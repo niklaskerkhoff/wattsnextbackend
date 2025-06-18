@@ -22,5 +22,6 @@ plugins {
 include(":app")
 include(":utils")
 include(":model")
+include(":api")
 
 rootProject.name = "wattsnextbackend"
