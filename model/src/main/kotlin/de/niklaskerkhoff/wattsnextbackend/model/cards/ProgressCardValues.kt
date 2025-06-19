@@ -7,5 +7,6 @@ data class ProgressCardValues(
     val advancedPoints: Int,
     val energyForAdvancement: List<Energy>,
     val energyOutput: Energy,
-    val price: Int
+    val moneyCosts: Int,
+    val resourceCosts: Int,
 )

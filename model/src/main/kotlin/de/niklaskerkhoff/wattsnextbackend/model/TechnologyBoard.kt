@@ -19,12 +19,14 @@ class TechnologyBoard(private val height: Int) {
             throw IllegalArgumentException("Position must be between 0 and $height, but was $position.")
         }
 
-        val list = when (card.technology) {
-            Technology.GENERATION -> _generationCards
-            Technology.DISTRIBUTION -> _distributionCards
-            Technology.STORAGE -> _storageCards
-        }
+        getList(card.technology)[position] = card
+    }
 
-        list[position] = card
+    fun getCard(technology: Technology, position: Int): ProgressCard? = getList(technology)[position]
+
+    private fun getList(technology: Technology) = when (technology) {
+        Technology.GENERATION -> _generationCards
+        Technology.DISTRIBUTION -> _distributionCards
+        Technology.STORAGE -> _storageCards
     }
 }
