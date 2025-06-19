@@ -1,7 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.Action
-import de.niklaskerkhoff.wattsnextbackend.model.Game
+import de.niklaskerkhoff.wattsnextbackend.model.state.Game
 import kotlin.random.Random
 
 class RollDiceAction(

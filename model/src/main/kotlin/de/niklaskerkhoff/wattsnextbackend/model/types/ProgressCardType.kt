@@ -1,7 +1,8 @@
 package de.niklaskerkhoff.wattsnextbackend.model.types
 
-enum class Technology {
+enum class ProgressCardType {
     GENERATION,
     DISTRIBUTION,
-    STORAGE
+    STORAGE,
+    CLIMATE
 }
