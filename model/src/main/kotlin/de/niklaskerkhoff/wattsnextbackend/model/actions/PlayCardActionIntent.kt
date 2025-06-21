@@ -1,8 +1,10 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.Action
-import de.niklaskerkhoff.wattsnextbackend.model.state.Game
 import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModificationApplier
+import de.niklaskerkhoff.wattsnextbackend.model.modifiers.WithTargetPositionModifierProvider
+import de.niklaskerkhoff.wattsnextbackend.model.state.Game
 
 class PlayCardActionIntent(
     internal val progressCard: ProgressCard,
@@ -27,10 +29,16 @@ class PlayCardActionIntent(
                 Pair(hasEnoughMoney, moneyToRecycle)
             }
 
+        val moneyToPay = ModificationApplier(
+            WithTargetPositionModifierProvider({ costModifier }, progressCard, game, targetPosition),
+            progressCard.values.moneyCosts,
+            game,
+        ).applyModification()
+
         return Result(
             canRecycle = canRecycle,
             moneyToRecycle = moneyToRecycle,
-            moneyToPay = progressCard.values.moneyCosts,
+            moneyToPay = moneyToPay,
             resourcesToPay = progressCard.values.resourceCosts,
         )
     }

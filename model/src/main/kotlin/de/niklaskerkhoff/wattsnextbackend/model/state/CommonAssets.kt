@@ -24,8 +24,10 @@ class CommonAssets(
     private val _storageCards = List<MutableList<ProgressCard>>(TECHNOLOGY_BOARD_HEIGHT) { mutableListOf() }
     private val _climateCards = List<MutableList<ProgressCard>>(CLIMATE_CARD_COUNT) { mutableListOf() }
 
-    private var eventCard: EventCard? = null
-    private var catastropheCard: EventCard? = null
+    var standardEventCard: EventCard? = null
+        private set
+    var catastropheEventCard: EventCard? = null
+        private set
 
     init {
         val (catastropheEventCardDeck, standardEventCardDeck) = eventCards.shuffled().partition { it.isCatastrophe }
@@ -41,11 +43,11 @@ class CommonAssets(
     fun drawProgressCardFromDeck() = progressCardDeck.removeLastOrNull()
 
     fun drawEventCardFromDeck() {
-        eventCard = standardEventCardDeck.removeLast()
+        standardEventCard = standardEventCardDeck.removeLast()
     }
 
     fun drawCatastropheCardFromDeck() {
-        catastropheCard = catastropheEventCardDeck.removeLast()
+        catastropheEventCard = catastropheEventCardDeck.removeLast()
     }
 
     fun playProgressCard(card: ProgressCard, position: Int) {
