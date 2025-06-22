@@ -18,12 +18,13 @@ class Game(
     private val _players: MutableList<Player> = mutableListOf()
     val players: List<Player> = _players
 
+    val currentPlayer get() = players[totalMove % players.size]
+
     val commonAssets = CommonAssets(initialMoney, initialResources, progressCards, eventCards)
 
     private var phase = 0
     private var moveInPhase = 0
-    private var currentPlayer: Player? = null
-
+    private val totalMove = moveInPhase * phase
 
     fun addPlayer(name: String) {
         val cards = (0..<5).map {

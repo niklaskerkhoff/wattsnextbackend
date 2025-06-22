@@ -1,6 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
-import de.niklaskerkhoff.wattsnextbackend.model.Action
+import de.niklaskerkhoff.wattsnextbackend.model.state.Action
 import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.state.Game
 import de.niklaskerkhoff.wattsnextbackend.model.state.Player
