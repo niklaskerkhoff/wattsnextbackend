@@ -5,17 +5,18 @@ import de.niklaskerkhoff.wattsnextbackend.model.state.Game
 import kotlin.random.Random
 
 class RollDiceAction(
-    internal val game: Game,
-) : Action<RollDiceAction.Result>() {
-    override fun canExecute(): Boolean {
+) : Action<RollDiceAction.Information>() {
+    override fun canExecute(game: Game): Boolean {
         return true
     }
 
-    override fun execute(): Result {
+    override fun execute(game: Game): ActionResult<Information> {
         val value = Random.nextInt(1, 6)
-        game.commonAssets.money += value
-        return Result(value)
+        val updatedMoney = game.commonAssets.money + value
+
+        val updatedGame = game.copy(commonAssets = game.commonAssets.copy(money = updatedMoney))
+        return ActionResult(updatedGame, Information(value))
     }
 
-    data class Result(val diceValue: Int)
+    data class Information(val diceValue: Int)
 }

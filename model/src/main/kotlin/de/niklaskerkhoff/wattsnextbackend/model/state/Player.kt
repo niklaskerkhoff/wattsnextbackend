@@ -1,15 +1,13 @@
 package de.niklaskerkhoff.wattsnextbackend.model.state
 
 import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
 
-class Player(
+data class Player(
     val name: String,
-    initialProgressCards: List<ProgressCard?>
+    val progressCards: List<ProgressCard?>
 ) {
-    private val _progressCards = initialProgressCards.toMutableList()
-    val progressCards: List<ProgressCard?> = _progressCards
-
-    fun replaceProgressCard(replacementCard: ProgressCard?, cardToReplace: ProgressCard?) {
-        _progressCards.indexOfFirst { it == cardToReplace }.let { index -> _progressCards[index] = replacementCard }
-    }
+    fun replaceProgressCard(replacementCard: ProgressCard?, cardToReplace: ProgressCard?) = copy(
+        progressCards = progressCards.replacedFirst(replacementCard, cardToReplace)
+    )
 }

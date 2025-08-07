@@ -5,12 +5,18 @@ import de.niklaskerkhoff.wattsnextbackend.model.modifiers.WithTargetPositionModi
 import kotlin.math.ceil
 
 val costModifiers = mapOf<String, WithTargetPositionModifierFunction<Int>>(
-    "HALF_PRICE_WHEN_X_FOLLOWING" to { modifyingCard, modifiedCard, acc, game, targetPosition ->
-        game.commonAssets.getCurrentProgressCard(modifiedCard.progressCardType, targetPosition)
+    "HALF_PRICE_WHEN_X_FOLLOWING" to { modifyingCard, modifiedCard, acc, game, targetPosition -> acc
+        /*if (modifyingCard.name != "X") acc
+        else if (modifyingCard.)
             .let { currentProgressCard ->
                 if (currentProgressCard == modifyingCard) ceil(acc / 2.0).toInt()
                 else acc
-            }
+            }*/
+       /* game.commonAssets.getCurrentProgressCard(modifiedCard.progressCardType, targetPosition)
+            .let { currentProgressCard ->
+                if (currentProgressCard == modifyingCard) ceil(acc / 2.0).toInt()
+                else acc
+            }*/
     }
 )
 

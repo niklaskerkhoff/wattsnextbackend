@@ -8,15 +8,7 @@ class ModificationApplier<T>(
     private val game: Game,
 ) {
     fun applyModification(): T =
-        game.commonAssets
-            .run {
-                climateCards.map { it.lastOrNull() } +
-                        generationCards.map { it.lastOrNull() } +
-                        distributionCards.map { it.lastOrNull() } +
-                        storageCards.map { it.lastOrNull() } +
-                        standardEventCard +
-                        catastropheEventCard
-            }
+        game.commonAssets.getAllCards()
             .mapNotNull { modifyingCard ->
                 modifyingCard?.let { modifierProvider.provide(it) }
             }

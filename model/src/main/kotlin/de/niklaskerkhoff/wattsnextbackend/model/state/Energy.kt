@@ -1,4 +1,4 @@
-package de.niklaskerkhoff.wattsnextbackend.model
+package de.niklaskerkhoff.wattsnextbackend.model.state
 
 import de.niklaskerkhoff.wattsnextbackend.model.types.EnergyType
 

@@ -4,78 +4,50 @@ import de.niklaskerkhoff.wattsnextbackend.model.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.types.ProgressCardType
 
-class CommonAssets(
-    var money: Int,
-    var resources: Int,
-    progressCards: List<ProgressCard>,
-    eventCards: List<EventCard>
+
+data class CommonAssets(
+    val progressCardDeck: List<ProgressCard>,
+    val standardEventCardDeck: List<EventCard>,
+    val catastropheEventCardDeck: List<EventCard>,
+
+    val money: Int,
+    val resources: Int,
+
+    val technologyBoard: TechnologyBoard,
+
+
+    val standardEventCard: EventCard? = null,
+    val catastropheEventCard: EventCard? = null,
 ) {
     companion object {
         const val TECHNOLOGY_BOARD_HEIGHT = 3
         const val CLIMATE_CARD_COUNT = 10
-    }
 
-    private val progressCardDeck = progressCards.shuffled().toMutableList()
-    private val catastropheEventCardDeck: MutableList<EventCard>
-    private val standardEventCardDeck: MutableList<EventCard>
+        fun initialize(
+            progressCardDeck: List<ProgressCard>,
+            eventCards: List<EventCard>,
+            initialMoney: Int,
+            initialResources: Int,
+        ): CommonAssets {
+            val (catastropheEventCardDeck, standardEventCardDeck) = eventCards.shuffled().partition { it.isCatastrophe }
+            return CommonAssets(
+                progressCardDeck,
+                standardEventCardDeck,
+                catastropheEventCardDeck,
 
-    private val _generationCards = List<MutableList<ProgressCard>>(TECHNOLOGY_BOARD_HEIGHT) { mutableListOf() }
-    private val _distributionCards = List<MutableList<ProgressCard>>(TECHNOLOGY_BOARD_HEIGHT) { mutableListOf() }
-    private val _storageCards = List<MutableList<ProgressCard>>(TECHNOLOGY_BOARD_HEIGHT) { mutableListOf() }
-    private val _climateCards = List<MutableList<ProgressCard>>(CLIMATE_CARD_COUNT) { mutableListOf() }
+                initialMoney,
+                initialResources,
 
-    var standardEventCard: EventCard? = null
-        private set
-    var catastropheEventCard: EventCard? = null
-        private set
-
-    init {
-        val (catastropheEventCardDeck, standardEventCardDeck) = eventCards.shuffled().partition { it.isCatastrophe }
-        this.catastropheEventCardDeck = catastropheEventCardDeck.toMutableList()
-        this.standardEventCardDeck = standardEventCardDeck.toMutableList()
-    }
-
-    val generationCards: List<List<ProgressCard>> = _generationCards
-    val distributionCards: List<List<ProgressCard>> = _distributionCards
-    val storageCards: List<List<ProgressCard>> = _storageCards
-    val climateCards: List<List<ProgressCard>> = _climateCards
-
-    fun drawProgressCardFromDeck() = progressCardDeck.removeLastOrNull()
-
-    fun drawEventCardFromDeck() {
-        standardEventCard = standardEventCardDeck.removeLast()
-    }
-
-    fun drawCatastropheCardFromDeck() {
-        catastropheEventCard = catastropheEventCardDeck.removeLast()
-    }
-
-    fun playProgressCard(card: ProgressCard, position: Int) {
-        if (position > TECHNOLOGY_BOARD_HEIGHT) {
-            throw IllegalArgumentException("Position must be between 0 and $TECHNOLOGY_BOARD_HEIGHT, but was $position.")
+                TechnologyBoard(
+                    List(TECHNOLOGY_BOARD_HEIGHT) { emptyList() },
+                    List(TECHNOLOGY_BOARD_HEIGHT) { emptyList() },
+                    List(TECHNOLOGY_BOARD_HEIGHT) { emptyList() },
+                    List(CLIMATE_CARD_COUNT) { emptyList() },
+                )
+            )
         }
-
-        getMutableProgressCardSectionCell(card.progressCardType, position).add(card)
     }
 
-    fun getCurrentProgressCard(progressCardType: ProgressCardType, position: Int): ProgressCard? =
-        getMutableProgressCardSectionCell(progressCardType, position).lastOrNull()
-
-    private fun getMutableProgressCardSectionCell(
-        progressCardType: ProgressCardType,
-        position: Int
-    ): MutableList<ProgressCard> {
-        val list = getMutableProgressCardSection(progressCardType)
-        if (position > list.size) {
-            throw IllegalArgumentException("Position must be between 0 and ${list.size}, but was $position.")
-        }
-        return list[position]
-    }
-
-    private fun getMutableProgressCardSection(progressCardType: ProgressCardType) = when (progressCardType) {
-        ProgressCardType.GENERATION -> _generationCards
-        ProgressCardType.DISTRIBUTION -> _distributionCards
-        ProgressCardType.STORAGE -> _storageCards
-        ProgressCardType.CLIMATE -> _climateCards
-    }
+    fun getAllCards() =
+        technologyBoard.getAllCurrentProgressCards() + standardEventCard + catastropheEventCard
 }

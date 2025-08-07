@@ -9,15 +9,14 @@ import de.niklaskerkhoff.wattsnextbackend.model.state.Game
 class PlayCardActionIntent(
     internal val progressCard: ProgressCard,
     internal val targetPosition: Int,
-    internal val game: Game,
-) : Action<PlayCardActionIntent.Result>() {
-    override fun canExecute(): Boolean {
+) : Action<PlayCardActionIntent.Information>() {
+    override fun canExecute(game: Game): Boolean {
         return true
     }
 
-    override fun execute(): Result {
+    override fun execute(game: Game): ActionResult<Information> {
         val currentProgressCard =
-            game.commonAssets.getCurrentProgressCard(progressCard.progressCardType, targetPosition)
+            game.commonAssets.technologyBoard.getCurrentProgressCard(progressCard.progressCardType, targetPosition)
 
         val (canRecycle, moneyToRecycle) =
             if (currentProgressCard == null) {
@@ -35,15 +34,18 @@ class PlayCardActionIntent(
             game,
         ).applyModification()
 
-        return Result(
-            canRecycle = canRecycle,
-            moneyToRecycle = moneyToRecycle,
-            moneyToPay = moneyToPay,
-            resourcesToPay = progressCard.values.resourceCosts,
+        return ActionResult(
+            game,
+            Information(
+                canRecycle = canRecycle,
+                moneyToRecycle = moneyToRecycle,
+                moneyToPay = moneyToPay,
+                resourcesToPay = progressCard.values.resourceCosts,
+            )
         )
     }
 
-    data class Result(
+    data class Information(
         val canRecycle: Boolean,
         val moneyToRecycle: Int?,
         val moneyToPay: Int,

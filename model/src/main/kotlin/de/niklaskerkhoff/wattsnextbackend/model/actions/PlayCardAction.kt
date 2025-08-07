@@ -1,68 +1,108 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
-import de.niklaskerkhoff.wattsnextbackend.model.state.Action
 import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
+import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
+import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
+import de.niklaskerkhoff.wattsnextbackend.model.state.Action
 import de.niklaskerkhoff.wattsnextbackend.model.state.Game
-import de.niklaskerkhoff.wattsnextbackend.model.state.Player
 import de.niklaskerkhoff.wattsnextbackend.model.types.ProgressCardType
 import kotlin.math.floor
 
 class PlayCardAction(
     internal val shallRecycle: Boolean,
     internal val playCardActionIntent: PlayCardActionIntent,
-    internal val playCardActionIntentResult: PlayCardActionIntent.Result,
-    internal val game: Game,
-    internal val currentPlayer: Player,
-) : Action<PlayCardAction.Result>() {
+    internal val playCardActionIntentInformation: PlayCardActionIntent.Information,
+) : Action<PlayCardAction.Information>() {
 
-    override fun canExecute(): Boolean {
+    override fun canExecute(game: Game): Boolean {
         return true
     }
 
-    override fun execute(): Result {
-        if (shallRecycle) {
-            if (!playCardActionIntentResult.canRecycle) {
-                throw IllegalArgumentException("Cannot recycle.")
+    override fun execute(game: Game): ActionResult<Information> {
+        val gameAfterRecycle =
+            if (shallRecycle) {
+                if (!playCardActionIntentInformation.canRecycle) {
+                    throw IllegalArgumentException("Cannot recycle.")
+                }
+                recycle(game)
+            } else {
+                game
             }
-            recycle()
-        }
 
-        val drawnCard = playCard()
+        val resultAfterCardPlayed = playCard(gameAfterRecycle)
 
-        return Result(
-            playedCard = playCardActionIntent.progressCard,
-            targetProgressCardType = playCardActionIntent.progressCard.progressCardType,
-            targetPosition = playCardActionIntent.targetPosition,
-            drawnCard = drawnCard
+        return ActionResult(
+            resultAfterCardPlayed.game,
+            Information(
+                playedCard = playCardActionIntent.progressCard,
+                targetProgressCardType = playCardActionIntent.progressCard.progressCardType,
+                targetPosition = playCardActionIntent.targetPosition,
+                drawnCard = resultAfterCardPlayed.information
+            )
         )
     }
 
-    private fun recycle() {
-        val currentCard = game.commonAssets.getCurrentProgressCard(
+    private fun recycle(game: Game): Game {
+        val currentCard = game.commonAssets.technologyBoard.getCurrentProgressCard(
             playCardActionIntent.progressCard.progressCardType,
             playCardActionIntent.targetPosition
         ) ?: throw IllegalStateException("Previous card not found.")
 
-        game.commonAssets.money -= currentCard.values.moneyCosts
-        game.commonAssets.resources += floor(currentCard.values.resourceCosts / 2.0).toInt()
+        val updatedMoney = game.commonAssets.money - currentCard.values.moneyCosts
+        val updatedResources = game.commonAssets.resources + floor(currentCard.values.resourceCosts / 2.0).toInt()
+
+        return game.copy(commonAssets = game.commonAssets.copy(money = updatedMoney, resources = updatedResources))
     }
 
-    private fun playCard(): ProgressCard? {
-        game.commonAssets.playProgressCard(
+    private fun playCard(game: Game): ActionResult<ProgressCard?> {
+
+        // Play the ProgressCard
+        val technologyBoardWithPlayedCard = game.commonAssets.technologyBoard.withProgressCardPlayed(
             playCardActionIntent.progressCard,
             playCardActionIntent.targetPosition
         )
-        game.commonAssets.money -= playCardActionIntent.progressCard.values.moneyCosts
 
-        val drawnCard = game.commonAssets.drawProgressCardFromDeck()
+        val moneyAfterCardPlayed = game.commonAssets.money - playCardActionIntent.progressCard.values.moneyCosts
+        val resourcesAfterCardPlayed =
+            game.commonAssets.resources - playCardActionIntent.progressCard.values.resourceCosts
 
-        currentPlayer.replaceProgressCard(playCardActionIntent.progressCard, drawnCard)
+        val currentPlayerProgressCardsWithoutPlayedCard = game.currentPlayer.progressCards.removed(
+            playCardActionIntent.progressCard,
+        )
 
-        return drawnCard
+        // Draw a ProgressCard
+        val drawnCard = game.commonAssets.progressCardDeck.last()
+
+        val currentPlayerProgressCardsWithoutPlayedCardWithDrawnCard =
+            currentPlayerProgressCardsWithoutPlayedCard + drawnCard
+
+        // Update
+
+        val updatedCurrentPlayer =
+            game.currentPlayer.copy(progressCards = currentPlayerProgressCardsWithoutPlayedCardWithDrawnCard)
+        val updatedPlayers = game.players.replacedFirst(game.currentPlayer, updatedCurrentPlayer)
+
+        val updatedProgressDeck = game.commonAssets.progressCardDeck.removedLast()
+
+        val updatedCommonAssets = game.commonAssets.copy(
+            technologyBoard = technologyBoardWithPlayedCard,
+            money = moneyAfterCardPlayed,
+            resources = resourcesAfterCardPlayed,
+            progressCardDeck = updatedProgressDeck,
+        )
+
+        return ActionResult(
+            game.copy(
+                players = updatedPlayers,
+                commonAssets = updatedCommonAssets,
+            ),
+            drawnCard
+        )
     }
 
 
-    data class Result(
+    data class Information(
         val playedCard: ProgressCard,
         val targetProgressCardType: ProgressCardType,
         val targetPosition: Int,
