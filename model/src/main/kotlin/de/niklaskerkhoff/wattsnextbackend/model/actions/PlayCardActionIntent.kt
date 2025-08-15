@@ -15,18 +15,18 @@ class PlayCardActionIntent(
     }
 
     override fun execute(game: Game): ActionResult<Information> {
-        val currentProgressCard =
-            game.commonAssets.technologyBoard.getCurrentProgressCard(progressCard.progressCardType, targetPosition)
-
-        val (canRecycle, moneyToRecycle) =
-            if (currentProgressCard == null) {
+        /*val currentProgressCard =
+            game.commonAssets.technologyBoard.getCurrentProgressCard(progressCard.technology, targetPosition)
+*/
+        val (canRecycle, moneyToRecycle) =Pair(false, null)
+            /*if (currentProgressCard == null) {
                 Pair(false, null)
             } else {
                 val moneyToRecycle = currentProgressCard.values.moneyCosts
                 val presentMoney = game.commonAssets.money - progressCard.values.moneyCosts
                 val hasEnoughMoney = presentMoney >= moneyToRecycle
                 Pair(hasEnoughMoney, moneyToRecycle)
-            }
+            }*/
 
         val moneyToPay = ModificationApplier(
             WithTargetPositionModifierProvider({ costModifier }, progressCard, game, targetPosition),

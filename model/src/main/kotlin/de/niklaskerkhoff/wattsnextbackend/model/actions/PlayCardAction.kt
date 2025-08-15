@@ -6,7 +6,6 @@ import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
 import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
 import de.niklaskerkhoff.wattsnextbackend.model.state.Action
 import de.niklaskerkhoff.wattsnextbackend.model.state.Game
-import de.niklaskerkhoff.wattsnextbackend.model.types.ProgressCardType
 import kotlin.math.floor
 
 class PlayCardAction(
@@ -36,7 +35,6 @@ class PlayCardAction(
             resultAfterCardPlayed.game,
             Information(
                 playedCard = playCardActionIntent.progressCard,
-                targetProgressCardType = playCardActionIntent.progressCard.progressCardType,
                 targetPosition = playCardActionIntent.targetPosition,
                 drawnCard = resultAfterCardPlayed.information
             )
@@ -44,8 +42,8 @@ class PlayCardAction(
     }
 
     private fun recycle(game: Game): Game {
-        val currentCard = game.commonAssets.technologyBoard.getCurrentProgressCard(
-            playCardActionIntent.progressCard.progressCardType,
+        val currentCard = game.commonAssets.technologyBoard.getCurrentTechonologyProgressCard(
+            (playCardActionIntent.progressCard as ProgressCard.TechnologyCard).technology,
             playCardActionIntent.targetPosition
         ) ?: throw IllegalStateException("Previous card not found.")
 
@@ -104,7 +102,6 @@ class PlayCardAction(
 
     data class Information(
         val playedCard: ProgressCard,
-        val targetProgressCardType: ProgressCardType,
         val targetPosition: Int,
         val drawnCard: ProgressCard?
     )
