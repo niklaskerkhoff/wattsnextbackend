@@ -1,5 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.api.gamemanagement
 
+import de.niklaskerkhoff.wattsnextbackend.api.actions.PlayerDto
 import java.util.*
 
 data class CreateGameRequest(
@@ -13,7 +14,16 @@ data class CreateGameRequest(
 }
 
 data class JoinGameRequest(
-    val gameId: UUID,
+    val gameId: String,
     val playerName: String
+)
+
+data class StartGameRequest(
+    val gameId: String,
+)
+
+data class CreateGameResponse(
+    val gameId: String,
+    val player: PlayerDto
 )
 

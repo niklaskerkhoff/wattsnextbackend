@@ -1,27 +1,30 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
 import org.springframework.messaging.handler.annotation.MessageMapping
-import org.springframework.messaging.handler.annotation.SendTo
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Controller
 
 @Controller
-class ActionWebSocketController {
+@MessageMapping("/game")
+class ActionWebSocketController(
+    private val wsAuthHelper: WebSocketAuthHelper
+) {
 
-    @MessageMapping("/action.roll-dice")
-    @SendTo("/topic/public")
-    fun rollDiceAction(): String {
-        return "Action"
+    @MessageMapping("/earnMoney")
+    fun rollDiceAction(headerAccessor: StompHeaderAccessor) {
+        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
+        // TODO: process action
     }
 
-    @MessageMapping("/action.play-card-intent")
-    @SendTo("/topic/public")
-    fun playCardIntent(request: PlayCardActionIntentRequest): String {
-        return "Action"
+    @MessageMapping("/playCardIntent")
+    fun playCardIntent(request: PlayCardActionIntentRequest, headerAccessor: StompHeaderAccessor) {
+        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
+        // TODO: process action
     }
 
-    @MessageMapping("/action.play-card")
-    @SendTo("/topic/public")
-    fun playCard(request: PlayCardActionRequest): String {
-        return "Action"
+    @MessageMapping("/playCard")
+    fun playCard(request: PlayCardActionRequest, headerAccessor: StompHeaderAccessor) {
+        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
+        // TODO: process action
     }
 }

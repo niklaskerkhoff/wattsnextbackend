@@ -1,0 +1,24 @@
+package de.niklaskerkhoff.wattsnextbackend.api.actions
+
+import org.springframework.stereotype.Component
+import java.util.concurrent.ConcurrentHashMap
+
+// TODO: put in adequate location
+// Maps session ids of connected clients to the according game and player id to identify clients when they send a
+// message
+@Component
+class PlayerSessionRegistry {
+    private val sessionMap = ConcurrentHashMap<String, PlayerSession>()
+
+    data class PlayerSession(val gameId: String, val playerId: String)
+
+    fun register(sessionId: String, gameId: String, playerId: String) {
+        sessionMap[sessionId] = PlayerSession(gameId, playerId)
+    }
+
+    fun unregister(sessionId: String) {
+        sessionMap.remove(sessionId)
+    }
+
+    fun get(sessionId: String): PlayerSession? = sessionMap[sessionId]
+}
