@@ -8,19 +8,19 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("game-management")
-class GameManagementController(private val gameService: GameService) {
+class GameManagementController(private val gameManagementService: GameManagementService) {
     @PostMapping
     fun createGame(@RequestBody createGameRequest: CreateGameRequest): CreateGameResponse {
-        return gameService.createGame(createGameRequest)
+        return gameManagementService.createGame(createGameRequest)
     }
 
     @PostMapping("join")
     fun joinGame(@RequestBody joinGameRequest: JoinGameRequest): PlayerDto {
-        return gameService.joinGame(joinGameRequest.gameId, joinGameRequest.playerName)
+        return gameManagementService.joinGame(joinGameRequest.gameId, joinGameRequest.playerName)
     }
 
     @PostMapping("start")
     fun startGame(@RequestBody startGameRequest: StartGameRequest) {
-        gameService.startGame(startGameRequest.gameId)
+        gameManagementService.startGame(startGameRequest.gameId)
     }
 }

@@ -8,8 +8,9 @@ import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 @Service
-class GameService(private val messagingTemplate: SimpMessagingTemplate
+class GameManagementService(private val messagingTemplate: SimpMessagingTemplate
 ) {
+    // TODO: Where to manage the open games?
     private val games: MutableMap<String, GameManager> = ConcurrentHashMap()
 
     fun createGame(request: CreateGameRequest): CreateGameResponse {

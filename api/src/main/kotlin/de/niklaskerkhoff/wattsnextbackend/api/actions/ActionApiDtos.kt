@@ -11,6 +11,7 @@ data class PlayCardActionRequest(
     val shallRecycle: Boolean,
 )
 
+// TODO: possible Actions not up-to-date, add action-specific responses
 data class ActionResponse<T>(
     val game: GameDto,
     val information: T,
