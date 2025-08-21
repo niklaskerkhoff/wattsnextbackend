@@ -1,8 +1,8 @@
-package de.niklaskerkhoff.wattsnextbackend.model.state
+package de.niklaskerkhoff.wattsnextbackend.model.core
 
-import de.niklaskerkhoff.wattsnextbackend.model.cards.EventCard
-import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.energy.Technology
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
 
 object GameFactory {
     fun createGame(

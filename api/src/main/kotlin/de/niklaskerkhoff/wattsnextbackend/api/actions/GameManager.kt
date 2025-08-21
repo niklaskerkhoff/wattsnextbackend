@@ -3,9 +3,9 @@ package de.niklaskerkhoff.wattsnextbackend.api.actions
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayCardActionIntent
 import de.niklaskerkhoff.wattsnextbackend.model.actions.RollDiceAction
-import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.state.Action
-import de.niklaskerkhoff.wattsnextbackend.model.state.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.Action
+import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 
 class GameManager(
     private var game: Game

@@ -1,11 +1,11 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
-import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
 import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
-import de.niklaskerkhoff.wattsnextbackend.model.state.Action
-import de.niklaskerkhoff.wattsnextbackend.model.state.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.Action
+import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import kotlin.math.floor
 
 class PlayCardAction(
@@ -19,6 +19,16 @@ class PlayCardAction(
     }
 
     override fun execute(game: Game): ActionResult<Information> {
+
+        return when (playCardActionIntent.progressCard) {
+            is ProgressCard.TechnologyCard -> handleTechnologyCard(game, progressCard)
+            is ProgressCard.ClimateCard -> handleClimateCard(game, progressCard)
+        }
+
+
+    }
+
+    fun handleTechnologyCard(game: Game, progressCard: ProgressCard.TechnologyCard): ActionResult<Information> {
         val gameAfterRecycle =
             if (shallRecycle) {
                 if (!playCardActionIntentInformation.canRecycle) {
@@ -39,6 +49,10 @@ class PlayCardAction(
                 drawnCard = resultAfterCardPlayed.information
             )
         )
+    }
+
+    fun handleClimateCard(game: Game, climateCard: ProgressCard.ClimateCard): ActionResult<Information> {
+        game
     }
 
     private fun recycle(game: Game): Game {

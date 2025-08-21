@@ -1,4 +1,4 @@
-package de.niklaskerkhoff.wattsnextbackend.model.energy
+package de.niklaskerkhoff.wattsnextbackend.model.core.energy
 
 data class Energy(
     val size: Int,

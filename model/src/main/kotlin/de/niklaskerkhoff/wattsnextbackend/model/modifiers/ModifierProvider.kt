@@ -1,8 +1,8 @@
 package de.niklaskerkhoff.wattsnextbackend.model.modifiers
 
-import de.niklaskerkhoff.wattsnextbackend.model.cards.Card
-import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.state.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.Card
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 
 interface ModifierProvider<T> {
     fun provide(modifyingCard: Card): UnifiedModifier<T>?

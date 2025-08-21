@@ -1,6 +1,6 @@
-package de.niklaskerkhoff.wattsnextbackend.model.cards
+package de.niklaskerkhoff.wattsnextbackend.model.core.cards
 
-import de.niklaskerkhoff.wattsnextbackend.model.energy.Energy
+import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Energy
 
 data class ProgressCardValues(
     val basePoints: Int,

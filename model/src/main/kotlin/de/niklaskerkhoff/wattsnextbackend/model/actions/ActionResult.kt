@@ -1,6 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
-import de.niklaskerkhoff.wattsnextbackend.model.state.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 
 data class ActionResult<T>(
     val game: Game,

@@ -1,6 +1,6 @@
-package de.niklaskerkhoff.wattsnextbackend.model.state
+package de.niklaskerkhoff.wattsnextbackend.model.core
 
-import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
 
 data class Player(

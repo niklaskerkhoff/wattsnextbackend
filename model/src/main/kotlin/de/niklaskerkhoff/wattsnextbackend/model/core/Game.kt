@@ -1,12 +1,27 @@
-package de.niklaskerkhoff.wattsnextbackend.model.state
+package de.niklaskerkhoff.wattsnextbackend.model.core
 
-import de.niklaskerkhoff.wattsnextbackend.model.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.energy.EnergyForm
-import de.niklaskerkhoff.wattsnextbackend.model.energy.Technology
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.Card
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.energy.EnergyForm
+import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
 
 data class Game(
     val players: List<Player>,
-    val commonAssets: CommonAssets,
+
+    val money: Int,
+    val resources: Int,
+
+    val technologyBoard: TechnologyBoard,
+    val climateCards: List<ProgressCard.ClimateCard>,
+
+    val progressCardDeck: List<ProgressCard>,
+    val standardEventCardDeck: List<EventCard>,
+    val catastropheEventCardDeck: List<EventCard>,
+
+    val standardEventCard: EventCard? = null,
+    val catastropheEventCard: EventCard? = null,
+
     private val demandTargetsPerPhase: List<Map<Technology, Int>>,
     private val pointTargetsPerPhase: List<Int>,
     private val numberOfPhases: Int,
@@ -21,7 +36,7 @@ data class Game(
     val progressPoints get() = calculateProgressPoints()
 
     fun calculateProgressPoints(): Int {
-        val progressCards = commonAssets.technologyBoard.getAllCurrentProgressCards().filterNotNull()
+        val progressCards = getAllProgressCards().filterNotNull()
         val totalEnergyOutputs = calculateTotalEnergyOutputs(progressCards)
 
         return 0
@@ -113,6 +128,13 @@ data class Game(
             }
             return true
         }*/
+
+    fun getCurrentProgressCard()
+
+    fun getAllProgressCards(): List<ProgressCard?> = technologyBoard.getAllCurrentProgressCards() + climateCards
+
+    fun getAllCards(): List<Card?> =
+        technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCard + catastropheEventCard
 
     private fun calculateTotalEnergyOutputs(progressCards: List<ProgressCard>): Map<Technology, Map<EnergyForm, Int>> {
         val energyOutputs = progressCards.map { it.values.energyOutput }

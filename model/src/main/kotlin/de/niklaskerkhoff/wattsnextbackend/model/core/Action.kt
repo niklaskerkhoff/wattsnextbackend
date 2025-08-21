@@ -1,4 +1,4 @@
-package de.niklaskerkhoff.wattsnextbackend.model.state
+package de.niklaskerkhoff.wattsnextbackend.model.core
 
 import de.niklaskerkhoff.wattsnextbackend.model.actions.ActionResult
 
