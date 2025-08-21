@@ -12,14 +12,14 @@ data class TechnologyBoard(
     val climateCards: ProgressCardDeliveryStack,
 ) {
     fun withProgressCardPlayed(progressCard: ProgressCard, position: Int): TechnologyBoard = copy(
-        generationCards = generationCards.playIfRightTechnology(Technology.GENERATION, progressCard, position),
+        generationCards = generationCards.playIfRightTechnology(Technology.Generation, progressCard, position),
         distributionCards = distributionCards.playIfRightTechnology(
-            Technology.DISTRIBUTION,
+            Technology.Distribution,
             progressCard,
             position
         ),
-        storageCards = storageCards.playIfRightTechnology(Technology.STORAGE, progressCard, position),
-        climateCards = climateCards.playIfRightTechnology(Technology.CLIMATE, progressCard, position),
+        storageCards = storageCards.playIfRightTechnology(Technology.Storage, progressCard, position),
+        climateCards = climateCards.playIfRightTechnology(Technology.Climate, progressCard, position),
     )
 
     fun getCurrentTechonologyProgressCard(technology: Technology, targetPosition: Int): ProgressCard.TechnologyCard? =
@@ -45,9 +45,9 @@ data class TechnologyBoard(
 
     private fun getProgressCardDeliveryStack(technology: Technology): ProgressCardDeliveryStack =
         when (technology) {
-            Technology.GENERATION -> generationCards
-            Technology.DISTRIBUTION -> distributionCards
-            Technology.STORAGE -> storageCards
-            Technology.CLIMATE -> climateCards
+            Technology.Generation -> generationCards
+            Technology.Distribution -> distributionCards
+            Technology.Storage -> storageCards
+            Technology.Climate -> climateCards
         }
 }

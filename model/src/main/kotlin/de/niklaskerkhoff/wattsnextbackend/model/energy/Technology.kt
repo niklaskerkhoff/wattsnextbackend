@@ -1,8 +1,8 @@
 package de.niklaskerkhoff.wattsnextbackend.model.energy
 
 enum class Technology {
-    GENERATION,
-    DISTRIBUTION,
-    STORAGE,
-    CLIMATE // weg damit
+    Generation,
+    Distribution,
+    Storage,
+    Climate // TODO: weg damit
 }

@@ -4,6 +4,8 @@ import de.niklaskerkhoff.wattsnextbackend.model.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.energy.EnergyForm
 import de.niklaskerkhoff.wattsnextbackend.model.energy.Technology
 import java.util.*
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 
 data class GameDto(
     val state: GameState,
@@ -45,15 +47,15 @@ data class BoardDto(
     val generationCards: List<ProgressCardDto>,
     val distributionCards: List<ProgressCardDto>,
     val storageCards: List<ProgressCardDto>,
-    val climateCards: List<ProgressCardDto>,
-    val standardEventCard: EventCard? = null,
-    val catastropheEventCard: EventCard? = null,
+    val climateActionCards: List<ProgressCardDto>,
+    val eventCards: List<EventCard>,
+    val catastropheCard: EventCard? = null,
 )
 
 data class PlayerDto(
     val id: UUID,
     val name: String,
-    val progressCards: List<ProgressCardDto>
+    val handCards: List<ProgressCardDto>
 )
 
 data class ProgressCardDto(
@@ -63,24 +65,37 @@ data class ProgressCardDto(
     val explanation: String,
     val moneyCosts: ModifiableValue<Int>,
     val resourceCosts: ModifiableValue<Int>,
-    val originalPoints: ModifiableValue<ProgressPointDto?>,
-    val supply: Supply?,
+    val points: ModifiableValue<ProgressPointsDto>?,
+    val supply: ModifiableValue<Supply>?,
     val isPlayable: Boolean?,
-    val gameBeforeEffect: GameDto?
+    val gameBeforeEffect: GameDto?,
+    // TODO: Is this the right way of differentiating between technology and climate action?
+    val type: String // 'technology' or 'climateAction'
 )
 
 data class ModifiableValue<T>(
     val originalValue: T,
-    val modifiedValue: T,
+    // TODO: Optional or not?
+    val modifiedValue: T?,
     val modifications: List<Modification>
 )
 
+// Add a type field to serialization to make Stack and Card easily distinguishable in Frontend
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type"
+)
+@JsonSubTypes(
+    JsonSubTypes.Type(value = Modification.Stack::class, name = "Stack"),
+    JsonSubTypes.Type(value = Modification.Card::class, name = "Card")
+)
 sealed class Modification {
     data class Stack(val multiplier: Int) : Modification()
     data class Card(val name: String) : Modification()
 }
 
-data class ProgressPointDto(
+data class ProgressPointsDto(
     val baseProgressPoints: Int?,
     val systemProgressPoints: Int,
     val conditions: List<Supply>,
@@ -97,18 +112,18 @@ sealed class Supply {
         val size: Int,
         override val fulfilled: Boolean?
     ) : Supply() {
-        override val type: String = "ENERGY"
+        override val type: String = "energy"
     }
 
     data class Icon(
-        val iconName: String,
+        val iconName: String, // can be CarbonCapture, NuclearWasteRepository or ChemicalEnergy
         override val fulfilled: Boolean?
     ) : Supply() {
-        override val type: String = "ICON"
+        override val type: String = "icon"
     }
 
     object Never : Supply() {
-        override val type: String = "NEVER"
+        override val type: String = "never"
         override val fulfilled: Boolean = false
     }
 }
