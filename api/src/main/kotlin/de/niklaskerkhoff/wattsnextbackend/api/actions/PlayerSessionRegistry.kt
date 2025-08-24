@@ -1,6 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
 import org.springframework.stereotype.Component
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 // TODO: put in adequate location
@@ -10,9 +11,9 @@ import java.util.concurrent.ConcurrentHashMap
 class PlayerSessionRegistry {
     private val sessionMap = ConcurrentHashMap<String, PlayerSession>()
 
-    data class PlayerSession(val gameId: String, val playerId: String)
+    data class PlayerSession(val gameId: UUID, val playerId: UUID)
 
-    fun register(sessionId: String, gameId: String, playerId: String) {
+    fun register(sessionId: String, gameId: UUID, playerId: UUID) {
         sessionMap[sessionId] = PlayerSession(gameId, playerId)
     }
 

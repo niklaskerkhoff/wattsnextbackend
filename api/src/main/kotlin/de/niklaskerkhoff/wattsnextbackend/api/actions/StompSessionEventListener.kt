@@ -1,5 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Component
@@ -13,6 +15,7 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent
 class StompSessionEventListener(
     private val playerSessionRegistry: PlayerSessionRegistry
 ) {
+    val log: Logger = LoggerFactory.getLogger(javaClass)
 
     @EventListener
     fun handleConnect(event: SessionConnectEvent) {
@@ -22,7 +25,7 @@ class StompSessionEventListener(
         val gameId = headers.getFirstNativeHeader("gameId") ?: return
 
         playerSessionRegistry.register(sessionId, gameId, playerId)
-        println("Player $playerId connected to game $gameId (session $sessionId)")
+        log.info("Player $playerId connected to game $gameId (session $sessionId)")
     }
 
     @EventListener
@@ -31,7 +34,7 @@ class StompSessionEventListener(
         val sessionId = headers.sessionId ?: return
 
         playerSessionRegistry.unregister(sessionId)
-        println("Session $sessionId disconnected")
+        log.info("Session $sessionId disconnected")
     }
 }
 

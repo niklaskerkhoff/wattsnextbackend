@@ -1,6 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
-import java.util.UUID
+import java.util.*
+
 
 data class PlayCardActionIntentRequest(
     val progressCardId: UUID,
@@ -11,9 +12,14 @@ data class PlayCardActionRequest(
     val shallRecycle: Boolean,
 )
 
-// TODO: possible Actions not up-to-date, add action-specific responses
 data class ActionResponse<T>(
     val game: GameDto,
-    val information: T,
-    val possibleActions: List<Any>
+    val status: ResponseStatus,
+    val information: T?,
 )
+
+enum class ResponseStatus {
+    OK,
+    ILLEGAL_ACTION_ARGUMENTS,
+    ILLEGAL_ACTION,
+}

@@ -11,8 +11,7 @@ class WebSocketAuthHelper(
 ) {
     fun getAndValidateSessionInfo(headerAccessor: StompHeaderAccessor): PlayerSessionRegistry.PlayerSession {
         val sessionId = headerAccessor.sessionId ?: throw IllegalStateException("No session")
-        val sessionInfo = playerSessionRegistry.get(sessionId)
-            ?: throw IllegalStateException("Player not registered")
+        val sessionInfo = playerSessionRegistry.get(sessionId) ?: throw IllegalStateException("Player not registered")
 
         return sessionInfo
     }

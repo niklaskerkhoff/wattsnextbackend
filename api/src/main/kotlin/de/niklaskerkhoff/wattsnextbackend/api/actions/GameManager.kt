@@ -1,7 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayCardAction
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayCardActionIntent
+import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
+import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
 import de.niklaskerkhoff.wattsnextbackend.model.actions.RollDiceAction
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
@@ -18,23 +18,27 @@ class GameManager(
         executeAction(action)
     }
 
-    fun handlePlayCardIntentAction(progressCard: ProgressCard, targetPosition: Int) {
-        val action = PlayCardActionIntent(progressCard, targetPosition)
-        executeAction(action)
+    fun handlePlayCardIntentAction(progressCard: ProgressCard, targetPosition: Int): Any {
+        val action = PlayTechnologyCardActionIntent(progressCard, targetPosition)
+         executeAction(action)
     }
 
     fun handlePlayCardAction(shallRecycle: Boolean) {
-        val action = PlayCardAction(
+        val action = PlayClimateCardAction(
             shallRecycle,
-            previousAction as PlayCardActionIntent,
-            previousActionInformation as PlayCardActionIntent.Information
+            previousAction as PlayTechnologyCardActionIntent,
+            previousActionInformation as PlayTechnologyCardActionIntent.Information
         )
         executeAction(action)
     }
 
-    private fun <T> executeAction(action: Action<T>) {
-        if (!action.canExecute(game)) throw IllegalStateException("Action cannot be executed.")
+    fun getStateInfo(): Game = game
+
+    private fun <T> executeAction(action: Action<T>): Boolean {
+        if (!action.canExecute(game)) return false
         previousAction = action
         previousActionInformation = action.execute(game)
+
+        return true
     }
 }

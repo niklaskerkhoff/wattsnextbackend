@@ -8,7 +8,7 @@ class ModificationApplier<T>(
     private val game: Game,
 ) {
     fun applyModification(): T =
-        game.commonAssets.getAllCards()
+        game.getAllCards()
             .mapNotNull { modifyingCard ->
                 modifyingCard?.let { modifierProvider.provide(it) }
             }

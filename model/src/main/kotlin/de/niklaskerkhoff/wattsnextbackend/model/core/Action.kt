@@ -1,6 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core
 
-import de.niklaskerkhoff.wattsnextbackend.model.actions.ActionResult
+import de.niklaskerkhoff.wattsnextbackend.model.core.ActionResult
 
 abstract class Action<T> {
     abstract fun canExecute(game: Game): Boolean

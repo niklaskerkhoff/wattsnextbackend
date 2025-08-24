@@ -14,16 +14,16 @@ data class CreateGameRequest(
 }
 
 data class JoinGameRequest(
-    val gameId: String,
+    val gameId: UUID,
     val playerName: String
 )
 
 data class StartGameRequest(
-    val gameId: String,
+    val gameId: UUID,
 )
 
 data class CreateGameResponse(
-    val gameId: String,
+    val gameId: UUID,
     val player: PlayerDto
 )
 

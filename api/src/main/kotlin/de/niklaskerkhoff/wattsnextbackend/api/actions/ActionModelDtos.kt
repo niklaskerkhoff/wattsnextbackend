@@ -6,6 +6,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
 import java.util.*
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
+import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Supply
 
 data class GameDto(
     val state: GameState,
@@ -66,7 +67,7 @@ data class ProgressCardDto(
     val moneyCosts: ModifiableValue<Int>,
     val resourceCosts: ModifiableValue<Int>,
     val points: ModifiableValue<ProgressPointsDto>?,
-    val supply: ModifiableValue<Supply>?,
+    val supply: Supply?,
     val isPlayable: Boolean?,
     val gameBeforeEffect: GameDto?,
     // TODO: Is this the right way of differentiating between technology and climate action?
@@ -76,7 +77,7 @@ data class ProgressCardDto(
 data class ModifiableValue<T>(
     val originalValue: T,
     // TODO: Optional or not?
-    val modifiedValue: T?,
+    val modifiedValue: T,
     val modifications: List<Modification>
 )
 
@@ -102,28 +103,4 @@ data class ProgressPointsDto(
     val conditionsFulfilled: Boolean,
 )
 
-sealed class Supply {
-    abstract val type: String
-    abstract val fulfilled: Boolean?
 
-    data class Energy(
-        val technology: Technology,
-        val form: EnergyForm,
-        val size: Int,
-        override val fulfilled: Boolean?
-    ) : Supply() {
-        override val type: String = "energy"
-    }
-
-    data class Icon(
-        val iconName: String, // can be CarbonCapture, NuclearWasteRepository or ChemicalEnergy
-        override val fulfilled: Boolean?
-    ) : Supply() {
-        override val type: String = "icon"
-    }
-
-    object Never : Supply() {
-        override val type: String = "never"
-        override val fulfilled: Boolean = false
-    }
-}
