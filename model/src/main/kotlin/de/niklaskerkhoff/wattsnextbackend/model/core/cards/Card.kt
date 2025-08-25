@@ -9,9 +9,6 @@ typealias CardEffect = ((Game) -> Pair<Game, List<CardEffectInformation>>)?
 abstract class Card {
     abstract val id: UUID
     abstract val name: String
-    abstract val description: String
-    abstract val explanation: String
-    abstract val imageSrc: String
     abstract val modifierCollection: ModifierCollection
     abstract val effect: CardEffect
     abstract val phase: Int
