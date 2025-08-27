@@ -198,13 +198,13 @@ data class Game(
         return true
     }
 
-    fun withNextTurn(): ActionResult<BaseInformation> =
+    fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
             if (nextTurnInPhase == secondEventCardTurnInPhase) {
                 val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
                 val updatedStandardEventCards = standardEventCards + drawnCard
 
-                ActionResult(
+                Result(
                     copy(
                         turnInPhase = nextTurnInPhase,
                         standardEventCards = updatedStandardEventCards,
@@ -213,7 +213,7 @@ data class Game(
                     BaseInformation(gotNewStandardEventCard = true)
                 )
             } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
-                ActionResult(
+                Result(
                     copy(turnInPhase = nextTurnInPhase),
                     BaseInformation()
                 )
@@ -231,7 +231,7 @@ data class Game(
         progressCards: List<ProgressCard>
     ): Pair<Map<Technology, Map<EnergyForm, Int>>, Set<Supply.Achievement>> {
 
-        val supplies = progressCards.map { it.values.supply }
+        val supplies = progressCards.map { it.supply }
 
         val energy = mutableMapOf<Technology, MutableMap<EnergyForm, Int>>()
         val achievements = mutableSetOf<Supply.Achievement>()
@@ -251,13 +251,13 @@ data class Game(
         return Pair(energy, achievements)
     }
 
-    private fun handleNextPhase(nextPhase: Int): ActionResult<BaseInformation> =
+    private fun handleNextPhase(nextPhase: Int): Result<Unit> =
         if (nextPhase == numberOfPhases) {
             val requirementsFulfilled = hasReachedTargets()
             val updatedState = if (requirementsFulfilled) GameState.WON else GameState.LOST
-            ActionResult(
+            Result(
                 copy(state = updatedState),
-                BaseInformation(
+                baseInformation = BaseInformation(
                     phaseCompleted = true,
                     hasGameStateChanged = true,
                     requirementsFulfilled = requirementsFulfilled
@@ -273,7 +273,7 @@ data class Game(
                 if (requirementsFulfilled) Pair(null, catastropheEventCardDeck)
                 else catastropheEventCardDeck.removedLast()
 
-            ActionResult(
+            Result(
                 copy(
                     turnInPhase = 0,
                     phase = nextPhase,

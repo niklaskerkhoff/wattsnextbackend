@@ -7,6 +7,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.messaging.SessionConnectEvent
 import org.springframework.web.socket.messaging.SessionDisconnectEvent
+import java.util.UUID
 
 // TODO: put in adequate location
 
@@ -21,8 +22,8 @@ class StompSessionEventListener(
     fun handleConnect(event: SessionConnectEvent) {
         val headers = StompHeaderAccessor.wrap(event.message)
         val sessionId = headers.sessionId ?: return
-        val playerId = headers.getFirstNativeHeader("playerId") ?: return
-        val gameId = headers.getFirstNativeHeader("gameId") ?: return
+        val playerId = headers.getFirstNativeHeader("playerId").toUUID() ?: return
+        val gameId = headers.getFirstNativeHeader("gameId").toUUID() ?: return
 
         playerSessionRegistry.register(sessionId, gameId, playerId)
         log.info("Player $playerId connected to game $gameId (session $sessionId)")
@@ -36,5 +37,7 @@ class StompSessionEventListener(
         playerSessionRegistry.unregister(sessionId)
         log.info("Session $sessionId disconnected")
     }
+
+    private fun String?.toUUID() = if (this == null) null else UUID.fromString(this)
 }
 

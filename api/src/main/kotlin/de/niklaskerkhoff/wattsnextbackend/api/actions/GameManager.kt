@@ -1,6 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
+import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
 import de.niklaskerkhoff.wattsnextbackend.model.actions.RollDiceAction
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
@@ -18,13 +19,14 @@ class GameManager(
         executeAction(action)
     }
 
-    fun handlePlayCardIntentAction(progressCard: ProgressCard, targetPosition: Int): Any {
+    fun handlePlayCardIntentAction(progressCard: ProgressCard.TechnologyCard, targetPosition: Int): Any {
         val action = PlayTechnologyCardActionIntent(progressCard, targetPosition)
          executeAction(action)
+        return ""
     }
 
     fun handlePlayCardAction(shallRecycle: Boolean) {
-        val action = PlayClimateCardAction(
+        val action = PlayTechnologyCardAction(
             shallRecycle,
             previousAction as PlayTechnologyCardActionIntent,
             previousActionInformation as PlayTechnologyCardActionIntent.Information

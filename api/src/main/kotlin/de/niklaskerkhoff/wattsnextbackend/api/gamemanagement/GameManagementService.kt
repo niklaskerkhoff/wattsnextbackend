@@ -2,7 +2,6 @@ package de.niklaskerkhoff.wattsnextbackend.api.gamemanagement
 
 import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManager
 import de.niklaskerkhoff.wattsnextbackend.api.actions.PlayerDto
-import de.niklaskerkhoff.wattsnextbackend.model.core.GameFactory
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
 import java.util.*

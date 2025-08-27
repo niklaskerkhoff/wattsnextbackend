@@ -1,7 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
-import de.niklaskerkhoff.wattsnextbackend.model.core.ActionResult
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
@@ -20,27 +20,27 @@ class PlayTechnologyCardAction(
         return true
     }
 
-    override fun execute(game: Game): ActionResult<Information> {
-        val (gameAfterRecycle, recyclingInformation) =
+    override fun execute(game: Game): Result<Information> {
+        val (gameAfterRecycle, _, recyclingInformation) =
             if (shallRecycle) {
                 if (!playTechnologyCardActionIntentInformation.canRecycle) {
                     throw IllegalArgumentException("Cannot recycle.")
                 }
                 recycle(game)
             } else {
-                ActionResult(game, null)
+                Result(game)
             }
 
         val resultAfterCardPlayed = playCard(gameAfterRecycle)
 
-        return ActionResult(
-            resultAfterCardPlayed.game,
-            Information(
+        return Result(
+            game = resultAfterCardPlayed.game,
+            actionInformation = Information(
                 playedCard = playTechnologyCardActionIntent.technologyCard,
                 targetPosition = playTechnologyCardActionIntent.targetPosition,
-                drawnCard = resultAfterCardPlayed.information.drawnCard,
-                payedMoneyForCard = resultAfterCardPlayed.information.payedMoneyForCard,
-                payedResourcesForCard = resultAfterCardPlayed.information.payedResourcesForCard,
+                drawnCard = resultAfterCardPlayed.actionInformation!!.drawnCard,
+                payedMoneyForCard = resultAfterCardPlayed.actionInformation.payedMoneyForCard,
+                payedResourcesForCard = resultAfterCardPlayed.actionInformation.payedResourcesForCard,
                 didRecycle = shallRecycle,
                 payedMoneyForRecycling = recyclingInformation?.payedMoneyForRecycling,
                 gainedResourcesForRecycling = recyclingInformation?.gainedResourcesForRecycling,
@@ -48,9 +48,9 @@ class PlayTechnologyCardAction(
         )
     }
 
-    private fun recycle(game: Game): ActionResult<RecyclingInformation> {
+    private fun recycle(game: Game): Result<RecyclingInformation> {
         val currentCard = game.technologyBoard.getCurrentTechnologyCard(
-            playTechnologyCardActionIntent.technologyCard.technology,
+            playTechnologyCardActionIntent.technologyCard.supply.technology,
             playTechnologyCardActionIntent.targetPosition
         ) ?: throw IllegalStateException("Previous card not found.")
 
@@ -60,16 +60,16 @@ class PlayTechnologyCardAction(
         val updatedMoney = game.money - currentCard.values.resourceCosts
         val updatedResources = game.resources + gainingResources
 
-        return ActionResult(
-            game.copy(money = updatedMoney, resources = updatedResources),
-
-            RecyclingInformation(
-                moneyForRecycling, gainingResources
+        return Result(
+            game = game.copy(money = updatedMoney, resources = updatedResources),
+            actionInformation = RecyclingInformation(
+                payedMoneyForRecycling = moneyForRecycling,
+                gainedResourcesForRecycling = gainingResources
             )
         )
     }
 
-    private fun playCard(game: Game): ActionResult<PlayCardInformation> {
+    private fun playCard(game: Game): Result<PlayCardInformation> {
 
         // Play the ProgressCard
         val technologyBoardWithPlayedCard = game.technologyBoard.withCardPlayed(
@@ -98,20 +98,25 @@ class PlayTechnologyCardAction(
             game.currentPlayer.copy(progressCards = currentPlayerProgressCardsWithoutPlayedCardWithDrawnCard)
         val updatedPlayers = game.players.replacedFirst(game.currentPlayer, updatedCurrentPlayer)
 
-        return ActionResult(
-            game.copy(
-                players = updatedPlayers,
-                money = moneyAfterCardPlayed,
-                resources = resourcesAfterCardPlayed,
-                technologyBoard = technologyBoardWithPlayedCard,
-                progressCardDeck = updatedProgressDeck,
-            ).withNextTurn(),
-            PlayCardInformation(
-                drawnCard = drawnCard,
-                payedMoneyForCard = moneyToPay,
-                payedResourcesForCard = resourcesToPay,
-            )
+        val updatedGame = game.copy(
+            players = updatedPlayers,
+            money = moneyAfterCardPlayed,
+            resources = resourcesAfterCardPlayed,
+            technologyBoard = technologyBoardWithPlayedCard,
+            progressCardDeck = updatedProgressDeck,
         )
+
+        return updatedGame.withNextTurn().let {
+            Result(
+                game = it.game,
+                baseInformation = it.baseInformation,
+                actionInformation = PlayCardInformation(
+                    drawnCard = drawnCard,
+                    payedMoneyForCard = moneyToPay,
+                    payedResourcesForCard = resourcesToPay,
+                )
+            )
+        }
     }
 
     data class RecyclingInformation(

@@ -1,7 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
-import de.niklaskerkhoff.wattsnextbackend.model.core.ActionResult
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModificationApplier
@@ -16,9 +16,9 @@ class PlayTechnologyCardActionIntent(
         return game.money >= technologyCard.values.moneyCosts && game.resources >= technologyCard.values.resourceCosts
     }
 
-    override fun execute(game: Game): ActionResult<Information> {
+    override fun execute(game: Game): Result<Information> {
         val currentTechnologyCard =
-            game.technologyBoard.getCurrentTechnologyCard(technologyCard.technology, targetPosition)
+            game.technologyBoard.getCurrentTechnologyCard(technologyCard.supply.technology, targetPosition)
 
 
         val gainingResources = currentTechnologyCard?.let { floor(it.values.resourceCosts / 2.0).toInt() }
@@ -39,9 +39,9 @@ class PlayTechnologyCardActionIntent(
             game,
         ).applyModification()
 
-        return ActionResult(
-            game,
-            Information(
+        return Result(
+            game = game,
+            actionInformation = Information(
                 canRecycle = canRecycle,
                 moneyForRecycling = moneyToRecycle,
                 gainingResourcesForRecycling = gainingResources,

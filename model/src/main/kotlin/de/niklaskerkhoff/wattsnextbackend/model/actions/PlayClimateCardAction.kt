@@ -1,7 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
-import de.niklaskerkhoff.wattsnextbackend.model.core.ActionResult
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffectInformation
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
@@ -19,7 +19,7 @@ class PlayClimateCardAction(
                 game.climateCards.size < 10
     }
 
-    override fun execute(game: Game): ActionResult<Information> {
+    override fun execute(game: Game): Result<Information> {
         val updatedClimateCards = game.climateCards + climateCard
 
         val moneyAfterCardPlayed = game.money - climateCard.values.moneyCosts
@@ -49,12 +49,14 @@ class PlayClimateCardAction(
         val (gameAfterEffect, cardEffectInformations) =
             climateCard.effect?.let { it(gameAfterCardPlayed) } ?: Pair(gameAfterCardPlayed, emptyList())
 
-        return ActionResult(
-            gameAfterEffect.withNextTurn(),
-            Information(climateCard, drawnCard, cardEffectInformations)
-        )
+        return gameAfterEffect.withNextTurn().let {
+            Result(
+                game = it.game,
+                baseInformation = it.baseInformation,
+                actionInformation = Information(climateCard, drawnCard, cardEffectInformations)
+            )
+        }
     }
-
 
     data class Information(
         val playedCard: ProgressCard.ClimateCard,

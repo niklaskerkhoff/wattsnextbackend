@@ -1,5 +1,5 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core
-
+/*
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
@@ -65,3 +65,4 @@ object GameFactory {
         }
     }
 }
+*/

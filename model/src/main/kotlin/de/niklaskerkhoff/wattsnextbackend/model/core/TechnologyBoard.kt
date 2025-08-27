@@ -15,14 +15,14 @@ data class TechnologyBoard(
         require(generationCards.size == storageCards.size)
     }
 
-    fun withCardPlayed(progressCard: ProgressCard, position: Int): TechnologyBoard = copy(
-        generationCards = generationCards.playIfRightTechnology(Technology.Generation, progressCard, position),
+    fun withCardPlayed(card: ProgressCard.TechnologyCard, position: Int): TechnologyBoard = copy(
+        generationCards = generationCards.playIfRightTechnology(Technology.Generation, card, position),
         distributionCards = distributionCards.playIfRightTechnology(
             Technology.Distribution,
-            progressCard,
+            card,
             position
         ),
-        storageCards = storageCards.playIfRightTechnology(Technology.Storage, progressCard, position),
+        storageCards = storageCards.playIfRightTechnology(Technology.Storage, card, position),
     )
 
     fun getCurrentTechnologyCard(technology: Technology, targetPosition: Int): ProgressCard.TechnologyCard? =
@@ -42,10 +42,10 @@ data class TechnologyBoard(
 
     private fun TechnologyColumn.playIfRightTechnology(
         technology: Technology,
-        card: ProgressCard,
+        card: ProgressCard.TechnologyCard,
         position: Int
     ): TechnologyColumn =
-        if (technology == (card as ProgressCard.TechnologyCard).technology)
+        if (technology == card.supply.technology)
             this.mapIndexed { index, cards -> if (index == position) cards + card else cards }
         else this
 
