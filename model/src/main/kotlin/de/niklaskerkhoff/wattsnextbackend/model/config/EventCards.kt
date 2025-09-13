@@ -2,10 +2,11 @@ package de.niklaskerkhoff.wattsnextbackend.model.config
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard.EffectDescription
+import de.niklaskerkhoff.wattsnextbackend.model.modifiers.Modifier
 import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModifierCollection
-import java.util.UUID
+import java.util.*
 
-val eventCards = listOf<EventCard>(
+val eventCards = listOf(
     EventCard(
         id = UUID.randomUUID(),
         name = "Langer und kalter Winter",
@@ -16,12 +17,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -34,16 +32,18 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
             EffectDescription(
-                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",
+                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",// Rm. Effect
                 imageSrc = null,
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 5,
+                modify = SupplyListModifier.BasePointsForSolar.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -56,16 +56,18 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
             EffectDescription(
-                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",
+                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",// Rm. Effect
                 imageSrc = null,
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 5,
+                modify = SupplyListModifier.BasePointsForWind.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -78,12 +80,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -102,11 +101,13 @@ val eventCards = listOf<EventCard>(
         ),
         effectConditionDescription = "Falls Solartechnologien im Energiesystem vorhanden:",
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 4,
+                modify = SupplyListModifier.SystemPointsForSolar.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -121,12 +122,9 @@ val eventCards = listOf<EventCard>(
         ),
         effectConditionDescription = "Falls Atomkraftwerk im Energie-system vorhanden:",
         footnote = "Kein Atomkraftwerk? Glück gehabt",
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -145,11 +143,13 @@ val eventCards = listOf<EventCard>(
         ),
         effectConditionDescription = "Falls Windtechnologien im Energiesystem vorhanden:",
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 5,
+                modify = SupplyListModifier.SystemPointsForStorage.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -166,16 +166,18 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
             EffectDescription(
-                text = " Energieeinheiten dieser Technologien werden um 1 reduziert.",
+                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",// Rm. Effect
                 imageSrc = null,
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 5,
+                modify = SupplyListModifier.BasePointsForLargeGeneration.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -192,12 +194,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -211,11 +210,13 @@ val eventCards = listOf<EventCard>(
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            cardMoneyCostsModifier = Modifier(
+                rank = 5,
+                modify = CardCostModifier.CostsWithBatteryImproved.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -228,16 +229,13 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
             EffectDescription(
-                text = "Die Nachfrage nach  Energie sinkt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit reduziert.",
+                text = "Die Nachfrage nach Energie sinkt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit reduziert.",
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -250,12 +248,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -272,12 +267,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -290,12 +282,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = true
     ),
     EventCard(
@@ -313,11 +302,13 @@ val eventCards = listOf<EventCard>(
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyModifier = Modifier(
+                rank = 100,
+                modify = SupplyModifier.NoSupplyForOverheadPowerLine.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = false
     ),
     EventCard(
@@ -330,7 +321,7 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
             EffectDescription(
-                text = "Die Nachfrage nach  Energie steigt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit erhöht.",
+                text = "Die Nachfrage nach Energie steigt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit erhöht.",
                 imageSrc = null,
             ),
             EffectDescription(
@@ -339,11 +330,13 @@ val eventCards = listOf<EventCard>(
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 10,
+                modify = SupplyListModifier.BasePointsForCoalAndGasAndNuclear.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = true
     ),
     EventCard(
@@ -356,12 +349,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = true
     ),
     EventCard(
@@ -379,11 +369,13 @@ val eventCards = listOf<EventCard>(
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 10,
+                modify = SupplyListModifier.BasePointsForSolar.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = true
     ),
     EventCard(
@@ -401,11 +393,13 @@ val eventCards = listOf<EventCard>(
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 10,
+                modify = SupplyListModifier.BasePointsForWaterAndPumpStorage.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,
+        phaseIndex = 0,// Impl. Effect
         isCatastrophe = true
     ),
     EventCard(
@@ -418,12 +412,9 @@ val eventCards = listOf<EventCard>(
                 imageSrc = null,
             ),
         ),
-        modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
-        ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        modifierCollection = ModifierCollection(),
+        effect = null,
+        phaseIndex = 0,// Impl. Effect
         isCatastrophe = true
     ),
     EventCard(
@@ -441,11 +432,13 @@ val eventCards = listOf<EventCard>(
             ),
         ),
         modifierCollection = ModifierCollection(
-            costModifier = null,
-            pointModifier = null,
+            supplyRequirementsForSystemModifier = Modifier(
+                rank = 10,
+                modify = SupplyListModifier.BasePointsForDistribution.modify
+            )
         ),
-        effect = { Pair(it, emptyList()) },
-        phase = 0,
+        effect = null,// Impl. Effect
+        phaseIndex = 0,
         isCatastrophe = true
     ),
 )

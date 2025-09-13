@@ -11,7 +11,7 @@ abstract class Card {
     abstract val name: String
     abstract val modifierCollection: ModifierCollection
     abstract val effect: CardEffect
-    abstract val phase: Int
+    abstract val phaseIndex: Int
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

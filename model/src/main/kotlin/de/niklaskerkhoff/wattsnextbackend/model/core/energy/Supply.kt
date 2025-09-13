@@ -24,4 +24,9 @@ sealed class Supply {
         override val type: String = "never"
         override val fulfilled: Boolean = false
     }
+/*
+    object Always : Supply() {
+        override val type: String = "always"
+        override val fulfilled: Boolean = true
+    }*/
 }

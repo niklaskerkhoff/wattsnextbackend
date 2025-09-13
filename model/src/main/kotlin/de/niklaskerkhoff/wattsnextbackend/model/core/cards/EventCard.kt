@@ -8,7 +8,7 @@ class EventCard(
     override val name: String,
     override val modifierCollection: ModifierCollection,
     override val effect: CardEffect,
-    override val phase: Int,
+    override val phaseIndex: Int,
     val isCatastrophe: Boolean,
     val eventDescription: String,
     val effectDescriptions: List<EffectDescription>,

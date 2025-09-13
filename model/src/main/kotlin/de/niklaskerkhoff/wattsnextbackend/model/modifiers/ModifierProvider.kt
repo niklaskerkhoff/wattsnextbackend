@@ -8,11 +8,11 @@ interface ModifierProvider<T> {
     fun provide(modifyingCard: Card): UnifiedModifier<T>?
 }
 
-typealias SimpleModifierExecutorFunction<T> =
+typealias SimpleModifierFunction<T> =
             (modifyingCard: Card, modifiedCard: ProgressCard, acc: T, game: Game) -> T
 
 class SimpleModifierProvider<T>(
-    val getModifier: ModifierCollection.() -> Modifier<SimpleModifierExecutorFunction<T>>?,
+    val getModifier: ModifierCollection.() -> Modifier<SimpleModifierFunction<T>>?,
     val modifiedProgressCard: ProgressCard,
     val game: Game,
 ) : ModifierProvider<T> {

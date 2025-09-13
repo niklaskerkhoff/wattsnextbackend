@@ -1,6 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core.cards
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Supply
+import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
 import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModifierCollection
 import java.util.*
 
@@ -17,20 +18,23 @@ sealed class ProgressCard : Card() {
         override val name: String,
         override val modifierCollection: ModifierCollection,
         override val effect: CardEffect,
-        override val phase: Int,
+        override val phaseIndex: Int,
         override val values: ProgressCardValues,
         override val explanation: String,
         override val requirementsDescription: String,
         override val imageSrc: String,
-        override val supply: Supply.Energy
-    ) : ProgressCard()
+        override val supply: Supply.Energy,
+        val tags: List<String> = emptyList(),
+    ) : ProgressCard() {
+        val technology: Technology = supply.technology
+    }
 
     class ClimateCard(
         override val id: UUID,
         override val name: String,
         override val modifierCollection: ModifierCollection,
         override val effect: CardEffect,
-        override val phase: Int,
+        override val phaseIndex: Int,
         override val values: ProgressCardValues,
         override val explanation: String,
         override val requirementsDescription: String,

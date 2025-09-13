@@ -52,6 +52,8 @@ data class Game(
         require(pointTargetsPerPhase.size == numberOfPhases)
     }
 
+    fun withUpdatedResources(delta: Int): Game = copy(resources = resources + delta)
+
     private fun calculateProgressPoints(): Triple<List<ProgressCard>, List<ProgressCard>, Int> {
         val progressCards = getAllProgressCards().filterNotNull()
         val (energy, achievements) = calculateTotalSupply(progressCards)
