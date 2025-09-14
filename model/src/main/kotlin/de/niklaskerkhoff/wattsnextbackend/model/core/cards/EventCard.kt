@@ -1,6 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core.cards
 
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModifierCollection
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import java.util.*
 
 class EventCard(

@@ -2,9 +2,10 @@ package de.niklaskerkhoff.wattsnextbackend.model.config
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard.EffectDescription
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.Modifier
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModifierCollection
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
 import java.util.*
+
 
 val eventCards = listOf(
     EventCard(
@@ -37,7 +38,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 5,
                 modify = SupplyListModifier.BasePointsForSolar.modify
             )
@@ -61,7 +62,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 5,
                 modify = SupplyListModifier.BasePointsForWind.modify
             )
@@ -101,7 +102,7 @@ val eventCards = listOf(
         ),
         effectConditionDescription = "Falls Solartechnologien im Energiesystem vorhanden:",
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 4,
                 modify = SupplyListModifier.SystemPointsForSolar.modify
             )
@@ -143,7 +144,7 @@ val eventCards = listOf(
         ),
         effectConditionDescription = "Falls Windtechnologien im Energiesystem vorhanden:",
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 5,
                 modify = SupplyListModifier.SystemPointsForStorage.modify
             )
@@ -171,7 +172,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 5,
                 modify = SupplyListModifier.BasePointsForLargeGeneration.modify
             )
@@ -210,7 +211,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            cardMoneyCostsModifier = Modifier(
+            cardMoneyCostsModifierConfig = ModifierConfig(
                 rank = 5,
                 modify = CardCostModifier.CostsWithBatteryImproved.modify
             )
@@ -302,9 +303,9 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyModifier = Modifier(
+            supplyModifierConfig = ModifierConfig(
                 rank = 100,
-                modify = SupplyModifier.NoSupplyForOverheadPowerLine.modify
+                modify = SupplyModifier.NoSupplyFromOverheadPowerLine.modify
             )
         ),
         effect = null,// Impl. Effect
@@ -330,7 +331,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 10,
                 modify = SupplyListModifier.BasePointsForCoalAndGasAndNuclear.modify
             )
@@ -369,7 +370,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 10,
                 modify = SupplyListModifier.BasePointsForSolar.modify
             )
@@ -393,7 +394,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 10,
                 modify = SupplyListModifier.BasePointsForWaterAndPumpStorage.modify
             )
@@ -432,7 +433,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            supplyRequirementsForSystemModifier = Modifier(
+            supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 10,
                 modify = SupplyListModifier.BasePointsForDistribution.modify
             )

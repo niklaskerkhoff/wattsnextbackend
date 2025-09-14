@@ -1,4 +1,4 @@
-package de.niklaskerkhoff.wattsnextbackend.model.core.energy
+package de.niklaskerkhoff.wattsnextbackend.model.values.energy
 
 sealed class Supply {
     abstract val type: String

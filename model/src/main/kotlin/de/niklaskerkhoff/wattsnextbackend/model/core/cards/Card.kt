@@ -1,15 +1,18 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core.cards
 
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModifierCollection
-import de.niklaskerkhoff.wattsnextbackend.model.core.Game
-import java.util.UUID
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModificationBase
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifiedValue
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
+import java.util.*
 
-typealias CardEffect = ((Game) -> Pair<Game, List<CardEffectInformation>>)?
+typealias CardEffect = ((EffectBase) -> Pair<EffectBase, List<CardEffectInformation>>)?
+typealias SimpleModifiedValue< T> = ModifiedValue<T, ModificationBase>
+typealias WithIntModifiedValue<T> = ModifiedValue<T, Pair<ModificationBase, Int>>
 
 abstract class Card {
+    abstract val modifierCollection: ModifierCollection
     abstract val id: UUID
     abstract val name: String
-    abstract val modifierCollection: ModifierCollection
     abstract val effect: CardEffect
     abstract val phaseIndex: Int
 

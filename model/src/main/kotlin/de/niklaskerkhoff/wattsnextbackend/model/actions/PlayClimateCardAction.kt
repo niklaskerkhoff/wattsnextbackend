@@ -1,8 +1,8 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
-import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffectInformation
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
@@ -14,16 +14,16 @@ class PlayClimateCardAction(
 ) : Action<PlayClimateCardAction.Information>() {
 
     override fun canExecute(game: Game): Boolean {
-        return game.money >= climateCard.values.moneyCosts &&
-                game.resources >= climateCard.values.resourceCosts &&
+        return game.money >= climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1)) &&
+                game.resources >= climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1)) &&
                 game.climateCards.size < 10
     }
 
     override fun execute(game: Game): Result<Information> {
         val updatedClimateCards = game.climateCards + climateCard
 
-        val moneyAfterCardPlayed = game.money - climateCard.values.moneyCosts
-        val resourcesAfterCardPlayed = game.money - climateCard.values.resourceCosts
+        val moneyAfterCardPlayed = game.money - climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1))
+        val resourcesAfterCardPlayed = game.money - climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1))
 
         val currentPlayerProgressCardsWithoutPlayedCard = game.currentPlayer.progressCards.removed(climateCard)
 

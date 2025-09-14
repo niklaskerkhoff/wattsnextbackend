@@ -1,7 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 
 typealias TechnologyColumn = List<List<ProgressCard.TechnologyCard>>
 

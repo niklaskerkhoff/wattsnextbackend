@@ -1,11 +1,9 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
-import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.ModificationApplier
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.WithTargetPositionModifierProvider
 import kotlin.math.floor
 
 class PlayTechnologyCardActionIntent(
@@ -13,7 +11,8 @@ class PlayTechnologyCardActionIntent(
     internal val targetPosition: Int,
 ) : Action<PlayTechnologyCardActionIntent.Information>() {
     override fun canExecute(game: Game): Boolean {
-        return game.money >= technologyCard.values.moneyCosts && game.resources >= technologyCard.values.resourceCosts
+        return game.money >= technologyCard.moneyCosts.modified(technologyCard, game, Pair(game, targetPosition)) &&
+                game.resources >= technologyCard.resourceCosts.modified(technologyCard, game, Pair(game, targetPosition))
     }
 
     override fun execute(game: Game): Result<Information> {
@@ -21,23 +20,17 @@ class PlayTechnologyCardActionIntent(
             game.technologyBoard.getCurrentTechnologyCard(technologyCard.supply.technology, targetPosition)
 
 
-        val gainingResources = currentTechnologyCard?.let { floor(it.values.resourceCosts / 2.0).toInt() }
+        val gainingResources = currentTechnologyCard?.let { floor(it.resourceCosts.base / 2.0).toInt() }
 
         val (canRecycle, moneyToRecycle) =
             if (currentTechnologyCard == null) {
                 Pair(false, null)
             } else {
-                val moneyToRecycle = currentTechnologyCard.values.moneyCosts
-                val moneyAfterPurchase = game.money - technologyCard.values.moneyCosts
+                val moneyToRecycle = currentTechnologyCard.resourceCosts.base
+                val moneyAfterPurchase = game.money - moneyToRecycle
                 val hasEnoughMoney = moneyAfterPurchase >= moneyToRecycle
                 Pair(hasEnoughMoney, moneyToRecycle)
             }
-
-        val moneyToPay = ModificationApplier(
-            WithTargetPositionModifierProvider({ costModifier }, technologyCard, game, targetPosition),
-            technologyCard.values.moneyCosts,
-            game,
-        ).applyModification()
 
         return Result(
             game = game,
@@ -45,8 +38,8 @@ class PlayTechnologyCardActionIntent(
                 canRecycle = canRecycle,
                 moneyForRecycling = moneyToRecycle,
                 gainingResourcesForRecycling = gainingResources,
-                moneyForPlayingCard = moneyToPay,
-                resourcesForPlayingCard = technologyCard.values.resourceCosts,
+                moneyForPlayingCard = technologyCard.moneyCosts.modified(technologyCard, game, Pair(game, targetPosition)),
+                resourcesForPlayingCard = technologyCard.resourceCosts.modified(technologyCard, game, Pair(game, targetPosition)),
             )
         )
     }

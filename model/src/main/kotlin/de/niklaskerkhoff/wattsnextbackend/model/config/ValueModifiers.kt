@@ -1,40 +1,43 @@
 package de.niklaskerkhoff.wattsnextbackend.model.config
 
 import de.niklaskerkhoff.wattsnextbackend.model.config.Tag.*
-import de.niklaskerkhoff.wattsnextbackend.model.core.Game
-import de.niklaskerkhoff.wattsnextbackend.model.core.cards.Card
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard.TechnologyCard
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Supply
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.SimpleModifierFunction
-import de.niklaskerkhoff.wattsnextbackend.model.modifiers.WithTargetPositionModifierFunction
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModificationBase
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.SimpleModifierFunction
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.WithIntModifierFunction
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 import kotlin.math.max
 
 enum class CardCostModifier(
-    val modify: WithTargetPositionModifierFunction<Int>
+    val modify: WithIntModifierFunction<Int>
 ) {
-    MoneyCostsBuildingIronOnCoal({ modifyingCard, modifiedCard, acc, game, targetPosition ->
+    MoneyCostsBuildingIronOnCoal({ acc, modifiedCard, (game, targetPosition) ->
         if (isBuildingIronOnCoal(modifiedCard, game, targetPosition)) 4 else acc
     }),
 
-    ResourceCostsBuildingIronOnCoal({ modifyingCard, modifiedCard, acc, game, targetPosition ->
+    ResourceCostsBuildingIronOnCoal({ acc, modifiedCard, (game, targetPosition) ->
         if (isBuildingIronOnCoal(modifiedCard, game, targetPosition)) 1 else acc
     }),
 
-    CostsWithSubventionOfWindAndPhotovoltaic({ modifyingCard, modifiedCard, acc, game, targetPosition ->
+    CostsWithSubventionOfWindAndPhotovoltaic({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.containsAny(Wind, Photovoltaic) }) max(acc - 2, 1) else acc
     }),
 
-    CostsWithBatteryImproved({ modifyingCard, modifiedCard, acc, game, targetPosition ->
+    CostsWithBatteryImproved({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.contains(Battery) }) max(acc - 2, 1) else acc
     });
 
     companion object {
-        private fun isBuildingIronOnCoal(builtCard: ProgressCard, game: Game, targetPosition: Int): Boolean =
+        private fun isBuildingIronOnCoal(
+            builtCard: ProgressCard,
+            modificationBase: ModificationBase,
+            targetPosition: Int
+        ): Boolean =
             builtCard is TechnologyCard &&
                     builtCard.tags.contains(Iron) &&
-                    game.technologyBoard.getCurrentTechnologyCard(builtCard.technology, targetPosition)
+                    modificationBase.technologyBoard.getCurrentTechnologyCard(builtCard.technology, targetPosition)
                         .let { currentCard ->
                             currentCard != null && currentCard.tags.contains(Coal)
                         }
@@ -42,25 +45,25 @@ enum class CardCostModifier(
 }
 
 enum class SupplyModifier(
-    val modify: SimpleModifierFunction<List<Supply>>
+    val modify: SimpleModifierFunction<Supply?>
 ) {
-    NoSupplyForOverheadPowerLine({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
-        if (matches(modifiedCard) { tags.contains(OverheadPowerLine) }) emptyList() else acc
+    NoSupplyFromOverheadPowerLine({ acc, modifiedCard, _ ->
+        if (matches(modifiedCard) { tags.contains(OverheadPowerLine) }) null else acc
     }),
 }
 
 enum class SupplyListModifier(
     val modify: SimpleModifierFunction<List<Supply>>
 ) {
-    BasePointsForSolar({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    BasePointsForSolar({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.contains(Solar) }) acc + Supply.Never else acc
     }),
 
-    BasePointsForWind({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    BasePointsForWind({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.contains(Wind) }) acc + Supply.Never else acc
     }),
 
-    BasePointsForLargeGeneration({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    BasePointsForLargeGeneration({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { technology == Technology.Generation && supply.size >= 3 }) {
             acc + Supply.Never
         } else {
@@ -68,23 +71,23 @@ enum class SupplyListModifier(
         }
     }),
 
-    BasePointsForCoalAndGasAndNuclear({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    BasePointsForCoalAndGasAndNuclear({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.containsAny(Coal, Gas, Nuclear) }) acc + Supply.Never else acc
     }),
 
-    BasePointsForWaterAndPumpStorage({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    BasePointsForWaterAndPumpStorage({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.containsAny(Water, PumpStorage) }) acc + Supply.Never else acc
     }),
 
-    BasePointsForDistribution({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    BasePointsForDistribution({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { technology == Technology.Distribution }) acc + Supply.Never else acc
     }),
 
-    SystemPointsForSolar({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    SystemPointsForSolar({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.contains(Solar) }) emptyList() else acc
     }),
 
-    SystemPointsForStorage({ modifyingCard: Card, modifiedCard: ProgressCard, acc: List<Supply>, game: Game ->
+    SystemPointsForStorage({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { technology == Technology.Storage }) emptyList() else acc
     }),
 }

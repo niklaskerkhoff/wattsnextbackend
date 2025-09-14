@@ -1,13 +1,16 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.Card
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EffectBase
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.EnergyForm
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Supply
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModificationBase
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifiedValue
 import de.niklaskerkhoff.wattsnextbackend.model.lib.partitionByType
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.EnergyForm
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 import kotlin.random.Random
 
 data class Game(
@@ -17,7 +20,7 @@ data class Game(
     val money: Int,
     val resources: Int,
 
-    val technologyBoard: TechnologyBoard,
+    override val technologyBoard: TechnologyBoard,
     val climateCards: List<ProgressCard.ClimateCard>,
 
     val progressCardDeck: List<ProgressCard>,
@@ -30,11 +33,13 @@ data class Game(
     val phase: Int = 0,
     val turnInPhase: Int = 0,
 
+    val progressPointsDelta: Int = 0,
+
     private val energyTargetsPerPhase: List<Map<Technology, Int>>,
     private val pointTargetsPerPhase: List<Int>,
     private val numberOfPhases: Int,
     private val numberOfTurnsPerPhase: Int,
-) {
+) : ModificationBase, EffectBase {
 
 
     val secondEventCardTurnInPhase = Random.nextInt(2, numberOfTurnsPerPhase - 2)
@@ -42,6 +47,7 @@ data class Game(
     private val totalMove = turnInPhase * phase
 
     val currentPlayer get() = players[totalMove % players.size]
+
 
     val progressPoints get() = calculateProgressPoints()
 
@@ -52,7 +58,14 @@ data class Game(
         require(pointTargetsPerPhase.size == numberOfPhases)
     }
 
+    override fun provideModifiers() = getAllCards().filterNotNull()
+
+    fun withUpdatedProgressPointsDelta(delta: Int): Game = copy(progressPointsDelta = delta)
+
+    fun withUpdatedMoney(delta: Int): Game = copy(money = money + delta)
+
     fun withUpdatedResources(delta: Int): Game = copy(resources = resources + delta)
+
 
     private fun calculateProgressPoints(): Triple<List<ProgressCard>, List<ProgressCard>, Int> {
         val progressCards = getAllProgressCards().filterNotNull()
@@ -67,7 +80,7 @@ data class Game(
         return Triple(
             technologyResult.first + climateResult.first,
             technologyResult.second + climateResult.second,
-            technologyResult.third + climateResult.third,
+            technologyResult.third + climateResult.third + progressPointsDelta,
         )
     }
 
@@ -83,16 +96,16 @@ data class Game(
 
         for (climateCard in climateCards) {
             if (canUseSystemPoints(
-                    climateCard.values.supplyRequirementsForSystem,
+                    climateCard.supplyRequirementsForSystem.modified(climateCard),
                     totalEnergySupply,
                     totalAchievementsSupply
                 )
             ) {
                 systemCards += climateCard
-                climateProgressPoints += climateCard.values.systemPoints
+                climateProgressPoints += climateCard.systemPoints
             } else {
                 baseCards += climateCard
-                climateProgressPoints += climateCard.values.basePoints
+                climateProgressPoints += climateCard.basePoints
             }
         }
 
@@ -146,7 +159,7 @@ data class Game(
                 if ((mask and (1 shl i)) != 0) {
                     // Versuche, die Systembedingungen zu erfüllen
                     if (canFulfillConditions(
-                            card.values.supplyRequirementsForSystem,
+                            card.supplyRequirementsForSystem.modified(card),
                             totalEnergySupply,
                             totalAchievementsSupply,
                             usedEnergy,
@@ -165,7 +178,8 @@ data class Game(
             if (!valid) continue
 
             // Punkte berechnen
-            val points = systemCards.sumOf { it.values.systemPoints } + baseCards.sumOf { it.values.basePoints }
+            val points =
+                systemCards.sumOf { it.systemPoints } + baseCards.sumOf { it.basePoints }
             if (points > maxPoints) {
                 maxPoints = points
                 bestSystemCards = systemCards
@@ -200,7 +214,7 @@ data class Game(
         return true
     }
 
-    fun withNextTurn(): Result<Unit> =
+    override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
             if (nextTurnInPhase == secondEventCardTurnInPhase) {
                 val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
@@ -299,6 +313,9 @@ data class Game(
         calculateTotalSupply(getAllProgressCards().filterNotNull())
         return true
     }
+
+    private fun <T> ModifiedValue<T, ModificationBase>.modified(modifiedCard: ProgressCard) =
+        modified(modifiedCard, this@Game, this@Game)
 
     data class BaseInformation(
         val phaseCompleted: Boolean = false,

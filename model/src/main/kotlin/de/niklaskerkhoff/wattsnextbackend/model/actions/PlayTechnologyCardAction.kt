@@ -1,8 +1,8 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
-import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
@@ -11,8 +11,8 @@ import kotlin.math.floor
 
 class PlayTechnologyCardAction(
     internal val shallRecycle: Boolean,
-    internal val playTechnologyCardActionIntent: PlayTechnologyCardActionIntent,
-    internal val playTechnologyCardActionIntentInformation: PlayTechnologyCardActionIntent.Information,
+    internal val intent: PlayTechnologyCardActionIntent,
+    internal val intentInformation: PlayTechnologyCardActionIntent.Information,
 ) : Action<PlayTechnologyCardAction.Information>() {
 
     override fun canExecute(game: Game): Boolean {
@@ -23,7 +23,7 @@ class PlayTechnologyCardAction(
     override fun execute(game: Game): Result<Information> {
         val (gameAfterRecycle, _, recyclingInformation) =
             if (shallRecycle) {
-                if (!playTechnologyCardActionIntentInformation.canRecycle) {
+                if (!intentInformation.canRecycle) {
                     throw IllegalArgumentException("Cannot recycle.")
                 }
                 recycle(game)
@@ -36,8 +36,8 @@ class PlayTechnologyCardAction(
         return Result(
             game = resultAfterCardPlayed.game,
             actionInformation = Information(
-                playedCard = playTechnologyCardActionIntent.technologyCard,
-                targetPosition = playTechnologyCardActionIntent.targetPosition,
+                playedCard = intent.technologyCard,
+                targetPosition = intent.targetPosition,
                 drawnCard = resultAfterCardPlayed.actionInformation!!.drawnCard,
                 payedMoneyForCard = resultAfterCardPlayed.actionInformation.payedMoneyForCard,
                 payedResourcesForCard = resultAfterCardPlayed.actionInformation.payedResourcesForCard,
@@ -50,14 +50,14 @@ class PlayTechnologyCardAction(
 
     private fun recycle(game: Game): Result<RecyclingInformation> {
         val currentCard = game.technologyBoard.getCurrentTechnologyCard(
-            playTechnologyCardActionIntent.technologyCard.supply.technology,
-            playTechnologyCardActionIntent.targetPosition
+            intent.technologyCard.supply.technology,
+            intent.targetPosition
         ) ?: throw IllegalStateException("Previous card not found.")
 
-        val moneyForRecycling = currentCard.values.resourceCosts
-        val gainingResources = floor(currentCard.values.resourceCosts / 2.0).toInt()
+        val moneyForRecycling = currentCard.resourceCosts.base
+        val gainingResources = floor(currentCard.resourceCosts.base / 2.0).toInt()
 
-        val updatedMoney = game.money - currentCard.values.resourceCosts
+        val updatedMoney = game.money - moneyForRecycling
         val updatedResources = game.resources + gainingResources
 
         return Result(
@@ -73,18 +73,20 @@ class PlayTechnologyCardAction(
 
         // Play the ProgressCard
         val technologyBoardWithPlayedCard = game.technologyBoard.withCardPlayed(
-            playTechnologyCardActionIntent.technologyCard,
-            playTechnologyCardActionIntent.targetPosition
+            intent.technologyCard,
+            intent.targetPosition
         )
 
-        val moneyToPay = playTechnologyCardActionIntent.technologyCard.values.moneyCosts
-        val resourcesToPay = playTechnologyCardActionIntent.technologyCard.values.resourceCosts
+        val moneyToPay = intent.technologyCard.moneyCosts
+            .modified(intent.technologyCard, game, Pair(game, intent.targetPosition))
+        val resourcesToPay = intent.technologyCard.resourceCosts
+            .modified(intent.technologyCard, game, Pair(game, intent.targetPosition))
 
         val moneyAfterCardPlayed = game.money - moneyToPay
         val resourcesAfterCardPlayed = game.resources - resourcesToPay
 
         val currentPlayerProgressCardsWithoutPlayedCard = game.currentPlayer.progressCards.removed(
-            playTechnologyCardActionIntent.technologyCard,
+            intent.technologyCard,
         )
 
         // Draw a ProgressCard

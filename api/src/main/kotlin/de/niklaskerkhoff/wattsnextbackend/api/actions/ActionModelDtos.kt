@@ -1,12 +1,10 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.EnergyForm
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Technology
 import java.util.*
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
-import de.niklaskerkhoff.wattsnextbackend.model.core.energy.Supply
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
 
 data class GameDto(
     val state: GameState,
