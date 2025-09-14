@@ -60,7 +60,7 @@ data class Game(
 
     override fun provideModifiers() = getAllCards().filterNotNull()
 
-    fun withUpdatedProgressPointsDelta(delta: Int): Game = copy(progressPointsDelta = delta)
+    fun withAdditionalProgressPoints(delta: Int): Game = copy(progressPointsDelta = delta)
 
     fun withUpdatedMoney(delta: Int): Game = copy(money = money + delta)
 

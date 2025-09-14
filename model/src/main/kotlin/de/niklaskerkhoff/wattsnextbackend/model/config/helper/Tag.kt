@@ -1,4 +1,4 @@
-package de.niklaskerkhoff.wattsnextbackend.model.config
+package de.niklaskerkhoff.wattsnextbackend.model.config.helper
 
 enum class Tag {
     Coal,

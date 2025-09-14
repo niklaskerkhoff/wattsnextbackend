@@ -12,7 +12,7 @@ data class TechnologyCardData(
     val id: UUID,
     val name: String,
     val modifierCollection: ModifierCollection,
-    val effect: CardEffect,
+    val effect: CardEffect = { Pair(it, emptyList()) },
     val phaseIndex: Int,
 
     val supply: Supply.Energy,
@@ -56,7 +56,7 @@ data class ClimateCardData(
     val id: UUID,
     val name: String,
     val modifierCollection: ModifierCollection,
-    val effect: CardEffect,
+    val effect: CardEffect = { Pair(it, emptyList()) },
     val phaseIndex: Int,
 
     val supply: Supply.Achievement?,

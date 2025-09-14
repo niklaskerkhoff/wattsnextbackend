@@ -1,5 +1,16 @@
 package de.niklaskerkhoff.wattsnextbackend.model.config
 
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.CardCostModifier
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.SupplyListModifier
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.SupplyModifier
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.and
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.ifSolarIsExisting
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.ifWindIsExisting
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.nuclearCatastropheIfExistingEffect
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateCurrentPhaseTarget
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateMoneyEffect
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateMoneyPerPlayerEffect
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateResourcesEffect
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard.EffectDescription
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
@@ -19,7 +30,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateCurrentPhaseTarget(1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -43,7 +54,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForSolar.modify
             )
         ),
-        effect = null,
+        effect = { Pair(it, emptyList()) },
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -67,7 +78,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForWind.modify
             )
         ),
-        effect = null,
+        effect = { Pair(it, emptyList()) },
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -82,7 +93,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateMoneyPerPlayerEffect(-1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -107,7 +118,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.SystemPointsForSolar.modify
             )
         ),
-        effect = null,// Impl. Effect
+        effect = ifSolarIsExisting(updateMoneyEffect(3)),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -124,7 +135,7 @@ val eventCards = listOf(
         effectConditionDescription = "Falls Atomkraftwerk im Energie-system vorhanden:",
         footnote = "Kein Atomkraftwerk? Glück gehabt",
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = nuclearCatastropheIfExistingEffect(),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -149,7 +160,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.SystemPointsForStorage.modify
             )
         ),
-        effect = null,// Impl. Effect
+        effect = ifWindIsExisting(updateMoneyEffect(2)),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -177,7 +188,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForLargeGeneration.modify
             )
         ),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-2),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -196,7 +207,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-1) and updateCurrentPhaseTarget(1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -216,7 +227,7 @@ val eventCards = listOf(
                 modify = CardCostModifier.CostsWithBatteryImproved.modify
             )
         ),
-        effect = null,
+        effect = { Pair(it, emptyList()) },
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -235,7 +246,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-1) and updateCurrentPhaseTarget(-1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -250,7 +261,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateResourcesEffect(2) and updateMoneyEffect(2),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -269,7 +280,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(2) and updateCurrentPhaseTarget(-1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -284,7 +295,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-6),
         phaseIndex = 0,
         isCatastrophe = true
     ),
@@ -308,7 +319,7 @@ val eventCards = listOf(
                 modify = SupplyModifier.NoSupplyFromOverheadPowerLine.modify
             )
         ),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-2),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -336,7 +347,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForCoalAndGasAndNuclear.modify
             )
         ),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-2) and updateCurrentPhaseTarget(1),
         phaseIndex = 0,
         isCatastrophe = true
     ),
@@ -351,7 +362,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-5),
         phaseIndex = 0,
         isCatastrophe = true
     ),
@@ -375,7 +386,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForSolar.modify
             )
         ),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-2) and updateResourcesEffect(-2),
         phaseIndex = 0,
         isCatastrophe = true
     ),
@@ -399,8 +410,8 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForWaterAndPumpStorage.modify
             )
         ),
-        effect = null,
-        phaseIndex = 0,// Impl. Effect
+        effect = updateMoneyEffect(-4),
+        phaseIndex = 0,
         isCatastrophe = true
     ),
     EventCard(
@@ -414,8 +425,8 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = null,
-        phaseIndex = 0,// Impl. Effect
+        effect = updateMoneyEffect(-4),
+        phaseIndex = 0,
         isCatastrophe = true
     ),
     EventCard(
@@ -438,7 +449,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForDistribution.modify
             )
         ),
-        effect = null,// Impl. Effect
+        effect = updateMoneyEffect(-6) and updateResourcesEffect(-2),
         phaseIndex = 0,
         isCatastrophe = true
     ),

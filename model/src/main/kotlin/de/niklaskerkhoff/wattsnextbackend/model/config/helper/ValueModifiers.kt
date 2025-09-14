@@ -1,6 +1,6 @@
-package de.niklaskerkhoff.wattsnextbackend.model.config
+package de.niklaskerkhoff.wattsnextbackend.model.config.helper
 
-import de.niklaskerkhoff.wattsnextbackend.model.config.Tag.*
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag.*
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard.TechnologyCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModificationBase
