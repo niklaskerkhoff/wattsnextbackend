@@ -1,4 +1,4 @@
-package de.niklaskerkhoff.wattsnextbackend.api.config
+package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
@@ -16,6 +16,6 @@ class WebSocketConfig : WebSocketMessageBrokerConfigurer {
     }
 
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS()
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*")
     }
 }

@@ -1,12 +1,15 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
+import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManager
 import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManagerRepo
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayClimateCardRequest
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayTechnologyCardIntentRequest
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayTechnologyCardRequest
+import org.springframework.http.HttpStatus
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Controller
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Controller
@@ -18,9 +21,10 @@ class ActionWebSocketController(
 ) {
 
     @MessageMapping("/earnMoney")
-    fun rollDiceAction(headerAccessor: StompHeaderAccessor) {
+    fun rollDice(headerAccessor: StompHeaderAccessor) {
         val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
         val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        authorize(sessionInfo.playerId, gameManager)
         val response = gameManager.handleRollDice()
         gameMessageSender.sendRollDiceResponse(sessionInfo.gameId, response)
     }
@@ -29,6 +33,7 @@ class ActionWebSocketController(
     fun playClimateCard(request: PlayClimateCardRequest, headerAccessor: StompHeaderAccessor) {
         val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
         val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        authorize(sessionInfo.playerId, gameManager)
         val response = gameManager.handlePlayClimateCard(request.climateCardId)
         gameMessageSender.sendPlayClimateCardResponse(sessionInfo.gameId, response)
     }
@@ -45,8 +50,13 @@ class ActionWebSocketController(
     fun playTechnologyCard(request: PlayTechnologyCardRequest, headerAccessor: StompHeaderAccessor) {
         val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
         val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        authorize(sessionInfo.playerId, gameManager)
         val response = gameManager.handlePlayTechnologyCard(request.shallRecycle)
         gameMessageSender.sendPlayTechnologyCardResponse(sessionInfo.gameId, response)
+    }
+
+    private fun authorize(playerId: UUID, gameManager: GameManager) {
+        if (gameManager.game.currentPlayer.publicId != playerId) throw ResponseStatusException(HttpStatus.FORBIDDEN)
     }
 
     private fun GameManagerRepo.getGameManagerOrThrow(gameId: UUID) =

@@ -12,9 +12,9 @@ data class ActionResponse<T>(
     val cardEffectInformation: Any? = null,
 ) {
     enum class Status {
-        OK,
-        ILLEGAL_ACTION_ARGUMENTS,
-        ILLEGAL_ACTION,
+        Ok,
+        IllegalActionArguments,
+        IllegalAction,
     }
 
     constructor(game: Game, status: Status) : this(

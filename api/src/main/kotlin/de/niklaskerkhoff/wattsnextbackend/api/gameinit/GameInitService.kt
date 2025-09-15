@@ -2,6 +2,8 @@ package de.niklaskerkhoff.wattsnextbackend.api.gameinit
 
 import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManager
 import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManagerRepo
+import de.niklaskerkhoff.wattsnextbackend.api.actions.data.responsemodel.GameData
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
 import java.util.*
@@ -14,31 +16,42 @@ class GameInitService(
 ) {
     private val gameInitMap: MutableMap<UUID, GameInit> = ConcurrentHashMap()
 
-    fun createGame(request: CreateGameRequest): CreateGameResponse {
+    fun createGame(request: CreateGameRequest): GameInitWithPlayerIdResponse {
         val gameInit = GameInit(request.gameMode, request.playerName)
         gameInitMap[gameInit.id] = gameInit
-        return CreateGameResponse(gameInit.id, request.playerName)
+        return GameInitWithPlayerIdResponse(gameInit, gameInit.players.last().id)
     }
 
-    fun joinGame(gameId: UUID, playerName: String): String {
-        val gameInit = getGameOrThrow(gameId)
-        gameInit.playerNames.add(playerName)
+    fun joinGame(gameId: UUID, playerName: String): GameInitWithPlayerIdResponse {
+        val gameInit = getGameInitOrThrow(gameId)
+        gameInit.addPlayer(playerName)
 
-        messagingTemplate.convertAndSend("/topic/game/$gameId", gameInit)
-        return playerName
+        messagingTemplate.convertAndSend("/game/$gameId", gameInit)
+        return GameInitWithPlayerIdResponse(gameInit, gameInit.players.last().id)
     }
 
     fun startGame(gameId: UUID) {
-        val gameInit = getGameOrThrow(gameId)
+        val gameInit = getGameInitOrThrow(gameId)
 
-        val (game, entityResolver) = GameBuilder.buildGame(gameInit)
+        val (game, entityResolver) = GameFactory.buildGame(gameInit)
         val gameManager = GameManager(game, entityResolver)
         gameManagerRepo.addGameManager(gameManager)
 
-        messagingTemplate.convertAndSend("/topic/game/$gameId", game)
+        messagingTemplate.convertAndSend("/game/$gameId", GameData(game))
     }
 
-    private fun getGameOrThrow(gameId: UUID): GameInit {
+    fun getGameState(gameId: UUID): Any {
+        val gameInit = gameInitMap[gameId]
+        if (gameInit != null) return gameInit
+
+        val game = gameManagerRepo.getGameManager(gameId)?.let { gameManager ->
+            GameData(gameManager.game)
+        }
+
+        return game ?: throw IllegalArgumentException("Game not found")
+    }
+
+    private fun getGameInitOrThrow(gameId: UUID): GameInit {
         return gameInitMap[gameId] ?: throw IllegalArgumentException("Game not found")
     }
 }

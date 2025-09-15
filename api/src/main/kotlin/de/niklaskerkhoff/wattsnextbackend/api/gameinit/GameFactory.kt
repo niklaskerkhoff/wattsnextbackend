@@ -1,8 +1,8 @@
 package de.niklaskerkhoff.wattsnextbackend.api.gameinit
 
 import de.niklaskerkhoff.wattsnextbackend.api.actions.EntityResolver
-import de.niklaskerkhoff.wattsnextbackend.api.gameinit.GameInit.Mode.START_WITH_COAL
-import de.niklaskerkhoff.wattsnextbackend.api.gameinit.GameInit.Mode.START_WITH_NUCLEAR
+import de.niklaskerkhoff.wattsnextbackend.api.gameinit.GameInit.Mode.StartWithCoal
+import de.niklaskerkhoff.wattsnextbackend.api.gameinit.GameInit.Mode.StartWithNuclear
 import de.niklaskerkhoff.wattsnextbackend.model.config.climateCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.eventCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag
@@ -14,13 +14,13 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.TechnologyBoard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
 
-object GameBuilder {
+object GameFactory {
     fun buildGame(gameInit: GameInit): Pair<Game, EntityResolver> {
 
         val startTechnologyCard =
             when (gameInit.mode) {
-                START_WITH_COAL -> technologyCards.first { it.tags.contains(Tag.Coal.name) }
-                START_WITH_NUCLEAR -> technologyCards.first { it.tags.contains(Tag.Nuclear.name) }
+                StartWithCoal -> technologyCards.first { it.tags.contains(Tag.Coal.name) }
+                StartWithNuclear -> technologyCards.first { it.tags.contains(Tag.Nuclear.name) }
             }
 
 
@@ -35,13 +35,13 @@ object GameBuilder {
             money = 10,
             resources = 10,
             technologyBoard = TechnologyBoard(
-                generationCards = listOf(listOf(startTechnologyCard)),
-                distributionCards = emptyList(),
-                storageCards = emptyList(),
+                generationCards = listOf(listOf(startTechnologyCard), emptyList(), emptyList()),
+                distributionCards = List(3) { emptyList() },
+                storageCards = List(3) { emptyList() },
             ),
-            players = gameInit.playerNames.map {
+            players = gameInit.players.map {
                 Player(
-                    name = it,
+                    name = it.name,
                     progressCards = emptyList()
                 )
             },
@@ -51,7 +51,7 @@ object GameBuilder {
             catastropheEventCardDeck = catastropheEventCardDeck,
             energyTargetsPerPhase = emptyList(),
             pointTargetsPerPhase = emptyList(),
-            numberOfPhases = 3,
+            numberOfPhases = 0,
             numberOfTurnsPerPhase = 12,
         )
 
@@ -62,7 +62,7 @@ object GameBuilder {
         gameInit: GameInit,
         progressCardDeck: List<ProgressCard>
     ): Pair<List<Player>, List<ProgressCard>> {
-        val playerCount = gameInit.playerNames.size
+        val playerCount = gameInit.players.size
         val cardsPerPlayer = when (playerCount) {
             2 -> 5
             3 -> 4
@@ -73,9 +73,9 @@ object GameBuilder {
         val playerCards = progressCardDeck.take(totalPlayerCardCount)
         val progressCardDeckWithoutPlayerCards = progressCardDeck.drop(totalPlayerCardCount)
 
-        val players = gameInit.playerNames.mapIndexed { index, name ->
+        val players = gameInit.players.mapIndexed { index, playerInit ->
             Player(
-                name = name,
+                name = playerInit.name,
                 progressCards = playerCards.slice(index * cardsPerPlayer until (index + 1) * cardsPerPlayer)
             )
         }

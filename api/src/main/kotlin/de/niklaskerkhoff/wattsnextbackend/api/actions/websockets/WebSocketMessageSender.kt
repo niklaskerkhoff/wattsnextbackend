@@ -18,11 +18,7 @@ class GameMessageSender(
 ) {
 
     private fun sendToGame(gameId: UUID, suffix: String?, payload: Any) {
-        val destination = if (suffix.isNullOrBlank()) {
-            "/topic/game/$gameId"
-        } else {
-            "/topic/game/$gameId/$suffix"
-        }
+        val destination = "/game/$gameId" + (if (suffix.isNullOrBlank()) "" else "/$suffix")
         messagingTemplate.convertAndSend(destination, payload)
     }
 

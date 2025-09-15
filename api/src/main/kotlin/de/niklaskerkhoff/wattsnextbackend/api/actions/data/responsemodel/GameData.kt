@@ -1,5 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions.data.responsemodel
 
+import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.GameState
 import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import java.util.*
@@ -17,6 +18,8 @@ data class GameData(
     val phases: List<PhaseData>,
     val progressCardPileSize: Int,
 ) {
+
+    constructor(game: Game) : this(Result<Unit>(game))
     constructor(result: Result<*>) : this(
         state = result.game.state,
         money = result.game.money,
