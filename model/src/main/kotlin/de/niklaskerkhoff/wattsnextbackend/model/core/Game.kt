@@ -11,9 +11,11 @@ import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.EnergyForm
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
+import java.util.*
 import kotlin.random.Random
 
 data class Game(
+    private val id: UUID,
     val state: GameState,
     val players: List<Player>,
 
@@ -35,10 +37,10 @@ data class Game(
 
     val progressPointsDelta: Int = 0,
 
-    private val energyTargetsPerPhase: List<Map<Technology, Int>>,
-    private val pointTargetsPerPhase: List<Int>,
-    private val numberOfPhases: Int,
-    private val numberOfTurnsPerPhase: Int,
+    val energyTargetsPerPhase: List<Map<Technology, Int>>,
+    val pointTargetsPerPhase: List<Int>,
+    val numberOfPhases: Int,
+    val numberOfTurnsPerPhase: Int,
 ) : ModificationBase, EffectBase {
 
 
@@ -48,6 +50,7 @@ data class Game(
 
     val currentPlayer get() = players[totalMove % players.size]
 
+    val publicId get() = id
 
     val progressPoints get() = calculateProgressPoints()
 
@@ -65,6 +68,35 @@ data class Game(
     fun withUpdatedMoney(delta: Int): Game = copy(money = money + delta)
 
     fun withUpdatedResources(delta: Int): Game = copy(resources = resources + delta)
+
+    fun getAllProgressCards(): List<ProgressCard?> = technologyBoard.getAllCurrentProgressCards() + climateCards
+
+    fun getAllCards(): List<Card?> =
+        technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCards + catastropheEventCard
+
+    override fun withNextTurn(): Result<Unit> =
+        (turnInPhase + 1).let { nextTurnInPhase ->
+            if (nextTurnInPhase == secondEventCardTurnInPhase) {
+                val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
+                val updatedStandardEventCards = standardEventCards + drawnCard
+
+                Result(
+                    copy(
+                        turnInPhase = nextTurnInPhase,
+                        standardEventCards = updatedStandardEventCards,
+                        standardEventCardDeck = updatedStandardEventCardDeck,
+                    ),
+                    BaseInformation(gotNewStandardEventCard = true)
+                )
+            } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
+                Result(
+                    copy(turnInPhase = nextTurnInPhase),
+                    BaseInformation()
+                )
+            } else {
+                handleNextPhase(phase + 1)
+            }
+        }
 
 
     private fun calculateProgressPoints(): Triple<List<ProgressCard>, List<ProgressCard>, Int> {
@@ -213,35 +245,6 @@ data class Game(
         }
         return true
     }
-
-    override fun withNextTurn(): Result<Unit> =
-        (turnInPhase + 1).let { nextTurnInPhase ->
-            if (nextTurnInPhase == secondEventCardTurnInPhase) {
-                val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
-                val updatedStandardEventCards = standardEventCards + drawnCard
-
-                Result(
-                    copy(
-                        turnInPhase = nextTurnInPhase,
-                        standardEventCards = updatedStandardEventCards,
-                        standardEventCardDeck = updatedStandardEventCardDeck,
-                    ),
-                    BaseInformation(gotNewStandardEventCard = true)
-                )
-            } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
-                Result(
-                    copy(turnInPhase = nextTurnInPhase),
-                    BaseInformation()
-                )
-            } else {
-                handleNextPhase(phase + 1)
-            }
-        }
-
-    fun getAllProgressCards(): List<ProgressCard?> = technologyBoard.getAllCurrentProgressCards() + climateCards
-
-    fun getAllCards(): List<Card?> =
-        technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCards + catastropheEventCard
 
     private fun calculateTotalSupply(
         progressCards: List<ProgressCard>

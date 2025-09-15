@@ -1,5 +1,7 @@
-package de.niklaskerkhoff.wattsnextbackend.api.actions
+package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
+import de.niklaskerkhoff.wattsnextbackend.api.actions.data.ActionResponse
+import de.niklaskerkhoff.wattsnextbackend.api.actions.data.responsemodel.GameData
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
 
@@ -19,7 +21,7 @@ class GameMessageSender(
         messagingTemplate.convertAndSend(destination, payload)
     }
 
-    fun sendGameState(gameId: String, gameState: GameDto) {
+    fun sendGameState(gameId: String, gameState: GameData) {
         sendToGame(gameId, null, gameState)
     }
 

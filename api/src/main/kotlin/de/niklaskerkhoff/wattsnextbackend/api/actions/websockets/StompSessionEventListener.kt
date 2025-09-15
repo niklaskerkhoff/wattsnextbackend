@@ -1,5 +1,6 @@
-package de.niklaskerkhoff.wattsnextbackend.api.actions
+package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
+import de.niklaskerkhoff.wattsnextbackend.api.actions.websockets.PlayerSessionRegistry
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.event.EventListener

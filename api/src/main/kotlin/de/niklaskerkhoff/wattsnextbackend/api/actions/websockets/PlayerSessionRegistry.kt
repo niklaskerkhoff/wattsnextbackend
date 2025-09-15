@@ -1,7 +1,7 @@
-package de.niklaskerkhoff.wattsnextbackend.api.actions
+package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
 import org.springframework.stereotype.Component
-import java.util.*
+import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
 // TODO: put in adequate location

@@ -12,10 +12,12 @@ typealias WithIntModifiedValue<T> = ModifiedValue<T, Pair<ModificationBase, Int>
 
 abstract class Card {
     abstract val modifierCollection: ModifierCollection
-    abstract val id: UUID
+    protected abstract val id: UUID
     abstract val name: String
     abstract val effect: CardEffect
     abstract val phaseIndex: Int
+
+    val publicId get() = id
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

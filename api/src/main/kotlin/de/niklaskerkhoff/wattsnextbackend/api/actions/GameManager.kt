@@ -1,46 +1,73 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions
 
+import de.niklaskerkhoff.wattsnextbackend.api.actions.data.ActionResponse
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
 import de.niklaskerkhoff.wattsnextbackend.model.actions.RollDiceAction
-import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
+import java.util.*
 
 class GameManager(
-    private var game: Game
+    game: Game,
+    val entityResolver: EntityResolver,
 ) {
+    var game: Game = game
+        private set
+
     private var previousAction: Action<*>? = null
-    private var previousActionInformation: Any? = null
+    private var previousActionInformation: Result<*>? = null
 
-    fun handleRollDiceAction() {
+    fun handleRollDice(): ActionResponse<RollDiceAction.Information> {
         val action = RollDiceAction()
-        executeAction(action)
+        return executeAction(action)
     }
 
-    fun handlePlayCardIntentAction(progressCard: ProgressCard.TechnologyCard, targetPosition: Int): Any {
-        val action = PlayTechnologyCardActionIntent(progressCard, targetPosition)
-         executeAction(action)
-        return ""
+    fun handlePlayClimateCard(climateCardId: UUID): ActionResponse<PlayClimateCardAction.Information> {
+        val climateCard = entityResolver.getClimateCard(climateCardId)
+            ?: return ActionResponse(game, ActionResponse.Status.ILLEGAL_ACTION)
+
+        val action = PlayClimateCardAction(climateCard)
+        return executeAction(action)
     }
 
-    fun handlePlayCardAction(shallRecycle: Boolean) {
+    fun handlePlayTechnologyCardIntent(
+        technologyCardId: UUID,
+        targetPosition: Int
+    ): ActionResponse<PlayTechnologyCardActionIntent.Information> {
+        val technologyCard = entityResolver.getTechnologyCard(technologyCardId)
+            ?: return ActionResponse(game, ActionResponse.Status.ILLEGAL_ACTION)
+
+        val action = PlayTechnologyCardActionIntent(technologyCard, targetPosition)
+        return executeAction(action)
+    }
+
+    fun handlePlayTechnologyCard(shallRecycle: Boolean): ActionResponse<PlayTechnologyCardAction.Information> {
+        val previousAction = previousAction as? PlayTechnologyCardActionIntent
+            ?: return ActionResponse(game, ActionResponse.Status.ILLEGAL_ACTION)
+        val previousActionInformation = previousActionInformation as? PlayTechnologyCardActionIntent.Information
+            ?: return ActionResponse(game, ActionResponse.Status.ILLEGAL_ACTION)
+
         val action = PlayTechnologyCardAction(
             shallRecycle,
-            previousAction as PlayTechnologyCardActionIntent,
-            previousActionInformation as PlayTechnologyCardActionIntent.Information
+            previousAction,
+            previousActionInformation
         )
-        executeAction(action)
+        return executeAction(action)
     }
 
-    fun getStateInfo(): Game = game
+    fun getState() = ActionResponse<Unit>(game, ActionResponse.Status.OK)
 
-    private fun <T> executeAction(action: Action<T>): Boolean {
-        if (!action.canExecute(game)) return false
+    private fun <T> executeAction(action: Action<T>): ActionResponse<T> {
+        if (!action.canExecute(game)) return ActionResponse(game, ActionResponse.Status.ILLEGAL_ACTION)
+
+        val result = action.execute(game)
+
         previousAction = action
-        previousActionInformation = action.execute(game)
+        previousActionInformation = result
 
-        return true
+        return ActionResponse(result, ActionResponse.Status.ILLEGAL_ACTION)
     }
 }
