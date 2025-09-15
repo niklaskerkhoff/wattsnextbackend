@@ -1,6 +1,5 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
-import de.niklaskerkhoff.wattsnextbackend.api.actions.websockets.PlayerSessionRegistry
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Component
 

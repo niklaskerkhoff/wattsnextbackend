@@ -2,8 +2,13 @@ package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.ActionResponse
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.responsemodel.GameData
+import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
+import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardAction
+import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
+import de.niklaskerkhoff.wattsnextbackend.model.actions.RollDiceAction
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
+import java.util.*
 
 // TODO: Put in adequate location
 
@@ -12,7 +17,7 @@ class GameMessageSender(
     private val messagingTemplate: SimpMessagingTemplate
 ) {
 
-    private fun sendToGame(gameId: String, suffix: String?, payload: Any) {
+    private fun sendToGame(gameId: UUID, suffix: String?, payload: Any) {
         val destination = if (suffix.isNullOrBlank()) {
             "/topic/game/$gameId"
         } else {
@@ -21,22 +26,26 @@ class GameMessageSender(
         messagingTemplate.convertAndSend(destination, payload)
     }
 
-    fun sendGameState(gameId: String, gameState: GameData) {
+    fun sendGameState(gameId: UUID, gameState: GameData) {
         sendToGame(gameId, null, gameState)
     }
 
-    // TODO: specific result
-    fun sendEarnMoneyResult(gameId: String, result: ActionResponse<String>) {
+    fun sendRollDiceResponse(gameId: UUID, result: ActionResponse<RollDiceAction.Information>) {
         sendToGame(gameId, "earnMoneyResult", result)
     }
 
-    // TODO: specific result
-    fun sendPlayCardIntentResult(gameId: String, result: ActionResponse<String>) {
-        sendToGame(gameId, "playCardIntentResult", result)
+    fun sendPlayClimateCardResponse(gameId: UUID, result: ActionResponse<PlayClimateCardAction.Information>) {
+        sendToGame(gameId, "playClimateCardResult", result)
     }
 
-    // TODO: specific result
-    fun sendPlayCardResult(gameId: String, result: ActionResponse<String>) {
-        sendToGame(gameId, "playCardResult", result)
+    fun sendPlayTechnologyCardIntentResponse(
+        gameId: UUID,
+        result: ActionResponse<PlayTechnologyCardActionIntent.Information>
+    ) {
+        sendToGame(gameId, "playTechnologyCardIntentResult", result)
+    }
+
+    fun sendPlayTechnologyCardResponse(gameId: UUID, result: ActionResponse<PlayTechnologyCardAction.Information>) {
+        sendToGame(gameId, "playTechnologyCardResult", result)
     }
 }

@@ -1,11 +1,13 @@
 package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
-import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayCardActionIntentRequest
-import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayCardActionRequest
 import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManagerRepo
+import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayClimateCardRequest
+import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayTechnologyCardIntentRequest
+import de.niklaskerkhoff.wattsnextbackend.api.actions.data.PlayTechnologyCardRequest
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Controller
+import java.util.*
 
 @Controller
 @MessageMapping("/game")
@@ -18,26 +20,35 @@ class ActionWebSocketController(
     @MessageMapping("/earnMoney")
     fun rollDiceAction(headerAccessor: StompHeaderAccessor) {
         val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
-        sessionInfo.gameId.let { gameId ->
-            val game = gameManagerRepo.getGameManager(gameId)
-        }
-    }
-
-    @MessageMapping("/playTechnologyCardIntent")
-    fun playTechnologyCardIntent(request: PlayCardActionIntentRequest, headerAccessor: StompHeaderAccessor) {
-        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
-        // TODO: process action
-    }
-
-    @MessageMapping("/playTechnologyCard")
-    fun playTechnologyCard(request: PlayCardActionRequest, headerAccessor: StompHeaderAccessor) {
-        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
-        // TODO: process action
+        val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        val response = gameManager.handleRollDice()
+        gameMessageSender.sendRollDiceResponse(sessionInfo.gameId, response)
     }
 
     @MessageMapping("/playClimateCard")
-    fun playClimateCard(request: PlayCardActionRequest, headerAccessor: StompHeaderAccessor) {
+    fun playClimateCard(request: PlayClimateCardRequest, headerAccessor: StompHeaderAccessor) {
         val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
-        // TODO: process action
+        val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        val response = gameManager.handlePlayClimateCard(request.climateCardId)
+        gameMessageSender.sendPlayClimateCardResponse(sessionInfo.gameId, response)
     }
+
+    @MessageMapping("/playTechnologyCardIntent")
+    fun playTechnologyCardIntent(request: PlayTechnologyCardIntentRequest, headerAccessor: StompHeaderAccessor) {
+        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
+        val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        val response = gameManager.handlePlayTechnologyCardIntent(request.progressCardId, request.targetPosition)
+        gameMessageSender.sendPlayTechnologyCardIntentResponse(sessionInfo.gameId, response)
+    }
+
+    @MessageMapping("/playTechnologyCard")
+    fun playTechnologyCard(request: PlayTechnologyCardRequest, headerAccessor: StompHeaderAccessor) {
+        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
+        val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        val response = gameManager.handlePlayTechnologyCard(request.shallRecycle)
+        gameMessageSender.sendPlayTechnologyCardResponse(sessionInfo.gameId, response)
+    }
+
+    private fun GameManagerRepo.getGameManagerOrThrow(gameId: UUID) =
+        this.getGameManager(gameId) ?: throw IllegalArgumentException("Game not found")
 }
