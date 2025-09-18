@@ -29,7 +29,7 @@ class GameManager(
 
     fun handlePlayClimateCard(climateCardId: UUID): ActionResponse<PlayClimateCardAction.Information> {
         val climateCard = entityResolver.getClimateCard(climateCardId)
-            ?: return ActionResponse(game, ActionResponse.Status.IllegalAction)
+            ?: return illegalActionResponse()
 
         val action = PlayClimateCardAction(climateCard)
         return executeAction(action)
@@ -40,7 +40,7 @@ class GameManager(
         targetPosition: Int
     ): ActionResponse<PlayTechnologyCardActionIntent.Information> {
         val technologyCard = entityResolver.getTechnologyCard(technologyCardId)
-            ?: return ActionResponse(game, ActionResponse.Status.IllegalAction)
+            ?: return illegalActionResponse()
 
         val action = PlayTechnologyCardActionIntent(technologyCard, targetPosition)
         return executeAction(action)
@@ -52,7 +52,7 @@ class GameManager(
             previousActionResult?.actionInformation as? PlayTechnologyCardActionIntent.Information
 
         if (previousAction == null || previousActionInformation == null)
-            return ActionResponse(game, ActionResponse.Status.IllegalAction)
+            return illegalActionResponse()
 
         val action = PlayTechnologyCardAction(
             shallRecycle,
@@ -63,7 +63,7 @@ class GameManager(
     }
 
     private fun <T> executeAction(action: Action<T>): ActionResponse<T> {
-        if (!action.canExecute(game)) return ActionResponse(game, ActionResponse.Status.IllegalAction)
+        if (!action.canExecute(game)) return illegalActionResponse()
 
         val result = action.execute(game)
 
@@ -73,4 +73,6 @@ class GameManager(
 
         return ActionResponse(result, ActionResponse.Status.Ok)
     }
+
+    private fun <T> illegalActionResponse() = ActionResponse<T>(game, ActionResponse.Status.IllegalAction)
 }
