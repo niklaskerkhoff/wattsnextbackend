@@ -69,7 +69,8 @@ class GameManager(
 
         previousAction = action
         previousActionResult = result
+        this.game = result.game
 
-        return ActionResponse(result, ActionResponse.Status.IllegalAction)
+        return ActionResponse(result, ActionResponse.Status.Ok)
     }
 }
