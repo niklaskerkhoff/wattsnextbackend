@@ -2,6 +2,7 @@ package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.ActionResponse
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.responsemodel.GameData
+import de.niklaskerkhoff.wattsnextbackend.api.gameinit.GameInit
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
@@ -10,19 +11,22 @@ import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
 import java.util.*
 
-// TODO: Put in adequate location
-
 @Component
 class GameMessageSender(
     private val messagingTemplate: SimpMessagingTemplate
 ) {
 
     private fun sendToGame(gameId: UUID, suffix: String?, payload: Any) {
-        val destination = "/game/$gameId" + (if (suffix.isNullOrBlank()) "" else "/$suffix")
+        val destination = "/topic/game/$gameId" + (if (suffix.isNullOrBlank()) "" else "/$suffix")
+        println("➡️ Sending message to $destination: $payload")
         messagingTemplate.convertAndSend(destination, payload)
     }
 
     fun sendGameState(gameId: UUID, gameState: GameData) {
+        sendToGame(gameId, null, gameState)
+    }
+
+    fun sendGameState(gameId: UUID, gameState: GameInit) {
         sendToGame(gameId, null, gameState)
     }
 

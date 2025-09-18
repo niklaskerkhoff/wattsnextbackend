@@ -3,6 +3,7 @@ package de.niklaskerkhoff.wattsnextbackend.api.gameinit
 import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManager
 import de.niklaskerkhoff.wattsnextbackend.api.actions.GameManagerRepo
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.responsemodel.GameData
+import de.niklaskerkhoff.wattsnextbackend.api.actions.websockets.GameMessageSender
 import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap
 class GameInitService(
     private val messagingTemplate: SimpMessagingTemplate,
     private val gameManagerRepo: GameManagerRepo,
+    private val gameMessageSender: GameMessageSender,
 ) {
     private val gameInitMap: MutableMap<UUID, GameInit> = ConcurrentHashMap()
 
@@ -26,7 +28,7 @@ class GameInitService(
         val gameInit = getGameInitOrThrow(gameId)
         gameInit.addPlayer(playerName)
 
-        messagingTemplate.convertAndSend("/game/$gameId", gameInit)
+        gameMessageSender.sendGameState(gameId, gameInit)
         return GameInitWithPlayerIdResponse(gameInit, gameInit.players.last().id)
     }
 
@@ -37,7 +39,7 @@ class GameInitService(
         val gameManager = GameManager(game, entityResolver)
         gameManagerRepo.addGameManager(gameManager)
 
-        messagingTemplate.convertAndSend("/game/$gameId", GameData(game))
+        gameMessageSender.sendGameState(gameId, GameData(game))
     }
 
     fun getGameState(gameId: UUID): Any {
