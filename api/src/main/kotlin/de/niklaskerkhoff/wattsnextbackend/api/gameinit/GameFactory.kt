@@ -39,12 +39,7 @@ object GameFactory {
                 distributionCards = List(3) { emptyList() },
                 storageCards = List(3) { emptyList() },
             ),
-            players = gameInit.players.map {
-                Player(
-                    name = it.name,
-                    progressCards = emptyList()
-                )
-            },
+            players = players,
             climateCards = emptyList(),
             progressCardDeck = progressCardDeckWithoutStartCard,
             standardEventCardDeck = standardEventCardDeck,
