@@ -18,7 +18,9 @@ class GameManager(
         private set
 
     private var previousAction: Action<*>? = null
-    private var previousActionInformation: Result<*>? = null
+    private var previousActionResult: Result<*>? = null
+
+    fun getState() = ActionResponse<Unit>(game, ActionResponse.Status.Ok)
 
     fun handleRollDice(): ActionResponse<RollDiceAction.Information> {
         val action = RollDiceAction()
@@ -46,9 +48,11 @@ class GameManager(
 
     fun handlePlayTechnologyCard(shallRecycle: Boolean): ActionResponse<PlayTechnologyCardAction.Information> {
         val previousAction = previousAction as? PlayTechnologyCardActionIntent
-            ?: return ActionResponse(game, ActionResponse.Status.IllegalAction)
-        val previousActionInformation = previousActionInformation as? PlayTechnologyCardActionIntent.Information
-            ?: return ActionResponse(game, ActionResponse.Status.IllegalAction)
+        val previousActionInformation =
+            previousActionResult?.actionInformation as? PlayTechnologyCardActionIntent.Information
+
+        if (previousAction == null || previousActionInformation == null)
+            return ActionResponse(game, ActionResponse.Status.IllegalAction)
 
         val action = PlayTechnologyCardAction(
             shallRecycle,
@@ -58,17 +62,13 @@ class GameManager(
         return executeAction(action)
     }
 
-    fun getState() = ActionResponse<Unit>(game, ActionResponse.Status.Ok)
-
     private fun <T> executeAction(action: Action<T>): ActionResponse<T> {
         if (!action.canExecute(game)) return ActionResponse(game, ActionResponse.Status.IllegalAction)
 
         val result = action.execute(game)
 
         previousAction = action
-        previousActionInformation = result
-
-
+        previousActionResult = result
 
         return ActionResponse(result, ActionResponse.Status.IllegalAction)
     }
