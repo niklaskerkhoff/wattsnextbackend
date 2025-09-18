@@ -13,10 +13,12 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.Player
 import de.niklaskerkhoff.wattsnextbackend.model.core.TechnologyBoard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
+import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 
 object GameFactory {
     fun buildGame(gameInit: GameInit): Pair<Game, EntityResolver> {
 
+        // TODO: There are more start technology cards that are independent of the mode
         val startTechnologyCard =
             when (gameInit.mode) {
                 StartWithCoal -> technologyCards.first { it.tags.contains(Tag.Coal.name) }
@@ -24,6 +26,7 @@ object GameFactory {
             }
 
 
+        // TODO: StartTechnologyCards are not part of the CardDeck, but printed on the Board
         val progressCardDeck = (technologyCards + climateCards).shuffled().removed(startTechnologyCard)
         val (players, progressCardDeckWithoutStartCard) = buildPlayers(gameInit, progressCardDeck)
 
@@ -44,10 +47,27 @@ object GameFactory {
             progressCardDeck = progressCardDeckWithoutStartCard,
             standardEventCardDeck = standardEventCardDeck,
             catastropheEventCardDeck = catastropheEventCardDeck,
-            energyTargetsPerPhase = emptyList(),
-            pointTargetsPerPhase = emptyList(),
-            numberOfPhases = 0,
+            pointTargetsPerPhase = listOf(30, 60, 100),
+            numberOfPhases = 3,
             numberOfTurnsPerPhase = 12,
+            progressPointsDelta = 5,
+            energyTargetsPerPhase = listOf(
+                mapOf(
+                    Technology.Generation to 3,
+                    Technology.Distribution to 3,
+                    Technology.Storage to 0
+                ),
+                mapOf(
+                    Technology.Generation to 6,
+                    Technology.Distribution to 6,
+                    Technology.Storage to 3
+                ),
+                mapOf(
+                    Technology.Generation to 9,
+                    Technology.Distribution to 9,
+                    Technology.Storage to 6
+                )
+            ),
         )
 
         return Pair(game, EntityResolver(players))
@@ -58,7 +78,9 @@ object GameFactory {
         progressCardDeck: List<ProgressCard>
     ): Pair<List<Player>, List<ProgressCard>> {
         val playerCount = gameInit.players.size
+        // TODO: There is also a number of players with 2 cards per player
         val cardsPerPlayer = when (playerCount) {
+            1 -> 6
             2 -> 5
             3 -> 4
             else -> 3
@@ -70,6 +92,7 @@ object GameFactory {
 
         val players = gameInit.players.mapIndexed { index, playerInit ->
             Player(
+                id = playerInit.id,
                 name = playerInit.name,
                 progressCards = playerCards.slice(index * cardsPerPlayer until (index + 1) * cardsPerPlayer)
             )
