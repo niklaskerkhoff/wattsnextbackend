@@ -1,8 +1,8 @@
 package de.niklaskerkhoff.wattsnextbackend.model.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
-import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
+import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import kotlin.random.Random
 
 class RollDiceAction(
@@ -13,14 +13,14 @@ class RollDiceAction(
 
     override fun execute(game: Game): Result<Information> {
         val value = Random.nextInt(1, 7)
-        val updatedMoney = game.money + value
-        val updatedGame = game.copy(money = updatedMoney)
+        val updatedGame = game.withUpdatedMoney(value)
 
         return updatedGame.withNextTurn().let {
             Result(
                 game = it.game,
                 baseInformation = it.baseInformation,
-                actionInformation = Information(value)
+                actionInformation = Information(value),
+                cardEffectInformations = it.cardEffectInformations,
             )
         }
     }

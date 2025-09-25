@@ -3,7 +3,6 @@ package de.niklaskerkhoff.wattsnextbackend.model.actions
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.Result
-import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffectInformation
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
@@ -11,7 +10,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
 
 class PlayClimateCardAction(
     internal val climateCard: ProgressCard.ClimateCard,
-) : Action<PlayClimateCardAction.Information>() {
+) : Action<PlayClimateCardAction.ActionInformation>() {
 
     override fun canExecute(game: Game): Boolean {
         return game.money >= climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1)) &&
@@ -19,11 +18,12 @@ class PlayClimateCardAction(
                 game.climateCards.size < 10
     }
 
-    override fun execute(game: Game): Result<Information> {
+    override fun execute(game: Game): Result<ActionInformation> {
         val updatedClimateCards = game.climateCards + climateCard
 
         val moneyAfterCardPlayed = game.money - climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1))
-        val resourcesAfterCardPlayed = game.money - climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1))
+        val resourcesAfterCardPlayed =
+            game.money - climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1))
 
         val currentPlayerProgressCardsWithoutPlayedCard = game.currentPlayer.progressCards.removed(climateCard)
 
@@ -46,21 +46,20 @@ class PlayClimateCardAction(
             progressCardDeck = updatedProgressDeck,
         )
 
-        val (gameAfterEffect, cardEffectInformations) =
-            climateCard.effect?.let { it(gameAfterCardPlayed) } ?: Pair(gameAfterCardPlayed, emptyList())
+        val (gameAfterEffect, cardEffectInformations) = climateCard.effect(gameAfterCardPlayed)
 
         return gameAfterEffect.withNextTurn().let {
             Result(
                 game = it.game,
                 baseInformation = it.baseInformation,
-                actionInformation = Information(climateCard, drawnCard, cardEffectInformations)
+                actionInformation = ActionInformation(climateCard, drawnCard),
+                cardEffectInformations = cardEffectInformations + it.cardEffectInformations,
             )
         }
     }
 
-    data class Information(
+    data class ActionInformation(
         val playedCard: ProgressCard.ClimateCard,
         val drawnCard: ProgressCard,
-        val cardEffectInformations: List<CardEffectInformation>
     )
 }

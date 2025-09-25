@@ -80,13 +80,16 @@ data class Game(
                 val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
                 val updatedStandardEventCards = standardEventCards + drawnCard
 
+                val (gameAfterStandardEffect, standardEffectInformations) = drawnCard.effect(this)
+
                 Result(
-                    copy(
+                    gameAfterStandardEffect.copy(
                         turnInPhase = nextTurnInPhase,
                         standardEventCards = updatedStandardEventCards,
                         standardEventCardDeck = updatedStandardEventCardDeck,
                     ),
-                    BaseInformation(gotNewStandardEventCard = true)
+                    BaseInformation(gotNewStandardEventCard = true),
+                    cardEffectInformations = standardEffectInformations,
                 )
             } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
                 Result(
@@ -292,8 +295,12 @@ data class Game(
                 if (requirementsFulfilled) Pair(null, catastropheEventCardDeck)
                 else catastropheEventCardDeck.removedLast()
 
+            val (gameAfterStandardEffect, standardEffectInformations) = drawnStandardEventCard.effect(this)
+            val (gameAfterCatastropheEffect, catastropheEffectInformations) =
+                drawnCatastropheCard?.effect(gameAfterStandardEffect) ?: Pair(gameAfterStandardEffect, emptyList())
+
             Result(
-                copy(
+                gameAfterCatastropheEffect.copy(
                     turnInPhase = 0,
                     phase = nextPhase,
                     standardEventCards = updatedStandardEventCards,
@@ -305,7 +312,8 @@ data class Game(
                     phaseCompleted = true,
                     gotNewStandardEventCard = true,
                     requirementsFulfilled = requirementsFulfilled
-                )
+                ),
+                cardEffectInformations = standardEffectInformations + catastropheEffectInformations
             )
         }
 

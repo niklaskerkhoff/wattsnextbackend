@@ -13,14 +13,14 @@ class PlayTechnologyCardAction(
     internal val shallRecycle: Boolean,
     internal val intent: PlayTechnologyCardActionIntent,
     internal val intentInformation: PlayTechnologyCardActionIntent.Information,
-) : Action<PlayTechnologyCardAction.Information>() {
+) : Action<PlayTechnologyCardAction.ActionInformation>() {
 
     override fun canExecute(game: Game): Boolean {
         // Already checked in PlayTechnologyCardActionIntent
         return true
     }
 
-    override fun execute(game: Game): Result<Information> {
+    override fun execute(game: Game): Result<ActionInformation> {
         val (gameAfterRecycle, _, recyclingInformation) =
             if (shallRecycle) {
                 if (!intentInformation.canRecycle) {
@@ -35,7 +35,7 @@ class PlayTechnologyCardAction(
 
         return Result(
             game = resultAfterCardPlayed.game,
-            actionInformation = Information(
+            actionInformation = ActionInformation(
                 playedCard = intent.technologyCard,
                 targetPosition = intent.targetPosition,
                 drawnCard = resultAfterCardPlayed.actionInformation!!.drawnCard,
@@ -108,7 +108,9 @@ class PlayTechnologyCardAction(
             progressCardDeck = updatedProgressDeck,
         )
 
-        return updatedGame.withNextTurn().let {
+        val (gameAfterEffect, cardEffectInformations) = intent.technologyCard.effect(updatedGame)
+
+        return gameAfterEffect.withNextTurn().let {
             Result(
                 game = it.game,
                 baseInformation = it.baseInformation,
@@ -116,7 +118,8 @@ class PlayTechnologyCardAction(
                     drawnCard = drawnCard,
                     payedMoneyForCard = moneyToPay,
                     payedResourcesForCard = resourcesToPay,
-                )
+                ),
+                cardEffectInformations = cardEffectInformations + it.cardEffectInformations,
             )
         }
     }
@@ -132,7 +135,7 @@ class PlayTechnologyCardAction(
         val payedResourcesForCard: Int,
     )
 
-    data class Information(
+    data class ActionInformation(
         val playedCard: ProgressCard.TechnologyCard,
         val targetPosition: Int,
         val drawnCard: ProgressCard,

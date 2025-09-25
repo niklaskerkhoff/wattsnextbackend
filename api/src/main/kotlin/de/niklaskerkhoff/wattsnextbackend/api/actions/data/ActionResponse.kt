@@ -27,6 +27,6 @@ data class ActionResponse<T>(
         status = status,
         baseInformation = result.baseInformation,
         actionInformation = result.actionInformation,
-        cardEffectInformation = result.cardEffectInformation,
+        cardEffectInformation = result.cardEffectInformations,
     )
 }

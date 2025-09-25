@@ -33,7 +33,7 @@ class GameMessageSender(
         sendToGame(gameId, "earnMoneyResult", result)
     }
 
-    fun sendPlayClimateCardResponse(gameId: UUID, result: ActionResponse<PlayClimateCardAction.Information>) {
+    fun sendPlayClimateCardResponse(gameId: UUID, result: ActionResponse<PlayClimateCardAction.ActionInformation>) {
         sendToGame(gameId, "playClimateCardResult", result)
     }
 
@@ -44,7 +44,7 @@ class GameMessageSender(
         sendToGame(gameId, "playTechnologyCardIntentResult", result)
     }
 
-    fun sendPlayTechnologyCardResponse(gameId: UUID, result: ActionResponse<PlayTechnologyCardAction.Information>) {
+    fun sendPlayTechnologyCardResponse(gameId: UUID, result: ActionResponse<PlayTechnologyCardAction.ActionInformation>) {
         sendToGame(gameId, "playTechnologyCardResult", result)
     }
 }

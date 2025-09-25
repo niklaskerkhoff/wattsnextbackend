@@ -27,7 +27,7 @@ class GameManager(
         return executeAction(action)
     }
 
-    fun handlePlayClimateCard(climateCardId: UUID): ActionResponse<PlayClimateCardAction.Information> {
+    fun handlePlayClimateCard(climateCardId: UUID): ActionResponse<PlayClimateCardAction.ActionInformation> {
         val climateCard = entityResolver.getClimateCard(climateCardId) ?: return illegalActionResponse()
 
         val action = PlayClimateCardAction(climateCard)
@@ -44,7 +44,7 @@ class GameManager(
         return executeAction(action)
     }
 
-    fun handlePlayTechnologyCard(shallRecycle: Boolean): ActionResponse<PlayTechnologyCardAction.Information> {
+    fun handlePlayTechnologyCard(shallRecycle: Boolean): ActionResponse<PlayTechnologyCardAction.ActionInformation> {
         val previousAction = previousAction as? PlayTechnologyCardActionIntent
         val previousActionInformation =
             previousActionResult?.actionInformation as? PlayTechnologyCardActionIntent.Information
