@@ -1,5 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.values.energy
 
+import de.niklaskerkhoff.wattsnextbackend.model.values.AchievementName
+
 sealed class Supply {
     abstract val type: String
     abstract val fulfilled: Boolean?
@@ -14,7 +16,7 @@ sealed class Supply {
     }
 
     data class Achievement(
-        val name: String, // can be CarbonCapture, NuclearWasteRepository or ChemicalEnergy
+        val name: AchievementName, // can be CarbonCapture, NuclearWasteRepository or ChemicalEnergy
         override val fulfilled: Boolean? = null
     ) : Supply() {
         override val type: String = "achievement"

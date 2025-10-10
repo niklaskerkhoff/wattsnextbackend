@@ -6,6 +6,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag.*
 import de.niklaskerkhoff.wattsnextbackend.model.config.helper.TechnologyCardData
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
+import de.niklaskerkhoff.wattsnextbackend.model.values.AchievementName
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.EnergyForm.Electricity
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.EnergyForm.Heat
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply.Achievement
@@ -39,7 +40,7 @@ val technologyCards = listOf(
                 form = Heat,
                 size = 2,
             ),
-            Achievement("CCS")
+            Achievement(AchievementName.CarbonCapture)
         ),
         requirementsDescription = "Strom und Wärme müssen verteilt werden. CO2 muss aus dem Abgas entfernt werden.",
         explanation = "Verbrennung von Kohle erzeugt Strom und die Abwärme ist nutzbar für Fernwärme.",
@@ -285,7 +286,7 @@ val technologyCards = listOf(
                 form = Heat,
                 size = 2,
             ),
-            Achievement("CCS")
+            Achievement(AchievementName.CarbonCapture)
         ),
         requirementsDescription = "Strom und Wärme müssen verteilt werden. CO2 muss aus dem Abgas entfernt werden.",
         explanation = "Durch das Verbrennen von Gas kann Stromerzeugt werden, die Abwärme kann für Fernwärme genutzt werden.",
@@ -369,7 +370,7 @@ val technologyCards = listOf(
         basePoints = 10,
         systemPoints = 18,
         supplyRequirementsForSystem = listOf(
-            Achievement("Endlager"),
+            Achievement(AchievementName.NuclearWasteRepository),
             Energy(
                 technology = Distribution,
                 form = Electricity,
@@ -498,7 +499,7 @@ val technologyCards = listOf(
                 form = Heat,
                 size = 2,
             ),
-            Achievement("CCS")
+            Achievement(AchievementName.CarbonCapture)
         ),
         requirementsDescription = "Bau auf Kohlekraftwerk: Zahle nur 4 Geldeinheiten und 1 Ressource. Strom und Wärme müssen verteilt werden.",
         explanation = "Strom und Abwärme werden durch Verbrennung von Eisen erzeugt. Dafür kann ein Kohlekraftwerk umgerüstet werden.",

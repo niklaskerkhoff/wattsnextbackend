@@ -3,6 +3,7 @@ package de.niklaskerkhoff.wattsnextbackend.model.config
 import de.niklaskerkhoff.wattsnextbackend.model.config.helper.*
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
+import de.niklaskerkhoff.wattsnextbackend.model.values.AchievementName
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.EnergyForm.Electricity
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply.Achievement
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply.Energy
@@ -112,7 +113,7 @@ val climateCards = listOf(
         id = UUID.randomUUID(),
         name = "CO2-Abscheidung und -Speicherung",
         imageSrc = "",
-        supply = Achievement("CCS"),
+        supply = Achievement(AchievementName.CarbonCapture),
         moneyCosts = 2,
         resourceCosts = 0,
         basePoints = 0,
@@ -140,7 +141,7 @@ val climateCards = listOf(
         basePoints = 0,
         systemPoints = 2,
         supplyRequirementsForSystem = listOf(
-            Achievement("Chemie")
+            Achievement(AchievementName.ChemicalEnergy)
         ),
         requirementsDescription = "",
         explanation = "Wasserstoff (H2) gilt als alternativer grüner Kraftstoff. Die Nutzung bietet sich vor allem auf langen Strecken an, da Batterien nicht die notwendige Reichweite bieten können.",
@@ -180,7 +181,7 @@ val climateCards = listOf(
             id = UUID.randomUUID(),
             name = "Power-to-X",
             imageSrc = "",
-            supply = Achievement("Chemie"),
+            supply = Achievement(AchievementName.ChemicalEnergy),
             moneyCosts = 2,
             resourceCosts = 0,
             basePoints = 0,
@@ -214,7 +215,7 @@ val climateCards = listOf(
         basePoints = 0,
         systemPoints = 2,
         supplyRequirementsForSystem = listOf(
-            Achievement("Chemie")
+            Achievement(AchievementName.ChemicalEnergy)
         ),
         requirementsDescription = "",
         explanation = "Die Nutzung von synthetischem Kerosin bietet eine grünere Alternative zu fossilem Kraftstoff, die für Flugzeuge geeignet ist.",
