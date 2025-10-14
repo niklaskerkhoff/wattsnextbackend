@@ -46,7 +46,8 @@ data class Game(
 
     val secondEventCardTurnInPhase = Random.nextInt(2, numberOfTurnsPerPhase - 2)
 
-    private val totalMove = turnInPhase * phase
+    // TODO: Not the correct formula: number of done phases has to be multiplied with numberOfTurnsPerPhase
+    private val totalMove = turnInPhase * (phase + 1)
 
     val currentPlayer get() = players[totalMove % players.size]
 
