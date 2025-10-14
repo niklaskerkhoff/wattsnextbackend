@@ -42,15 +42,28 @@ class GameInitService(
         gameMessageSender.sendGameState(gameId, GameData(game))
     }
 
+    // TODO: It seems like there is still a gameInit object when the game has already started, so check for a game object
+    // first
     fun getGameState(gameId: UUID): Any {
-        val gameInit = gameInitMap[gameId]
+        /*val gameInit = gameInitMap[gameId]
         if (gameInit != null) return gameInit
 
         val game = gameManagerRepo.getGameManager(gameId)?.let { gameManager ->
             GameData(gameManager.game)
         }
 
-        return game ?: throw IllegalArgumentException("Game not found")
+        return game ?: throw IllegalArgumentException("Game not found")*/
+
+        val game = gameManagerRepo.getGameManager(gameId)?.let { gameManager ->
+            GameData(gameManager.game)
+        }
+
+        if (game != null) return game
+
+        val gameInit = gameInitMap[gameId]
+        if (gameInit != null) return gameInit
+
+        throw IllegalArgumentException("Game not found")
     }
 
     private fun getGameInitOrThrow(gameId: UUID): GameInit {
