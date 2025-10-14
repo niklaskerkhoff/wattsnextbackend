@@ -15,6 +15,9 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard.EffectDescription
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
+import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType.MoneyAndResources
+import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType.Points
+import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType.EnergySystem
 import java.util.*
 
 
@@ -26,7 +29,7 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Die Nachfrage nach  Energie steigt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit erhöht.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -41,11 +44,7 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Photovoltaik- und Solarthermie- Technologien zählen mit ihrer Basispunktzahl in die Fortschrittspunkte.",
-                imageSrc = null,
-            ),
-            EffectDescription(
-                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",// Rm. Effect
-                imageSrc = null,
+                type = Points,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -65,11 +64,7 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Windtechnologien zählen mit ihrer Basispunktzahl in die Fortschrittspunkte.",
-                imageSrc = null,
-            ),
-            EffectDescription(
-                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",// Rm. Effect
-                imageSrc = null,
+                type = Points,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -89,7 +84,7 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Ihr verliert pro Spieler 1 Geldeinheit.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -104,11 +99,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 3 Einheiten erhöht.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Speicher zählen mit ihrer Systempunktzahl in die Fortschrittspunkte, da sie vollständig geladen wurden.",
-                imageSrc = null,
+                type = Points,
             ),
         ),
         effectConditionDescription = "Falls Solartechnologien im Energiesystem vorhanden:",
@@ -129,11 +124,10 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Das Energiesystem wird auf den Startzustand zurückgesetzt.  War ein Atomkraftwerk auf dem Startfeld, wird auch dieses entfernt.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
-        effectConditionDescription = "Falls Atomkraftwerk im Energie-system vorhanden:",
-        footnote = "Kein Atomkraftwerk? Glück gehabt",
+        effectConditionDescription = "Falls Atomkraftwerk im Energiesystem vorhanden:",
         modifierCollection = ModifierCollection(),
         effect = nuclearCatastropheIfExistingEffect(),
         phaseIndex = 0,
@@ -146,11 +140,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 2 Einheiten erhöht.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Speicher zählen mit ihrer Systempunktzahl in die Fortschrittspunkte, da sie vollständig geladen wurden.",
-                imageSrc = null,
+                type = Points,
             ),
         ),
         effectConditionDescription = "Falls Windtechnologien im Energiesystem vorhanden:",
@@ -171,15 +165,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 2 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Große Erzeugungstechnologien (≥3 Energieeinheiten) zählen nur mit ihrer Basispunktzahl in die Fortschrittspunkte.",
-                imageSrc = null,
-            ),
-            EffectDescription(
-                text = "Energieeinheiten dieser Technologien werden um 1 reduziert.",// Rm. Effect
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -199,11 +189,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 1 Einheit reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Die Nachfrage nach  Energie steigt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit erhöht.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -213,15 +203,16 @@ val eventCards = listOf(
     ),
     EventCard(
         id = UUID.randomUUID(),
-        name = "Batterie-Preis sinkt",
+        name = "Batteriepreis sinkt",
         eventDescription = "Die Herstellung von Batteriespeichern wurde effizienter und damit günstiger.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Batterie-Speichertechnologien kosten in dieser Phase 2 Geldeinheiten weniger.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
         ),
         modifierCollection = ModifierCollection(
+            // TODO: Isn't there a parameter 2 missing
             cardMoneyCostsModifierConfig = ModifierConfig(
                 rank = 5,
                 modify = CardCostModifier.CostsWithBatteryImproved.modify
@@ -233,16 +224,16 @@ val eventCards = listOf(
     ),
     EventCard(
         id = UUID.randomUUID(),
-        name = "Virus-Pandemie: Lockdown",
+        name = "Viruspandemie: Lockdown",
         eventDescription = "Bei einem Lockdown stehen viele Bereiche still: Weniger Produktion, weniger Verkehr, mehr Homeoffice. Weniger Mobilität und Produktion bedeuten auch weniger Energieverbrauch.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 1 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Die Nachfrage nach Energie sinkt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit reduziert.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -257,7 +248,7 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld und Ressourcen werden jeweils um zwei Einheiten erhöht.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -272,11 +263,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Das Geld erhöht sich um 2 Einheiten.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Die Nachfrage nach  Energie sinkt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit reduziert.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -291,7 +282,7 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Das Geld wird um 6 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -301,16 +292,17 @@ val eventCards = listOf(
     ),
     EventCard(
         id = UUID.randomUUID(),
-        name = "Sturmschaden",
+        name = "Sturmschäden",
         eventDescription = "Eine Sturmfront, die über Deutschland hinweg zog, zerstörte die Überlandleitungen im ganzen Land. Viele Regionen haben Schwierigkeiten, ihren Bedarf zu decken.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 2 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
+            // TODO: Eigentlich nur "Bereits gebaute oberirdische Stromleitungen ..."
             EffectDescription(
                 text = "Oberirdische Stromleitungen zählen nicht zur Erfüllung der Voraussetzung anderer Fortschrittskarten und der Phasenziele.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -326,19 +318,19 @@ val eventCards = listOf(
     EventCard(
         id = UUID.randomUUID(),
         name = "Hitzewelle",
-        eventDescription = "Eine extreme Hitzewelle lässt die Nachfrage an Strom steigen und die Leistung von thermischen Kraftwerken abnehmen. Die Klimakrise erhöht die Wahrscheinlichkeiten für Hitzewellen.",
+        eventDescription = "Während Hitzewellen steigt die Nachfrage nach Strom und die Leistung von thermischen Kraftwerken nimmt wegen sinkender Kühlleistung ab. Die Klimakrise erhöht die Wahrscheinlichkeit für Hitzewellen.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 2 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Die Nachfrage nach Energie steigt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit erhöht.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
             EffectDescription(
                 text = "Kohle-, Gas-, und Nukleare Kraftwerke zählen in dieser Runde nur mit den Basispunkten in die Fortschrittspunkte.",
-                imageSrc = null,
+                type = Points,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -358,7 +350,7 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 5 Einheiten verringert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -373,11 +365,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld und Ressourcen werden um je 2 Einheiten verringert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Photovoltaik- und Solarthermie- Technologien zählen in dieser Runde mit ihrer Basispunktzahl in die Fortschrittspunkte.",
-                imageSrc = null,
+                type = Points,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -397,11 +389,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Das Geld wird um 4 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Wasser- und Pumpspeicherkraftwerke zählen nur mit den Basispunkten in die Fortschrittspunkte.",
-                imageSrc = null,
+                type = Points,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -417,11 +409,11 @@ val eventCards = listOf(
     EventCard(
         id = UUID.randomUUID(),
         name = "Mückenplage",
-        eventDescription = "Die Klimakrise schafft günstigere Bedingungen für Mücken, sodass diese sich immer mehr ausbreiten. Mücken können Krankheiten übertragen. Um dies zu verhindern, muss mehr Arbeit investiert werden, die Mücken zu bekämpfen.",
+        eventDescription = "Die Klimakrise schafft günstigere Bedingungen für Mücken, sodass diese sich immer mehr ausbreiten. Mücken können Krankheiten übertragen. Das führt zu Mehrkosten bei der Mückenbekämpfung und im Gesundheitssystem.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Das Geld wird um 4 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
         ),
         modifierCollection = ModifierCollection(),
@@ -436,11 +428,11 @@ val eventCards = listOf(
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 6 Einheiten und Ressourcen um 2 Einheiten reduziert.",
-                imageSrc = null,
+                type = MoneyAndResources,
             ),
             EffectDescription(
                 text = "Karten mit der Voraussetzung Verteilung zählen in dieser Runde nur mit den Basispunkten in die Fortschrittspunkte.",
-                imageSrc = null,
+                type = EnergySystem,
             ),
         ),
         modifierCollection = ModifierCollection(

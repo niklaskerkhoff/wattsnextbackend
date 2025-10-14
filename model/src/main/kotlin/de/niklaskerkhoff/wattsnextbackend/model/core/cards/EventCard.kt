@@ -1,6 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core.cards
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
+import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType
 import java.util.*
 
 class EventCard(
@@ -13,10 +14,9 @@ class EventCard(
     val eventDescription: String,
     val effectDescriptions: List<EffectDescription>,
     val effectConditionDescription: String? = null,
-    val footnote: String? = null,
 ) : Card() {
     data class EffectDescription(
         val text: String,
-        val imageSrc: String?
+        val type: EffectType,
     )
 }

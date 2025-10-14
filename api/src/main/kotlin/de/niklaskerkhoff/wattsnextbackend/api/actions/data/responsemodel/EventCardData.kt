@@ -13,7 +13,6 @@ data class EventCardData(
     val eventDescription: String,
     val effectDescriptions: List<EffectDescription>,
     val effectConditionDescription: String? = null,
-    val footnote: String? = null,
 ) {
     constructor(eventCard: EventCard, result: Result<*>) : this(
         id = eventCard.publicId,
@@ -23,6 +22,5 @@ data class EventCardData(
         eventDescription = eventCard.eventDescription,
         effectDescriptions = eventCard.effectDescriptions,
         effectConditionDescription = eventCard.effectConditionDescription,
-        footnote = eventCard.footnote,
     )
 }
