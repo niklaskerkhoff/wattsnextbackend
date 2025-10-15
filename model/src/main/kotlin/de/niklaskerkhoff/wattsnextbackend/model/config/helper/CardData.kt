@@ -9,7 +9,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
 import java.util.*
 
 data class TechnologyCardData(
-    val id: UUID,
+    val id: String,
     val name: String,
     val modifierCollection: ModifierCollection,
     val effect: CardEffect = { Pair(it, emptyList()) },
@@ -30,7 +30,7 @@ data class TechnologyCardData(
 ) {
     fun toTechnologyCard() =
         ProgressCard.TechnologyCard(
-            id = id,
+            id = UUID.fromString(id),
             name = name,
             modifierCollection = modifierCollection,
             effect = effect,
@@ -53,7 +53,7 @@ data class TechnologyCardData(
 }
 
 data class ClimateCardData(
-    val id: UUID,
+    val id: String,
     val name: String,
     val modifierCollection: ModifierCollection,
     val effect: CardEffect = { Pair(it, emptyList()) },
@@ -72,7 +72,7 @@ data class ClimateCardData(
 ) {
     fun toClimateCard() =
         ProgressCard.ClimateCard(
-            id = id,
+            id = UUID.fromString(id),
             name = name,
             modifierCollection = modifierCollection,
             effect = effect,

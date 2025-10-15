@@ -319,10 +319,14 @@ data class Game(
         }
 
     private fun hasReachedTargets(): Boolean {
-        val supplyTarget = energyTargetsPerPhase[phase]
         val pointTarget = pointTargetsPerPhase[phase]
+        if (progressPoints.third < pointTarget) return false
 
-        calculateTotalSupply(getAllProgressCards().filterNotNull())
+        val supplyTarget = energyTargetsPerPhase[phase]
+        val totalSupply = calculateTotalSupply(getAllProgressCards().filterNotNull())
+        val technologySupply = totalSupply.first.mapValues { (_, energyMap) -> energyMap.values.sum() }
+        supplyTarget.forEach { (technology, size) -> if ((technologySupply[technology] ?: 0) < size) return false }
+
         return true
     }
 

@@ -3,10 +3,6 @@ package de.niklaskerkhoff.wattsnextbackend.api.actions.websockets
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.ActionResponse
 import de.niklaskerkhoff.wattsnextbackend.api.actions.data.responsemodel.GameData
 import de.niklaskerkhoff.wattsnextbackend.api.gameinit.GameInit
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardAction
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
-import de.niklaskerkhoff.wattsnextbackend.model.actions.RollDiceAction
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Component
 import java.util.*
@@ -29,22 +25,22 @@ class GameMessageSender(
         sendToGame(gameId, null, gameState)
     }
 
-    fun sendRollDiceResponse(gameId: UUID, result: ActionResponse<RollDiceAction.Information>) {
+    fun sendRollDiceResponse(gameId: UUID, result: ActionResponse) {
         sendToGame(gameId, "earnMoneyResult", result)
     }
 
-    fun sendPlayClimateCardResponse(gameId: UUID, result: ActionResponse<PlayClimateCardAction.ActionInformation>) {
+    fun sendPlayClimateCardResponse(gameId: UUID, result: ActionResponse) {
         sendToGame(gameId, "playClimateCardResult", result)
     }
 
     fun sendPlayTechnologyCardIntentResponse(
         gameId: UUID,
-        result: ActionResponse<PlayTechnologyCardActionIntent.Information>
+        result: ActionResponse
     ) {
         sendToGame(gameId, "playTechnologyCardIntentResult", result)
     }
 
-    fun sendPlayTechnologyCardResponse(gameId: UUID, result: ActionResponse<PlayTechnologyCardAction.ActionInformation>) {
+    fun sendPlayTechnologyCardResponse(gameId: UUID, result: ActionResponse) {
         sendToGame(gameId, "playTechnologyCardResult", result)
     }
 }

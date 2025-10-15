@@ -7,7 +7,7 @@ import java.util.UUID
 data class Player(
     val name: String,
     val progressCards: List<ProgressCard?>,
-    private val id: UUID = UUID.randomUUID(),
+    private val id: UUID,
 ) {
     val publicId get() = id
 

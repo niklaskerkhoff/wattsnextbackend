@@ -20,14 +20,14 @@ class GameManager(
     private var previousAction: Action<*>? = null
     private var previousActionResult: Result<*>? = null
 
-    fun getState() = ActionResponse<Unit>(game, ActionResponse.Status.Ok)
+    fun getState() = ActionResponse(game, ActionResponse.Status.Ok)
 
-    fun handleRollDice(): ActionResponse<RollDiceAction.Information> {
+    fun handleRollDice(): ActionResponse {
         val action = RollDiceAction()
         return executeAction(action)
     }
 
-    fun handlePlayClimateCard(climateCardId: UUID): ActionResponse<PlayClimateCardAction.ActionInformation> {
+    fun handlePlayClimateCard(climateCardId: UUID): ActionResponse {
         val climateCard = entityResolver.getClimateCard(climateCardId) ?: return illegalActionResponse()
 
         val action = PlayClimateCardAction(climateCard)
@@ -37,14 +37,14 @@ class GameManager(
     fun handlePlayTechnologyCardIntent(
         technologyCardId: UUID,
         targetPosition: Int
-    ): ActionResponse<PlayTechnologyCardActionIntent.Information> {
+    ): ActionResponse {
         val technologyCard = entityResolver.getTechnologyCard(technologyCardId) ?: return illegalActionResponse()
 
         val action = PlayTechnologyCardActionIntent(technologyCard, targetPosition)
         return executeAction(action)
     }
 
-    fun handlePlayTechnologyCard(shallRecycle: Boolean): ActionResponse<PlayTechnologyCardAction.ActionInformation> {
+    fun handlePlayTechnologyCard(shallRecycle: Boolean): ActionResponse {
         val previousAction = previousAction as? PlayTechnologyCardActionIntent
         val previousActionInformation =
             previousActionResult?.actionInformation as? PlayTechnologyCardActionIntent.Information
@@ -59,7 +59,7 @@ class GameManager(
         return executeAction(action)
     }
 
-    private fun <T> executeAction(action: Action<T>): ActionResponse<T> {
+    private fun <T> executeAction(action: Action<T>): ActionResponse {
         if (!action.canExecute(game)) return illegalActionResponse()
 
         val result = action.execute(game)
@@ -71,5 +71,5 @@ class GameManager(
         return ActionResponse(result, ActionResponse.Status.Ok)
     }
 
-    private fun <T> illegalActionResponse() = ActionResponse<T>(game, ActionResponse.Status.IllegalAction)
+    private fun illegalActionResponse() = ActionResponse(game, ActionResponse.Status.IllegalAction)
 }

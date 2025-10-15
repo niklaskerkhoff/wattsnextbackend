@@ -23,7 +23,7 @@ import java.util.*
 
 val eventCards = listOf(
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("c1ea1fd9-6882-4247-a5b3-6db5c311fc86"),
         name = "Langer und kalter Winter",
         eventDescription = "Im Winter sind die Temperaturen niedriger als üblich und unzureichend isolierte Häuser benötigen mehr Energie zum Heizen als in normalen Wintern.",
         effectDescriptions = listOf(
@@ -38,7 +38,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("a4636f5f-742b-4299-a49f-efeb8ce054d5"),
         name = "Bewölktes Wetter",
         eventDescription = "Das Wetter ist bewölkt, es gibt seit Wochen keinen Sonnenschein. Solarkraftwerke produzieren kaum Strom.",
         effectDescriptions = listOf(
@@ -58,7 +58,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("e76b0f7f-5029-420e-aa34-ab96363990c3"),
         name = "Windflaute",
         eventDescription = "Es herrscht wochenlang Windstille. Windkraftanlagen produzieren keinen Strom.",
         effectDescriptions = listOf(
@@ -78,7 +78,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("f73c682c-7b1a-4a4c-bc57-ec12db07e6c1"),
         name = "Alles Gute zum neuen Jahr",
         eventDescription = "Ein neues Jahr beginnt mit einigen teuren Partys und Feuerwerken. Auch die Reinigung der Städte und die Versorgung der Verletzten sind teuer.",
         effectDescriptions = listOf(
@@ -93,7 +93,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("23698ead-e0fc-4394-a47d-51d5120a7912"),
         name = "Sonniges Wetter",
         eventDescription = "Produzierter Solarstrom, der den aktuellen Bedarf in Deutschland übersteigt, wird ins Ausland verkauft.",
         effectDescriptions = listOf(
@@ -118,7 +118,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("235dfaae-ee5d-4ecf-bb0d-9868660fc8a4"),
         name = "Nukleare Katastrophe",
         eventDescription = "Eine nukleares Desaster zerstört ein Kernkraftwerk und eine Kernschmelze löst eine weltweite nukleare Katastrophe aus.",
         effectDescriptions = listOf(
@@ -134,7 +134,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("8a7edb80-cc91-48c2-af3f-5fd0483f4e9d"),
         name = "Windiges Wetter",
         eventDescription = "Produzierter Windstrom, der den aktuellen Bedarf in Deutschland übersteigt, wird ins Ausland verkauft.",
         effectDescriptions = listOf(
@@ -159,7 +159,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("abd495fa-5f77-426a-b44d-6984ed19a196"),
         name = "Blackout durch Cyberangriff",
         eventDescription = "Ein großer Teil des deutschen Stromnetzes bricht zusammen. Das wird teuer...",
         effectDescriptions = listOf(
@@ -183,7 +183,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("c6e271d1-aa0d-4fce-ab4b-0a3c174705c3"),
         name = "Rebound-Effekt",
         eventDescription = "Der Großteil der Wohngebäude wurde neu gedämmt. Mit dem guten Gefühl dadurch Geld zu sparen und etwas Gutes fürs Klima zu machen, heizen die Bewohner*innen jetzt umso wärmer, weshalb keine Energie eingespart wird.",
         effectDescriptions = listOf(
@@ -202,7 +202,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("17917efd-d4ac-42d5-992b-78e1886713fa"),
         name = "Batteriepreis sinkt",
         eventDescription = "Die Herstellung von Batteriespeichern wurde effizienter und damit günstiger.",
         effectDescriptions = listOf(
@@ -223,7 +223,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("c433dc78-f691-461a-aacb-88695b8d6ad2"),
         name = "Viruspandemie: Lockdown",
         eventDescription = "Bei einem Lockdown stehen viele Bereiche still: Weniger Produktion, weniger Verkehr, mehr Homeoffice. Weniger Mobilität und Produktion bedeuten auch weniger Energieverbrauch.",
         effectDescriptions = listOf(
@@ -242,7 +242,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("ede9c64a-f8c0-43d1-9d1e-9185707915fb"),
         name = "Neues aus der Photovoltaikforschung",
         eventDescription = "Photovoltaikanlagen sind jetzt langlebiger. Außerdem wurde eine Recycling-Methode entwickelt. Das spart Geld und Ressourcen.",
         effectDescriptions = listOf(
@@ -257,7 +257,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("a44b062f-4795-4486-9e68-87277a77105e"),
         name = "Milder Winter",
         eventDescription = "Es muss weniger geheizt werden, als sonst.",
         effectDescriptions = listOf(
@@ -276,7 +276,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("53b46e11-a4b3-4944-9fc9-16f10d3f20fd"),
         name = "Klimaziele verpasst",
         eventDescription = "Deutschland hat seine Klimaziele verpasst. Dafür muss jetzt Strafe gezahlt werden.",
         effectDescriptions = listOf(
@@ -291,7 +291,7 @@ val eventCards = listOf(
         isCatastrophe = true
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("9a949a40-6f18-4add-969e-18910b13033a"),
         name = "Sturmschäden",
         eventDescription = "Eine Sturmfront, die über Deutschland hinweg zog, zerstörte die Überlandleitungen im ganzen Land. Viele Regionen haben Schwierigkeiten, ihren Bedarf zu decken.",
         effectDescriptions = listOf(
@@ -316,7 +316,7 @@ val eventCards = listOf(
         isCatastrophe = false
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("1298409a-9359-4104-bd01-c39b7b4048fa"),
         name = "Hitzewelle",
         eventDescription = "Während Hitzewellen steigt die Nachfrage nach Strom und die Leistung von thermischen Kraftwerken nimmt wegen sinkender Kühlleistung ab. Die Klimakrise erhöht die Wahrscheinlichkeit für Hitzewellen.",
         effectDescriptions = listOf(
@@ -344,7 +344,7 @@ val eventCards = listOf(
         isCatastrophe = true
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("b71335de-a8cf-4e7f-9e02-3f436b53832d"),
         name = "Überschwemmung",
         eventDescription = "Eine Folge des Klimawandels sind häufigere Überschwemmungen. Das hat negative Auswirkungen auf jegliche Infrastruktur, auch im Energiesystem. Es müssen teure Reparaturen durchgeführt werden.",
         effectDescriptions = listOf(
@@ -359,7 +359,7 @@ val eventCards = listOf(
         isCatastrophe = true
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("8a5ac688-e7b3-4613-bb4e-f5f50cb9829e"),
         name = "Großflächiger Waldbrand",
         eventDescription = "Waldbrände infolge des Klimawandels schaden Umwelt und Energieinfrastruktur. Rauch und Feinstaub beeinträchtigen Photovoltaikanlagen - sie produzieren weniger Strom.",
         effectDescriptions = listOf(
@@ -383,7 +383,7 @@ val eventCards = listOf(
         isCatastrophe = true
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("6c66a4ad-86ae-4274-a526-e5e8a9009b32"),
         name = "Dürre",
         eventDescription = "Durch die Klimakrise werden Trockenperioden häufiger. Wasserkraftwerke fallen wegen niedrigem Wasserstand aus. Außerdem sind Dürren verantwortlich für Ernteausfälle, was Lebensmittelpreise steigen lässt.",
         effectDescriptions = listOf(
@@ -407,7 +407,7 @@ val eventCards = listOf(
         isCatastrophe = true
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("19a19155-e22a-4f7a-bb61-642df63adc08"),
         name = "Mückenplage",
         eventDescription = "Die Klimakrise schafft günstigere Bedingungen für Mücken, sodass diese sich immer mehr ausbreiten. Mücken können Krankheiten übertragen. Das führt zu Mehrkosten bei der Mückenbekämpfung und im Gesundheitssystem.",
         effectDescriptions = listOf(
@@ -422,7 +422,7 @@ val eventCards = listOf(
         isCatastrophe = true
     ),
     EventCard(
-        id = UUID.randomUUID(),
+        id = UUID.fromString("e15be36e-f257-475d-b2c8-53f972f619cf"),
         name = "Blackout",
         eventDescription = "Das Stromnetz bricht zusammen, weil zu viel Strom verbraucht oder zu wenig erzeugt wird. Die Stromversorgung muss aufwendig neu gestartet werden. Teure Reparaturarbeiten an Kraftwerken sind notwendig.",
         effectDescriptions = listOf(

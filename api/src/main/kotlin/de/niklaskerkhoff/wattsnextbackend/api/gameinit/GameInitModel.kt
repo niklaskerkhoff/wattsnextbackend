@@ -14,7 +14,11 @@ class GameInit(
     fun addPlayer(playerName: String) {
         var nameKey = 2
         var name = playerName
-        while (_players.any { it.name == playerName }) {}
+
+        while (_players.any { it.name == playerName }) {
+            name += " $nameKey"
+            nameKey++
+        }
 
         _players.add(PlayerInit(playerName))
     }

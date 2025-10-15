@@ -19,5 +19,6 @@ class EntityResolver(
     fun getPlayer(id: UUID): Player? = playerMap[id]
     fun getTechnologyCard(id: UUID): ProgressCard.TechnologyCard? = technologyCardMap[id]
     fun getClimateCard(id: UUID): ProgressCard.ClimateCard? = climateCardMap[id]
+    fun getProgressCard(id: UUID): ProgressCard? = technologyCardMap[id] ?: climateCardMap[id]
     fun getEventCard(id: UUID): EventCard? = eventCardMap[id]
 }
