@@ -17,7 +17,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "5bcb9299-43b8-4ce2-81d3-b507d5d1a52b",
         name = "Kohlekraftwerk",
-        imageSrc = "",
+        imageSrc = "Kohlekraftwerk.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -52,7 +52,7 @@ val technologyCards = listOf(
         TechnologyCardData(
             id = "12cf4f5f-0cdd-44d6-aff3-649286417c0$it",
             name = "Photovoltaik auf dem Dach",
-            imageSrc = "",
+            imageSrc = "Photovoltaik auf dem Dach.png",
             supply = Energy(
                 technology = Generation,
                 form = Electricity,
@@ -82,7 +82,7 @@ val technologyCards = listOf(
         TechnologyCardData(
             id = "9e988a4e-0dce-48bf-9a06-4d794c3ee37$it",
             name = "Balkon-Photovoltaik",
-            imageSrc = "",
+            imageSrc = "Balkon-Photovoltaik.png",
             supply = Energy(
                 technology = Generation,
                 form = Electricity,
@@ -112,7 +112,7 @@ val technologyCards = listOf(
         TechnologyCardData(
             id = "5dbb90d4-68a2-4ea5-9013-e234bf39e55$it",
             name = "Solarthermie-Anlage auf Dach",
-            imageSrc = "",
+            imageSrc = "Solarthermie-Anlage auf Dach.png",
             supply = Energy(
                 technology = Generation,
                 form = Heat,
@@ -141,7 +141,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "303c8221-1646-4126-82bf-c348badb2548",
         name = "Ölheizung",
-        imageSrc = "",
+        imageSrc = "Ölheizung.png",
         supply = Energy(
             technology = Generation,
             form = Heat,
@@ -164,7 +164,7 @@ val technologyCards = listOf(
         TechnologyCardData(
             id = "a9f174a8-e9fe-460f-aeca-62957be683e$it",
             name = "Erdwärmeheizung",
-            imageSrc = "",
+            imageSrc = "Erdwärmeheizung.png",
             supply = Energy(
                 technology = Generation,
                 form = Heat,
@@ -197,7 +197,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "e2ab22fe-9bbc-4e86-aaac-91aa9ce514c4",
         name = "Kleiner Windpark",
-        imageSrc = "",
+        imageSrc = "Kleiner Windpark.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -230,7 +230,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "f3b60f9e-c83a-489e-be80-33f87753a730",
         name = "Großer Photovoltaik-Park",
-        imageSrc = "",
+        imageSrc = "Großer Photovoltaik-Park.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -263,7 +263,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "41bd396b-ab06-4350-8fa4-5777c32338b2",
         name = "Gaskraftwerk",
-        imageSrc = "",
+        imageSrc = "Gaskraftwerk.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -297,7 +297,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "a6bedca0-e564-4223-b86b-65943b83fe9a",
         name = "Großer Windpark",
-        imageSrc = "",
+        imageSrc = "Großer Windpark.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -330,7 +330,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "a3bac719-409b-47fd-b855-f40b6c16aa63",
         name = "Geothermieheizwerk",
-        imageSrc = "",
+        imageSrc = "Geothermieheizwerk.png",
         supply = Energy(
             technology = Generation,
             form = Heat,
@@ -357,7 +357,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "266015d0-0d83-4b85-b627-084770a46a99",
         name = "Atomkraftwerk",
-        imageSrc = "",
+        imageSrc = "Atomkraftwerk.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -386,7 +386,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "da34a02f-9352-4611-aa41-8ffc5d2038c5",
         name = "Laufwasserkraftwerk",
-        imageSrc = "",
+        imageSrc = "Laufwasserkraftwerk.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -414,7 +414,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "59c1765e-f5df-425b-86d4-85c92e073ad2",
         name = "Offshore Windpark",
-        imageSrc = "",
+        imageSrc = "Offshore Windpark.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -448,7 +448,7 @@ val technologyCards = listOf(
         TechnologyCardData(
             id = "88eb5f2d-72c7-4f95-9fdb-31b0f740c51$it",
             name = "Luft-Wärmepumpe",
-            imageSrc = "",
+            imageSrc = "Luft-Wärmepumpe.png",
             supply = Energy(
                 technology = Generation,
                 form = Heat,
@@ -476,7 +476,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "d73b3ca3-416d-4528-8a1c-29968cb8e93e",
         name = "Eisenkraftwerk",
-        imageSrc = "",
+        imageSrc = "Eisenkraftwerk.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -519,7 +519,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "c074e451-ec2e-4e99-979e-8f4d2c2321a5",
         name = "Biomassekraftwerk",
-        imageSrc = "",
+        imageSrc = "Biomassekraftwerk.png",
         supply = Energy(
             technology = Generation,
             form = Electricity,
@@ -551,7 +551,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "b8299381-19a2-4332-9193-fbdee721a17c",
         name = "Erdkabel für kommunale Verteilung",
-        imageSrc = "",
+        imageSrc = "Erdkabel für kommunale Verteilung.png",
         supply = Energy(
             technology = Distribution,
             form = Electricity,
@@ -573,7 +573,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "2d75760f-493c-4b55-a225-7a6770c08c0c",
         name = "Erdkabel für regionale Verteilung",
-        imageSrc = "",
+        imageSrc = "Erdkabel für regionale Verteilung.png",
         supply = Energy(
             technology = Distribution,
             form = Electricity,
@@ -595,7 +595,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "4dba5490-7df7-4ed2-8467-00594731bcd3",
         name = "Freileitungen für überregionale Verteilung",
-        imageSrc = "",
+        imageSrc = "Freileitungen für überregionale Verteilung.png",
         supply = Energy(
             technology = Distribution,
             form = Electricity,
@@ -616,7 +616,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "123d010d-b44c-4f7b-907c-d538760f529f",
         name = "Erdkabel für Stromübertragung auf weiten Strecken",
-        imageSrc = "",
+        imageSrc = "Erdkabel für Stromübertragung auf weiten Strecken.png",
         supply = Energy(
             technology = Distribution,
             form = Electricity,
@@ -637,7 +637,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "68b8150b-f6f5-40e7-b294-a0a7fef7c497",
         name = "Oberirdische Höchstspannungsleitung",
-        imageSrc = "",
+        imageSrc = "Oberirdische Höchstspannungsleitung.png",
         supply = Energy(
             technology = Distribution,
             form = Electricity,
@@ -659,7 +659,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "07511e44-b130-4cb0-923f-786e07ebe097",
         name = "Freileitung Südlink",
-        imageSrc = "",
+        imageSrc = "Freileitung Südlink.png",
         supply = Energy(
             technology = Distribution,
             form = Electricity,
@@ -680,7 +680,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "1f731e92-cada-4594-a199-b43ca6d39214",
         name = "Erdkabel Südlink",
-        imageSrc = "",
+        imageSrc = "Erdkabel Südlink.png",
         supply = Energy(
             technology = Distribution,
             form = Electricity,
@@ -701,7 +701,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "a0240b4f-eeb4-4c58-896a-9f024ca5b91f",
         name = "Nahwärmenetz",
-        imageSrc = "",
+        imageSrc = "Nahwärmenetz.png",
         supply = Energy(
             technology = Distribution,
             form = Heat,
@@ -723,7 +723,7 @@ val technologyCards = listOf(
         TechnologyCardData(
             id = "befae368-dc10-436c-b574-4104371f488$it",
             name = "Fernwärmenetz",
-            imageSrc = "",
+            imageSrc = "Fernwärmenetz.png",
             supply = Energy(
                 technology = Distribution,
                 form = Heat,
@@ -745,7 +745,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "c0784e6a-ca8f-47d3-9983-10161ab563a9",
         name = "E-Autos als Speicher",
-        imageSrc = "",
+        imageSrc = "E-Autos als Speicher.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -772,7 +772,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "401a3542-3efa-49b9-b255-98f12b1afb53",
         name = "Wärmespeicher",
-        imageSrc = "",
+        imageSrc = "Wärmespeicher.png",
         supply = Energy(
             technology = Storage,
             form = Heat,
@@ -799,7 +799,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "dd1124ef-3e86-4c0f-93b8-2fa1c7aa5eea",
         name = "Batteriespeicher im Haus",
-        imageSrc = "",
+        imageSrc = "Batteriespeicher im Haus.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -827,7 +827,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "c31cace0-27b9-4ddf-b883-97a65f843b1b",
         name = "Wasserstoffspeicher",
-        imageSrc = "",
+        imageSrc = "Wasserstoffspeicher.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -854,7 +854,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "d44498dc-d5e5-468b-9c53-64a099f43eb9",
         name = "Großer Wasserstoffspeicher",
-        imageSrc = "",
+        imageSrc = "Großer Wasserstoffspeicher.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -881,7 +881,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "0782f1d9-19e9-497a-b5c7-eea3794f7f97",
         name = "Schwungradspeicher",
-        imageSrc = "",
+        imageSrc = "Schwungradspeicher.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -908,7 +908,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "ed02f805-1eaa-4e9b-ae54-57f64b689403",
         name = "Fernwärmespeicher",
-        imageSrc = "",
+        imageSrc = "Fernwärmespeicher.png",
         supply = Energy(
             technology = Storage,
             form = Heat,
@@ -935,7 +935,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "8460f3d7-fdf8-4359-b578-b81f86e28804",
         name = "Lithium-Ionen-Batterie Park",
-        imageSrc = "",
+        imageSrc = "Lithium-Ionen-Batterie Park.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -963,7 +963,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "459a1b59-7167-4c10-a5b7-5d5dfcce3d9f",
         name = "Natrium-Ionen-Batterie Park",
-        imageSrc = "",
+        imageSrc = "Natrium-Ionen-Batterie Park.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -991,7 +991,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "9b6479fb-460e-47f4-bbb0-204bda139225",
         name = "Bleiakkumulator",
-        imageSrc = "",
+        imageSrc = "Bleiakkumulator.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -1018,7 +1018,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "fe2a3bc6-6edc-4651-bd5b-aee6a4d3753e",
         name = "Redox-Flow-Batterie",
-        imageSrc = "",
+        imageSrc = "Redox-Flow-Batterie.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -1046,7 +1046,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "c54b2455-f3ed-4d54-a61f-0aa813777600",
         name = "Pumpspeicherkraftwerk",
-        imageSrc = "",
+        imageSrc = "Pumpspeicherkraftwerk.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -1074,7 +1074,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "6b53a792-7547-47e1-ba1c-f0be8da67a7d",
         name = "Methanspeicher",
-        imageSrc = "",
+        imageSrc = "Methanspeicher.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -1101,7 +1101,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "dc1cafa5-abb6-4ebe-917b-ffd606d3349c",
         name = "Ammoniakspeicher",
-        imageSrc = "",
+        imageSrc = "Ammoniakspeicher.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
@@ -1128,7 +1128,7 @@ val technologyCards = listOf(
     TechnologyCardData(
         id = "e2ec18e3-2a32-4fb3-8570-b790ace86165",
         name = "Druckluftspeicher",
-        imageSrc = "",
+        imageSrc = "Druckluftspeicher.png",
         supply = Energy(
             technology = Storage,
             form = Electricity,
