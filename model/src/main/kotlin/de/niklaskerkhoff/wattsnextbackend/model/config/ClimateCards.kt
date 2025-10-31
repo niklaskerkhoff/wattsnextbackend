@@ -14,7 +14,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "522e8924-fe4b-462d-acfd-c20f1d5f057e",
         name = "Gebäudeisolation",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
@@ -30,7 +30,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "6ee0626b-c616-48c2-a367-abe012f5ec95",
         name = "Ausbau der Eisenbahn",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
@@ -51,13 +51,12 @@ val climateCards = listOf(
         requirementsDescription = "",
         explanation = "Das Nutzen von öffentlichen Verkehrsmitteln reduziert Emissionen. Der Ausbau steigert die Attraktivität. Am Besten mit grünem Strom antreiben.",
         modifierCollection = ModifierCollection(),
-
         phaseIndex = 0
     ),
     ClimateCardData(
         id = "cafb531a-947e-4141-9776-191e7b70dafd",
         name = "Verbrenner-Aus",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 0,
         resourceCosts = 0,
@@ -84,7 +83,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "01e40fe0-cdce-4906-b5f5-a1ac93519e94",
         name = "Subventionierung von E-Autos",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
@@ -105,13 +104,12 @@ val climateCards = listOf(
         requirementsDescription = "",
         explanation = "Elektromobilität ist ein wichtiger Pfeiler der Verkehrswende.",
         modifierCollection = ModifierCollection(),
-
         phaseIndex = 0
     ),
     ClimateCardData(
         id = "f0a283b1-8ebb-42ab-a8cd-a1703a65d8e1",
         name = "CO2-Abscheidung und -Speicherung",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = Achievement(AchievementName.CarbonCapture),
         moneyCosts = 2,
         resourceCosts = 0,
@@ -133,7 +131,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "b665a46f-9b62-419f-aa90-5f9c23c5a633",
         name = "H2-betriebene Schiffe",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
@@ -145,13 +143,12 @@ val climateCards = listOf(
         requirementsDescription = "",
         explanation = "Wasserstoff (H2) gilt als alternativer grüner Kraftstoff. Die Nutzung bietet sich vor allem auf langen Strecken an, da Batterien nicht die notwendige Reichweite bieten können.",
         modifierCollection = ModifierCollection(),
-
         phaseIndex = 2
     ),
     ClimateCardData(
         id = "8731e98f-d136-48bc-a568-e90611540467",
         name = "E-Buslinien in ländlicher Region",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
@@ -179,7 +176,7 @@ val climateCards = listOf(
         ClimateCardData(
             id = "6cb50407-fafe-4528-9c7f-f3792cdd39b$it",
             name = "Power-to-X",
-            imageSrc = "",
+            imageSrc = "Klima.png",
             supply = Achievement(AchievementName.ChemicalEnergy),
             moneyCosts = 2,
             resourceCosts = 0,
@@ -207,7 +204,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "42f4e0d3-1eef-4d03-a255-fbe5f02c8714",
         name = "CO2-neutraler Flugverkehr",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
@@ -219,13 +216,12 @@ val climateCards = listOf(
         requirementsDescription = "",
         explanation = "Die Nutzung von synthetischem Kerosin bietet eine grünere Alternative zu fossilem Kraftstoff, die für Flugzeuge geeignet ist.",
         modifierCollection = ModifierCollection(),
-
         phaseIndex = 2
     ),
     ClimateCardData(
         id = "03994918-72a6-4823-8096-1b0e4d54adc4",
         name = "Verbot von Inlandsflügen",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 0,
         resourceCosts = 0,
@@ -253,7 +249,7 @@ val climateCards = listOf(
         ClimateCardData(
             id = "f2660f7f-b8ef-454e-987c-a04bb97236a$it",
             name = "Kunsstoff-Recycling",
-            imageSrc = "",
+            imageSrc = "Klima.png",
             supply = null,
             moneyCosts = 2,
             resourceCosts = 0,
@@ -281,7 +277,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "b57e711a-4cc5-4ef8-8bde-92d202b70d13",
         name = "Subventionierung von Erneuerbaren",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
@@ -306,14 +302,13 @@ val climateCards = listOf(
                 modify = CardCostModifier.CostsWithSubventionOfWindAndPhotovoltaic.modify
             )
         ),
-
         phaseIndex = 0
     ),
     *Array(2) {
         ClimateCardData(
             id = "f6573f3f-1672-42ad-a1da-717fd0fc348$it",
             name = "Batterie-Recycling",
-            imageSrc = "",
+            imageSrc = "Klima.png",
             supply = null,
             moneyCosts = 2,
             resourceCosts = 0,
@@ -341,7 +336,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "9028b732-b58f-4006-a26a-621976365224",
         name = "Pendeln mit dem Fahrrad",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 0,
         resourceCosts = 0,
@@ -357,7 +352,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "d173ceff-e20f-4a01-8f92-b2e6c7828a7f",
         name = "Sharing is Caring",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 0,
         resourceCosts = 0,
@@ -373,7 +368,7 @@ val climateCards = listOf(
     ClimateCardData(
         id = "96448365-5047-4994-a736-38135f7895cf",
         name = "Umweltbewusste Ernährung",
-        imageSrc = "",
+        imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 0,
         resourceCosts = 0,
