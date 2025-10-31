@@ -1,21 +1,21 @@
 package de.niklaskerkhoff.wattsnextbackend.model.config.helper
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffect
-import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffectInformation
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffectInfo
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 
 fun updateMoneyEffect(amount: Int): CardEffect = { game ->
-    Pair(game.withUpdatedMoney(amount), listOf(CardEffectInformation.Money(amount)))
+    Pair(game.withUpdatedMoney(amount), listOf(CardEffectInfo.Money(amount)))
 }
 
 fun updateResourcesEffect(resources: Int): CardEffect = { game ->
-    Pair(game.withUpdatedResources(resources), listOf(CardEffectInformation.Resources(resources)))
+    Pair(game.withUpdatedResources(resources), listOf(CardEffectInfo.Resources(resources)))
 }
 
 fun updateProgressPointsEffect(progressPoints: Int): CardEffect = { game ->
     Pair(
         game.withAdditionalProgressPoints(progressPoints),
-        listOf(CardEffectInformation.ProgressPoints(progressPoints))
+        listOf(CardEffectInfo.ProgressPoints(progressPoints))
     )
 }
 
@@ -46,7 +46,7 @@ fun ifWindIsExisting(effect: CardEffect): CardEffect = { game ->
 }
 
 infix fun CardEffect.and(other: CardEffect): CardEffect = { game ->
-    val (firstGame, firstInformation) = this(game)
-    val (secondGame, secondInformation) = other(firstGame)
-    Pair(secondGame, firstInformation + secondInformation)
+    val (firstGame, firstInfo) = this(game)
+    val (secondGame, secondInfo) = other(firstGame)
+    Pair(secondGame, firstInfo + secondInfo)
 }

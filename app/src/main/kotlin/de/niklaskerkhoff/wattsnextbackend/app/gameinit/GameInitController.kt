@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*
 import java.util.UUID
 
 @RestController
-@RequestMapping("game-init")
+@RequestMapping("/api/game-init")
 class GameInitController(private val gameInitService: GameInitService) {
     @PostMapping("create")
     fun createGame(@RequestBody request: CreateGameRequest): GameInitWithPlayerIdResponse =

@@ -6,24 +6,24 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import kotlin.random.Random
 
 class RollDiceAction(
-) : Action<RollDiceAction.Information>() {
+) : Action<RollDiceAction.Info>() {
     override fun canExecute(game: Game): Boolean {
         return true
     }
 
-    override fun execute(game: Game): Result<Information> {
+    override fun execute(game: Game): Result<Info> {
         val value = Random.nextInt(1, 7)
         val updatedGame = game.withUpdatedMoney(value)
 
         return updatedGame.withNextTurn().let {
             Result(
                 game = it.game,
-                baseInformation = it.baseInformation,
-                actionInformation = Information(value),
-                cardEffectInformations = it.cardEffectInformations,
+                baseInfo = it.baseInfo,
+                actionInfo = Info(value),
+                cardEffectInfos = it.cardEffectInfos,
             )
         }
     }
 
-    data class Information(val diceValue: Int)
+    data class Info(val diceValue: Int)
 }

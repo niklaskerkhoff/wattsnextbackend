@@ -6,7 +6,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.Modified
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import java.util.*
 
-typealias CardEffect = ((Game) -> Pair<Game, List<CardEffectInformation>>)
+typealias CardEffect = ((Game) -> Pair<Game, List<CardEffectInfo>>)
 typealias SimpleModifiedValue<T> = ModifiedValue<T, ModificationBase>
 typealias WithIntModifiedValue<T> = ModifiedValue<T, Pair<ModificationBase, Int>>
 

@@ -10,7 +10,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
 
 class PlayClimateCardAction(
     internal val climateCard: ProgressCard.ClimateCard,
-) : Action<PlayClimateCardAction.ActionInformation>() {
+) : Action<PlayClimateCardAction.ActionInfo>() {
 
     override fun canExecute(game: Game): Boolean {
         return game.money >= climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1)) &&
@@ -18,7 +18,7 @@ class PlayClimateCardAction(
                 game.climateCards.size < 10
     }
 
-    override fun execute(game: Game): Result<ActionInformation> {
+    override fun execute(game: Game): Result<ActionInfo> {
         val updatedClimateCards = game.climateCards + climateCard
 
         val moneyAfterCardPlayed = game.money - climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1))
@@ -46,19 +46,19 @@ class PlayClimateCardAction(
             progressCardDeck = updatedProgressDeck,
         )
 
-        val (gameAfterEffect, cardEffectInformations) = climateCard.effect(gameAfterCardPlayed)
+        val (gameAfterEffect, cardEffectInfos) = climateCard.effect(gameAfterCardPlayed)
 
         return gameAfterEffect.withNextTurn().let {
             Result(
                 game = it.game,
-                baseInformation = it.baseInformation,
-                actionInformation = ActionInformation(climateCard, drawnCard),
-                cardEffectInformations = cardEffectInformations + it.cardEffectInformations,
+                baseInfo = it.baseInfo,
+                actionInfo = ActionInfo(climateCard, drawnCard),
+                cardEffectInfos = cardEffectInfos + it.cardEffectInfos,
             )
         }
     }
 
-    data class ActionInformation(
+    data class ActionInfo(
         val playedCard: ProgressCard.ClimateCard,
         val drawnCard: ProgressCard,
     )

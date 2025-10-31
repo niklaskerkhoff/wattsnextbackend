@@ -12,18 +12,18 @@ import kotlin.math.floor
 class PlayTechnologyCardAction(
     internal val shallRecycle: Boolean,
     internal val intent: PlayTechnologyCardActionIntent,
-    internal val intentInformation: PlayTechnologyCardActionIntent.Information,
-) : Action<PlayTechnologyCardAction.ActionInformation>() {
+    internal val intentInfo: PlayTechnologyCardActionIntent.Info,
+) : Action<PlayTechnologyCardAction.ActionInfo>() {
 
     override fun canExecute(game: Game): Boolean {
         // Already checked in PlayTechnologyCardActionIntent
         return true
     }
 
-    override fun execute(game: Game): Result<ActionInformation> {
-        val (gameAfterRecycle, _, recyclingInformation) =
+    override fun execute(game: Game): Result<ActionInfo> {
+        val (gameAfterRecycle, _, recyclingInfo) =
             if (shallRecycle) {
-                if (!intentInformation.canRecycle) {
+                if (!intentInfo.canRecycle) {
                     throw IllegalArgumentException("Cannot recycle.")
                 }
                 recycle(game)
@@ -35,20 +35,20 @@ class PlayTechnologyCardAction(
 
         return Result(
             game = resultAfterCardPlayed.game,
-            actionInformation = ActionInformation(
+            actionInfo = ActionInfo(
                 playedCard = intent.technologyCard,
                 targetPosition = intent.targetPosition,
-                drawnCard = resultAfterCardPlayed.actionInformation!!.drawnCard,
-                payedMoneyForCard = resultAfterCardPlayed.actionInformation.payedMoneyForCard,
-                payedResourcesForCard = resultAfterCardPlayed.actionInformation.payedResourcesForCard,
+                drawnCard = resultAfterCardPlayed.actionInfo!!.drawnCard,
+                payedMoneyForCard = resultAfterCardPlayed.actionInfo.payedMoneyForCard,
+                payedResourcesForCard = resultAfterCardPlayed.actionInfo.payedResourcesForCard,
                 didRecycle = shallRecycle,
-                payedMoneyForRecycling = recyclingInformation?.payedMoneyForRecycling,
-                gainedResourcesForRecycling = recyclingInformation?.gainedResourcesForRecycling,
+                payedMoneyForRecycling = recyclingInfo?.payedMoneyForRecycling,
+                gainedResourcesForRecycling = recyclingInfo?.gainedResourcesForRecycling,
             )
         )
     }
 
-    private fun recycle(game: Game): Result<RecyclingInformation> {
+    private fun recycle(game: Game): Result<RecyclingInfo> {
         val currentCard = game.technologyBoard.getCurrentTechnologyCard(
             intent.technologyCard.supply.technology,
             intent.targetPosition
@@ -62,14 +62,14 @@ class PlayTechnologyCardAction(
 
         return Result(
             game = game.copy(money = updatedMoney, resources = updatedResources),
-            actionInformation = RecyclingInformation(
+            actionInfo = RecyclingInfo(
                 payedMoneyForRecycling = moneyForRecycling,
                 gainedResourcesForRecycling = gainingResources
             )
         )
     }
 
-    private fun playCard(game: Game): Result<PlayCardInformation> {
+    private fun playCard(game: Game): Result<PlayCardInfo> {
 
         // Play the ProgressCard
         val technologyBoardWithPlayedCard = game.technologyBoard.withCardPlayed(
@@ -108,34 +108,34 @@ class PlayTechnologyCardAction(
             progressCardDeck = updatedProgressDeck,
         )
 
-        val (gameAfterEffect, cardEffectInformations) = intent.technologyCard.effect(updatedGame)
+        val (gameAfterEffect, cardEffectInfos) = intent.technologyCard.effect(updatedGame)
 
         return gameAfterEffect.withNextTurn().let {
             Result(
                 game = it.game,
-                baseInformation = it.baseInformation,
-                actionInformation = PlayCardInformation(
+                baseInfo = it.baseInfo,
+                actionInfo = PlayCardInfo(
                     drawnCard = drawnCard,
                     payedMoneyForCard = moneyToPay,
                     payedResourcesForCard = resourcesToPay,
                 ),
-                cardEffectInformations = cardEffectInformations + it.cardEffectInformations,
+                cardEffectInfos = cardEffectInfos + it.cardEffectInfos,
             )
         }
     }
 
-    data class RecyclingInformation(
+    data class RecyclingInfo(
         val payedMoneyForRecycling: Int,
         val gainedResourcesForRecycling: Int,
     )
 
-    data class PlayCardInformation(
+    data class PlayCardInfo(
         val drawnCard: ProgressCard,
         val payedMoneyForCard: Int,
         val payedResourcesForCard: Int,
     )
 
-    data class ActionInformation(
+    data class ActionInfo(
         val playedCard: ProgressCard.TechnologyCard,
         val targetPosition: Int,
         val drawnCard: ProgressCard,

@@ -9,13 +9,13 @@ import kotlin.math.floor
 class PlayTechnologyCardActionIntent(
     internal val technologyCard: ProgressCard.TechnologyCard,
     internal val targetPosition: Int,
-) : Action<PlayTechnologyCardActionIntent.Information>() {
+) : Action<PlayTechnologyCardActionIntent.Info>() {
     override fun canExecute(game: Game): Boolean {
         return game.money >= technologyCard.moneyCosts.modified(technologyCard, game, Pair(game, targetPosition)) &&
                 game.resources >= technologyCard.resourceCosts.modified(technologyCard, game, Pair(game, targetPosition))
     }
 
-    override fun execute(game: Game): Result<Information> {
+    override fun execute(game: Game): Result<Info> {
         val currentTechnologyCard =
             game.technologyBoard.getCurrentTechnologyCard(technologyCard.supply.technology, targetPosition)
 
@@ -34,7 +34,7 @@ class PlayTechnologyCardActionIntent(
 
         return Result(
             game = game,
-            actionInformation = Information(
+            actionInfo = Info(
                 canRecycle = canRecycle,
                 moneyForRecycling = moneyToRecycle,
                 gainingResourcesForRecycling = gainingResources,
@@ -44,7 +44,7 @@ class PlayTechnologyCardActionIntent(
         )
     }
 
-    data class Information(
+    data class Info(
         val canRecycle: Boolean,
         val moneyForRecycling: Int?,
         val gainingResourcesForRecycling: Int?,

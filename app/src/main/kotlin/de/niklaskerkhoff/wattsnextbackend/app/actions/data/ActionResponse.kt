@@ -4,7 +4,7 @@ import de.niklaskerkhoff.wattsnextbackend.app.actions.data.responsemodel.GameDat
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.responsemodel.ProgressCardData
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.Result
-import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffectInformation
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.CardEffectInfo
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
@@ -12,9 +12,9 @@ import kotlin.reflect.jvm.isAccessible
 data class ActionResponse(
     val game: GameData,
     val status: Status,
-    val baseInformation: Game.BaseInformation? = null,
-    val actionInformation: Map<String, Any>? = null,
-    val cardEffectInformation: List<CardEffectInformation> = emptyList(),
+    val baseInfo: Game.BaseInfo? = null,
+    val actionInfo: Map<String, Any>? = null,
+    val cardEffectInfo: List<CardEffectInfo> = emptyList(),
 ) {
     enum class Status {
         Ok,
@@ -30,20 +30,20 @@ data class ActionResponse(
     constructor(result: Result<*>, status: Status) : this(
         game = GameData(result),
         status = status,
-        baseInformation = result.baseInformation,
-        actionInformation = getActionInformationDto(result),
-        cardEffectInformation = result.cardEffectInformations,
+        baseInfo = result.baseInfo,
+        actionInfo = getActionInfoDto(result),
+        cardEffectInfo = result.cardEffectInfos,
     )
 
     companion object {
-        private fun getActionInformationDto(result: Result<*>): Map<String, Any>? {
-            val actionInformation = result.actionInformation ?: return null
+        private fun getActionInfoDto(result: Result<*>): Map<String, Any>? {
+            val actionInfo = result.actionInfo ?: return null
 
             val resultMap = mutableMapOf<String, Any>()
 
-            for (prop in actionInformation::class.memberProperties) {
+            for (prop in actionInfo::class.memberProperties) {
                 prop.isAccessible = true
-                val raw = prop.getter.call(actionInformation) ?: continue
+                val raw = prop.getter.call(actionInfo) ?: continue
 
                 val value: Any =
                     when (raw) {

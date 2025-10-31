@@ -17,6 +17,7 @@ data class GameData(
     val turnsPerPhase: Int,
     val phases: List<PhaseData>,
     val progressCardPileSize: Int,
+    val progressPoints: Int,
 ) {
 
     constructor(game: Game) : this(Result<Unit>(game))
@@ -40,5 +41,6 @@ data class GameData(
         turnsPerPhase = result.game.numberOfTurnsPerPhase,
         phases = (0..<result.game.numberOfPhases).map { PhaseData(result, it) },
         progressCardPileSize = 0,
+        progressPoints = result.game.calculateProgressPointInfo().progressPoints,
     )
 }

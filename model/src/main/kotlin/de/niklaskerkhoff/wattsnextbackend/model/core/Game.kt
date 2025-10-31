@@ -53,8 +53,6 @@ data class Game(
 
     val publicId get() = id
 
-    val progressPoints get() = calculateProgressPoints()
-
 //    val totalSupply get() = calculateTotalSupply()
 
     init {
@@ -81,7 +79,7 @@ data class Game(
                 val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
                 val updatedStandardEventCards = standardEventCards + drawnCard
 
-                val (gameAfterStandardEffect, standardEffectInformations) = drawnCard.effect(this)
+                val (gameAfterStandardEffect, standardEffectInfos) = drawnCard.effect(this)
 
                 Result(
                     gameAfterStandardEffect.copy(
@@ -89,13 +87,13 @@ data class Game(
                         standardEventCards = updatedStandardEventCards,
                         standardEventCardDeck = updatedStandardEventCardDeck,
                     ),
-                    BaseInformation(gotNewStandardEventCard = true),
-                    cardEffectInformations = standardEffectInformations,
+                    BaseInfo(gotNewStandardEventCard = true),
+                    cardEffectInfos = standardEffectInfos,
                 )
             } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
                 Result(
                     copy(turnInPhase = nextTurnInPhase),
-                    BaseInformation()
+                    BaseInfo()
                 )
             } else {
                 handleNextPhase(phase + 1)
@@ -103,7 +101,7 @@ data class Game(
         }
 
 
-    private fun calculateProgressPoints(): Triple<List<ProgressCard>, List<ProgressCard>, Int> {
+    fun calculateProgressPointInfo(): ProgressPointInfo {
         val progressCards = getAllProgressCards().filterNotNull()
         val (energy, achievements) = calculateTotalSupply(progressCards)
 
@@ -113,10 +111,10 @@ data class Game(
         val technologyResult = getBaseAndSystemTechnologyCards(technologyCards, energy, achievements)
         val climateResult = getBaseAndSystemClimateCards(climateCards, energy, achievements)
 
-        return Triple(
-            technologyResult.first + climateResult.first,
-            technologyResult.second + climateResult.second,
-            technologyResult.third + climateResult.third + progressPointsDelta,
+        return ProgressPointInfo(
+            baseCards = technologyResult.baseCards + climateResult.baseCards,
+            systemCards = technologyResult.systemCards + climateResult.systemCards,
+            progressPoints = technologyResult.progressPoints + climateResult.progressPoints + progressPointsDelta,
         )
     }
 
@@ -124,7 +122,7 @@ data class Game(
         climateCards: List<ProgressCard.ClimateCard>,
         totalEnergySupply: Map<Technology, Map<EnergyForm, Int>>,
         totalAchievementsSupply: Set<Supply.Achievement>,
-    ): Triple<List<ProgressCard>, List<ProgressCard>, Int> {
+    ): ProgressPointInfo {
 
         var climateProgressPoints = 0
         var systemCards = listOf<ProgressCard>()
@@ -146,7 +144,11 @@ data class Game(
         }
 
 
-        return Triple(baseCards, systemCards, climateProgressPoints)
+        return ProgressPointInfo(
+            baseCards = baseCards,
+            systemCards = systemCards,
+            progressPoints = climateProgressPoints
+        )
     }
 
     private fun canUseSystemPoints(
@@ -173,7 +175,7 @@ data class Game(
         technologyCards: List<ProgressCard.TechnologyCard>,
         totalEnergySupply: Map<Technology, Map<EnergyForm, Int>>,
         totalAchievementsSupply: Set<Supply.Achievement>,
-    ): Triple<List<ProgressCard>, List<ProgressCard>, Int> {
+    ): ProgressPointInfo {
         val n = technologyCards.size
         var maxPoints = 0
         var bestSystemCards = listOf<ProgressCard>()
@@ -223,7 +225,11 @@ data class Game(
             }
         }
 
-        return Triple(bestBaseCards, bestSystemCards, maxPoints)
+        return ProgressPointInfo(
+            baseCards = bestBaseCards,
+            systemCards = bestSystemCards,
+            progressPoints = maxPoints
+        )
     }
 
     private fun canFulfillConditions(
@@ -280,7 +286,7 @@ data class Game(
             val updatedState = if (requirementsFulfilled) GameState.WON else GameState.LOST
             Result(
                 copy(state = updatedState),
-                baseInformation = BaseInformation(
+                baseInfo = BaseInfo(
                     phaseCompleted = true,
                     hasGameStateChanged = true,
                     requirementsFulfilled = requirementsFulfilled
@@ -296,8 +302,8 @@ data class Game(
                 if (requirementsFulfilled) Pair(null, catastropheEventCardDeck)
                 else catastropheEventCardDeck.removedLast()
 
-            val (gameAfterStandardEffect, standardEffectInformations) = drawnStandardEventCard.effect(this)
-            val (gameAfterCatastropheEffect, catastropheEffectInformations) =
+            val (gameAfterStandardEffect, standardEffectInfos) = drawnStandardEventCard.effect(this)
+            val (gameAfterCatastropheEffect, catastropheEffectInfos) =
                 drawnCatastropheCard?.effect(gameAfterStandardEffect) ?: Pair(gameAfterStandardEffect, emptyList())
 
             Result(
@@ -309,18 +315,18 @@ data class Game(
                     catastropheEventCardDeck = updatedCatastropheEventCardDeck,
                     catastropheEventCard = drawnCatastropheCard
                 ),
-                BaseInformation(
+                BaseInfo(
                     phaseCompleted = true,
                     gotNewStandardEventCard = true,
                     requirementsFulfilled = requirementsFulfilled
                 ),
-                cardEffectInformations = standardEffectInformations + catastropheEffectInformations
+                cardEffectInfos = standardEffectInfos + catastropheEffectInfos
             )
         }
 
     private fun hasReachedTargets(): Boolean {
         val pointTarget = pointTargetsPerPhase[phase]
-        if (progressPoints.third < pointTarget) return false
+        if (calculateProgressPointInfo().progressPoints < pointTarget) return false
 
         val supplyTarget = energyTargetsPerPhase[phase]
         val totalSupply = calculateTotalSupply(getAllProgressCards().filterNotNull())
@@ -333,10 +339,16 @@ data class Game(
     private fun <T> ModifiedValue<T, ModificationBase>.modified(modifiedCard: ProgressCard) =
         modified(modifiedCard, this@Game, this@Game)
 
-    data class BaseInformation(
+    data class BaseInfo(
         val phaseCompleted: Boolean = false,
         val gotNewStandardEventCard: Boolean = false,
         val hasGameStateChanged: Boolean = false,
         val requirementsFulfilled: Boolean? = null,
+    )
+
+    data class ProgressPointInfo(
+        val baseCards: List<ProgressCard>,
+        val systemCards: List<ProgressCard>,
+        val progressPoints: Int,
     )
 }

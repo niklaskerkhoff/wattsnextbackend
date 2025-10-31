@@ -46,15 +46,15 @@ class GameManager(
 
     fun handlePlayTechnologyCard(shallRecycle: Boolean): ActionResponse {
         val previousAction = previousAction as? PlayTechnologyCardActionIntent
-        val previousActionInformation =
-            previousActionResult?.actionInformation as? PlayTechnologyCardActionIntent.Information
+        val previousActionInfo =
+            previousActionResult?.actionInfo as? PlayTechnologyCardActionIntent.Info
 
-        if (previousAction == null || previousActionInformation == null) return illegalActionResponse()
+        if (previousAction == null || previousActionInfo == null) return illegalActionResponse()
 
         val action = PlayTechnologyCardAction(
             shallRecycle,
             previousAction,
-            previousActionInformation
+            previousActionInfo
         )
         return executeAction(action)
     }

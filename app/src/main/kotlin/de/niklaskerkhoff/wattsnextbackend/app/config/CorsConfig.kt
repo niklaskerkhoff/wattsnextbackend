@@ -1,4 +1,4 @@
-package de.niklaskerkhoff.wattsnextbackend.app
+package de.niklaskerkhoff.wattsnextbackend.app.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
