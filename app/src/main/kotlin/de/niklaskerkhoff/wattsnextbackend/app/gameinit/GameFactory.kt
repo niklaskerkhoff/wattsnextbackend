@@ -6,6 +6,9 @@ import de.niklaskerkhoff.wattsnextbackend.app.gameinit.GameInit.Mode.StartWithNu
 import de.niklaskerkhoff.wattsnextbackend.model.config.climateCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.eventCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag
+import de.niklaskerkhoff.wattsnextbackend.model.config.startDistributionCards
+import de.niklaskerkhoff.wattsnextbackend.model.config.startGenerationCardsWithCoal
+import de.niklaskerkhoff.wattsnextbackend.model.config.startGenerationCardsWithNuclear
 import de.niklaskerkhoff.wattsnextbackend.model.config.technologyCards
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.GameState
@@ -18,17 +21,14 @@ import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 object GameFactory {
     fun buildGame(gameInit: GameInit): Pair<Game, EntityResolver> {
 
-        // TODO: There are more start technology cards that are independent of the mode
-        val startTechnologyCard =
+        val startGenerationCards =
             when (gameInit.mode) {
-                StartWithCoal -> technologyCards.first { it.tags.contains(Tag.Coal.name) }
-                StartWithNuclear -> technologyCards.first { it.tags.contains(Tag.Nuclear.name) }
+                StartWithCoal -> startGenerationCardsWithCoal
+                StartWithNuclear -> startGenerationCardsWithNuclear
             }
 
-
-        // TODO: StartTechnologyCards are not part of the CardDeck, but printed on the Board
-        val progressCardDeck = (technologyCards + climateCards).shuffled().removed(startTechnologyCard)
-        val (players, progressCardDeckWithoutStartCard) = buildPlayers(gameInit, progressCardDeck)
+        val progressCardDeck = (technologyCards + climateCards).shuffled()
+        val (players, progressCardDeckWithoutStartCards) = buildPlayers(gameInit, progressCardDeck)
 
         val (standardEventCardDeck, catastropheEventCardDeck) = eventCards.shuffled().partition { !it.isCatastrophe }
 
@@ -36,21 +36,21 @@ object GameFactory {
             id = gameInit.id,
             state = GameState.RUNNING,
             money = 10,
-            resources = 10,
+            resources = 20,
             technologyBoard = TechnologyBoard(
-                generationCards = listOf(listOf(startTechnologyCard), emptyList(), emptyList()),
-                distributionCards = List(3) { emptyList() },
+                generationCards = startGenerationCards,
+                distributionCards = startDistributionCards,
                 storageCards = List(3) { emptyList() },
             ),
             players = players,
             climateCards = emptyList(),
-            progressCardDeck = progressCardDeckWithoutStartCard,
+            progressCardDeck = progressCardDeckWithoutStartCards,
             standardEventCardDeck = standardEventCardDeck,
             catastropheEventCardDeck = catastropheEventCardDeck,
             pointTargetsPerPhase = listOf(30, 60, 100),
             numberOfPhases = 3,
             numberOfTurnsPerPhase = 12,
-            progressPointsDelta = 5,
+            progressPointsDelta = 0,
             energyTargetsPerPhase = listOf(
                 mapOf(
                     Technology.Generation to 3,

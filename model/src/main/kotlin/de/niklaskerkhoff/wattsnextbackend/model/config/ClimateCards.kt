@@ -197,6 +197,7 @@ val climateCards = listOf(
             requirementsDescription = "Für ein gebautes Gaskraftwerk erhaltet ihr 5 zusätzliche Fortschrittspunkte.",
             explanation = "Power-to-X Technologien speichern Stromüberschüsse aus erneuerbaren Energien und wandeln sie in chemische Energieträger (z.B. H2) für Langfristspeicherung und Verkehr um.",
             modifierCollection = ModifierCollection(),
+            // TODO: Is the condition of a Gaskraftwerk missing in this effect?
             effect = updateProgressPointsEffect(5),
             phaseIndex = 1
         )

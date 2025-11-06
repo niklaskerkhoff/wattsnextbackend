@@ -35,6 +35,7 @@ data class Game(
     val phase: Int = 0,
     val turnInPhase: Int = 0,
 
+    // TODO: What is this?
     val progressPointsDelta: Int = 0,
 
     val energyTargetsPerPhase: List<Map<Technology, Int>>,
@@ -46,8 +47,7 @@ data class Game(
 
     val secondEventCardTurnInPhase = Random.nextInt(2, numberOfTurnsPerPhase - 2)
 
-    // TODO: Not the correct formula: number of done phases has to be multiplied with numberOfTurnsPerPhase
-    private val totalMove = turnInPhase * (phase + 1)
+    private val totalMove = numberOfTurnsPerPhase * phase + turnInPhase
 
     val currentPlayer get() = players[totalMove % players.size]
 

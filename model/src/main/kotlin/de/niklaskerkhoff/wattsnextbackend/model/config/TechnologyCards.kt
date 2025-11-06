@@ -4,6 +4,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.config.helper.CardCostModifier
 import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag
 import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag.*
 import de.niklaskerkhoff.wattsnextbackend.model.config.helper.TechnologyCardData
+import de.niklaskerkhoff.wattsnextbackend.model.core.TechnologyColumn
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
 import de.niklaskerkhoff.wattsnextbackend.model.values.AchievementName
@@ -1153,5 +1154,127 @@ val technologyCards = listOf(
         phaseIndex = 1
     ),
 ).map { it.toTechnologyCard() }
+
+val startOilHeating = TechnologyCardData(
+    id = "079f1c00-f57b-41c9-8a2d-8c9cd8ea4f85",
+    name = "Ölheizung",
+    imageSrc = "Ölheizung.png",
+    supply = Energy(
+        technology = Generation,
+        form = Heat,
+        size = 1,
+    ),
+
+    moneyCosts = 2,
+    resourceCosts = 2,
+    basePoints = 0,
+    systemPoints = 1,
+    supplyRequirementsForSystem = listOf(),
+
+    requirementsDescription = "",
+    explanation = "Eine Erdölheizung erzeugt durch Ölverbrennung Wärme für deine Heizung.",
+    modifierCollection = ModifierCollection(),
+
+    phaseIndex = 0
+)
+
+val startGenerationCardsWithCoal: TechnologyColumn = listOf(
+    listOf(TechnologyCardData(
+        id = "f8705fb3-a3fd-4301-8a79-6c32d67f8ea8",
+        name = "Kohlekraftwerk",
+        imageSrc = "Kohlekraftwerk.png",
+        supply = Energy(
+            technology = Generation,
+            form = Electricity,
+            size = 4,
+        ),
+
+        moneyCosts = 8,
+        resourceCosts = 5,
+        basePoints = 0,
+        systemPoints = 1,
+        supplyRequirementsForSystem = listOf(
+            Energy(
+                technology = Distribution,
+                form = Electricity,
+                size = 4,
+            ),
+            Energy(
+                technology = Distribution,
+                form = Heat,
+                size = 2,
+            ),
+            Achievement(AchievementName.CarbonCapture)
+        ),
+        requirementsDescription = "Strom und Wärme müssen verteilt werden. CO2 muss aus dem Abgas entfernt werden.",
+        explanation = "Verbrennung von Kohle erzeugt Strom und die Abwärme ist nutzbar für Fernwärme.",
+        modifierCollection = ModifierCollection(),
+
+        phaseIndex = 0,
+        tags = tagsOf(Coal)
+    )).map { it.toTechnologyCard() },
+    listOf(startOilHeating).map { it.toTechnologyCard() },
+    emptyList(),
+)
+
+val startGenerationCardsWithNuclear: TechnologyColumn = listOf(
+    emptyList(),
+    listOf(startOilHeating).map { it.toTechnologyCard() },
+    listOf(TechnologyCardData(
+        id = "fa0e41f2-98f7-4d5d-a417-1a534eae7c17",
+        name = "Atomkraftwerk",
+        imageSrc = "Atomkraftwerk.png",
+        supply = Energy(
+            technology = Generation,
+            form = Electricity,
+            size = 4,
+        ),
+
+        moneyCosts = 10,
+        resourceCosts = 5,
+        basePoints = 10,
+        systemPoints = 18,
+        supplyRequirementsForSystem = listOf(
+            Achievement(AchievementName.NuclearWasteRepository),
+            Energy(
+                technology = Distribution,
+                form = Electricity,
+                size = 4,
+            ),
+        ),
+        requirementsDescription = "Strom muss verteilt und ein Endlager für radioaktiven Abfall gefunden werden.",
+        explanation = "Durch Spaltung von Uran wird Strom und Wärme erzeugt.",
+        modifierCollection = ModifierCollection(),
+
+        phaseIndex = 0,
+        tags = tagsOf(Nuclear)
+    )).map { it.toTechnologyCard() },
+)
+
+val startDistributionCards: TechnologyColumn = listOf(
+    listOf(TechnologyCardData(
+        id = "64a64ef7-f94a-41fc-943f-f2590e8a981d",
+        name = "Freileitungen für überregionale Verteilung",
+        imageSrc = "Freileitungen für überregionale Verteilung.png",
+        supply = Energy(
+            technology = Distribution,
+            form = Electricity,
+            size = 3,
+        ),
+
+        moneyCosts = 2,
+        resourceCosts = 1,
+        basePoints = 0,
+        systemPoints = 0,
+        supplyRequirementsForSystem = listOf(),
+        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Bundesstraßen. Sie transportiert den  Strom überirdisch zwischen Regionen.",
+        modifierCollection = ModifierCollection(),
+
+        phaseIndex = 0
+    )).map { it.toTechnologyCard() },
+    emptyList(),
+    emptyList()
+)
 
 private fun tagsOf(vararg tags: Tag): List<String> = tags.map { it.name }
