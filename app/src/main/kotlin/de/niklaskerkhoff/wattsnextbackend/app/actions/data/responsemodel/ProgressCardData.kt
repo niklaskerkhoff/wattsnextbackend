@@ -17,7 +17,6 @@ data class ProgressCardData(
     val supply: Supply?,
     val isPlayable: Boolean,
     val gameBeforeEffect: GameData?,
-    // TODO: Is this the right way of differentiating between technology and climate action?
     val type: String // 'technology' or 'climateAction'
 ) {
     constructor(card: ProgressCard, result: Result<*>) : this(
@@ -28,10 +27,12 @@ data class ProgressCardData(
         explanation = card.explanation,
         moneyCosts = ModifiableValue(
             originalValue = card.moneyCosts.base,
+            // TODO: second needs to be target position!
             modifiedValue = card.moneyCosts.modified(card, result.game, Pair(result.game, -1))
         ),
         resourceCosts = ModifiableValue(
             originalValue = card.resourceCosts.base,
+            // TODO: second needs to be target position!
             modifiedValue = card.resourceCosts.modified(card, result.game, Pair(result.game, -1))
         ),
         points = ModifiableValue(
