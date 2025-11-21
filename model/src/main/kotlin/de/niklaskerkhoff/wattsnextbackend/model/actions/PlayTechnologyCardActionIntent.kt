@@ -17,7 +17,7 @@ class PlayTechnologyCardActionIntent(
 
     override fun execute(game: Game): Result<Info> {
         val currentTechnologyCard =
-            game.technologyBoard.getCurrentTechnologyCard(technologyCard.supply.technology, targetPosition)
+            game.technologyBoard.getCurrentTechnologyCard(technologyCard.supply.base.technology, targetPosition)
 
 
         val gainingResources = currentTechnologyCard?.let { floor(it.resourceCosts.base / 2.0).toInt() }

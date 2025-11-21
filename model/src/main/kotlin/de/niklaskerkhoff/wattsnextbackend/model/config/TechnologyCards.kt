@@ -44,7 +44,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Strom und Wärme müssen verteilt werden. CO2 muss aus dem Abgas entfernt werden.",
         explanation = "Verbrennung von Kohle erzeugt Strom und die Abwärme ist nutzbar für Fernwärme.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Coal)
@@ -73,7 +72,6 @@ val technologyCards = listOf(
             ),
             requirementsDescription = "Um das volle Potenzial nutzen zu können, muss in sonnenreichen Stunden Strom gespeichert werden.",
             explanation = "Photovoltaik generiert aus Sonnenlicht Strom.",
-            modifierCollection = ModifierCollection(),
 
             phaseIndex = 0,
             tags = tagsOf(Solar, Photovoltaic)
@@ -103,7 +101,6 @@ val technologyCards = listOf(
             ),
             requirementsDescription = "Um das volle Potenzial nutzen zu können, muss in sonnenreichen Stunden Strom gespeichert werden.",
             explanation = "Eine kleine Photovoltaikanalage auf deinem Balkon generiert aus Sonnenlicht Strom.",
-            modifierCollection = ModifierCollection(),
 
             phaseIndex = 0,
             tags = tagsOf(Solar, Photovoltaic)
@@ -133,7 +130,6 @@ val technologyCards = listOf(
             ),
             requirementsDescription = "Um das volle Potenzial nutzen zu können, muss in sonnenreichen Stunden Wärme gespeichert werden.",
             explanation = "Solarthermieanlagen erzeugen aus Sonnenenergie warmes Wasser für deine Dusche und Heizung.",
-            modifierCollection = ModifierCollection(),
 
             phaseIndex = 0,
             tags = tagsOf(Solar)
@@ -157,7 +153,6 @@ val technologyCards = listOf(
 
         requirementsDescription = "",
         explanation = "Eine Erdölheizung erzeugt durch Ölverbrennung Wärme für deine Heizung.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -190,7 +185,6 @@ val technologyCards = listOf(
             ),
             requirementsDescription = "Um das volle Potenzial nutzen zu können, muss Wärme gespeichert werden.",
             explanation = "Die Wärme aus dem Erdboden wird für deine Heizung genutzt.",
-            modifierCollection = ModifierCollection(),
 
             phaseIndex = 0
         )
@@ -223,7 +217,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Der Strom muss verteilt werden. In windreichen Stunden muss Strom gespeichert werden.",
         explanation = "Windkraftanlagen nutzen den Wind um daraus Strom zu erzeugen.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Wind)
@@ -256,7 +249,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Der Strom muss verteilt werden. In sonnenreichen Stunden muss Strom gespeichert werden.",
         explanation = "Mit Sonnenlicht wird im großen Maße Strom erzeugt.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Solar, Photovoltaic)
@@ -290,7 +282,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Strom und Wärme müssen verteilt werden. CO2 muss aus dem Abgas entfernt werden.",
         explanation = "Durch das Verbrennen von Gas kann Stromerzeugt werden, die Abwärme kann für Fernwärme genutzt werden.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Gas)
@@ -323,7 +314,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Der Strom muss verteilt werden. In windreichen Stunden muss Strom gespeichert werden.",
         explanation = "Viele Windkraftanalgen erzeugen aus Wind im großen Maße Strom.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Wind)
@@ -351,7 +341,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Die Wärme muss  verteilt werden.",
         explanation = "Durch Geothermie kann Erdwärme genutzt und ins Fernwärmenetz eingespeist werden.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -379,7 +368,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Strom muss verteilt und ein Endlager für radioaktiven Abfall gefunden werden.",
         explanation = "Durch Spaltung von Uran wird Strom und Wärme erzeugt.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Nuclear)
@@ -407,7 +395,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Der Strom muss verteilt werden.",
         explanation = "Durch die Flussströmung kann Strom erzeugt werden.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Water)
@@ -440,7 +427,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Der Strom muss verteilt werden. In windreichen Stunden muss Strom gespeichert werden.",
         explanation = "Viele Windkraftanalgen erzeugen aus Wind vor der Küste Strom.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Wind)
@@ -469,7 +455,6 @@ val technologyCards = listOf(
             ),
             requirementsDescription = "Für den Betrieb der Wärmepumpe wird Strom benötigt.",
             explanation = "Luft-Wärmepumpe: Nutzt Strom um mit der Umgebungstemperatur zu heizen.",
-            modifierCollection = ModifierCollection(),
 
             phaseIndex = 0
         )
@@ -545,7 +530,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Strom und Wärme müssen verteilt werden.",
         explanation = "Strom wird durch die Verbrennung von Biomasse, z.B. Altholz, erzeugt.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -567,7 +551,6 @@ val technologyCards = listOf(
 
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht dieses Erdkabel den Straßen innerhalb eines Ortes. Es transportiert den Strom unterirdisch zu den Haushalten.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -589,7 +572,6 @@ val technologyCards = listOf(
 
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht dieses Erdkabel den Landstraßen.  Es transportiert den Strom unterirdisch innerhalb einer Region.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -610,7 +592,6 @@ val technologyCards = listOf(
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Bundesstraßen. Sie transportiert den  Strom überirdisch zwischen Regionen.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -631,7 +612,6 @@ val technologyCards = listOf(
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht dieses Erdkabel den Autobahnen.  Es transportiert den Strom unterirdisch deutschlandweit über weite Strecken hin zu  Orten, an denen es viele Verbraucher gibt.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -652,7 +632,6 @@ val technologyCards = listOf(
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Autobahnen. Sie transportiert den Strom unterirdisch deutschlandweit über weite Strecken hin zu  Orten, an denen es viele Verbraucher gibt.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(OverheadPowerLine)
@@ -674,7 +653,6 @@ val technologyCards = listOf(
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Im Norden erzeugter Windstrom wird mittels  Hochspannungs-Gleichstrom-Übertragung überirdisch in den Süden  transportiert. Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Autobahnen.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -695,7 +673,6 @@ val technologyCards = listOf(
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Im Norden erzeugter Windstrom wird mittels  Hochspannungs-Gleichstrom-Übertragung unterirdisch in den Süden  transportiert. Vergleichen wir das Strom- mit dem Straßennetz, so entspricht dieses Erdkabel den Autobahnen.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -716,7 +693,6 @@ val technologyCards = listOf(
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Das Nahwärmenetz transportiert zentral erzeugte Wärme oder Abwärme aus Fabriken oder Kraftwerken innerhalb eines Wohngebiets für die eigene Wärmeversorgung zu Hause.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -738,7 +714,6 @@ val technologyCards = listOf(
             supplyRequirementsForSystem = listOf(),
             requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
             explanation = "Das Fernwärmenetz transportiert zentral erzeugte Wärme oder Abwärme aus Fabriken oder Kraftwerken über mehrere Kilometer für die eigene Wärmeversorgung zu Hause.",
-            modifierCollection = ModifierCollection(),
 
             phaseIndex = 0
         )
@@ -766,7 +741,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Laden und Entladen von E-Autos kann helfen Netzschwankungen auszugleichen.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 2
     ),
@@ -793,7 +767,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Wärme die aus der Sonnenenergie oder Umwelttemperatur gewonnen wird, muss für die spätere Nutzung gespeichert werden.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -820,7 +793,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Strom aus der Sonnenenergie muss bis zum späteren Verbrauch in einer Batterie gespeichert werden.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 1,
         tags = tagsOf(Battery)
@@ -848,7 +820,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird im Sommer für den Winter gespeichert.",
         explanation = "Mit Hilfe von Wasserstoff kann Energie gespeichert werden.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 2
     ),
@@ -875,7 +846,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird im Sommer für den Winter gespeichert.",
         explanation = "Mit Hilfe von Wasserstoff kann Energie gespeichert werden.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 2
     ),
@@ -902,7 +872,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Elektrische Energie wird in der Drehung einer großen Masse gespeichert.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 1
     ),
@@ -929,7 +898,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Wärme wird in einem großen Speicher gleich für mehrere Haushalte gespeichert.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -956,7 +924,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Große Speicher werden genutzt um Schwankungen auszugleichen. Lithium-Ionen sind dabei besonders gut geeignet.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 1,
         tags = tagsOf(Battery)
@@ -984,7 +951,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Große Speicher werden genutzt um Schwankungen auszugleichen. Lithium-Ionen sind umweltfreundlich und günstig.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 1,
         tags = tagsOf(Battery)
@@ -1012,7 +978,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Sind schwere und robuste Batterien zur Notstromversorgung.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     ),
@@ -1039,7 +1004,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Redox-Flow-Batterien eignen sich für Kurz- und Langzeitspeicherung, sind aber noch in Entwicklung.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 2,
         tags = tagsOf(Battery)
@@ -1067,7 +1031,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Strom, welcher durch das Abfließen von Wasser aus einem Stausee ins Tal generiert wird.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(PumpStorage)
@@ -1095,7 +1058,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird im Sommer für den Winter gespeichert.",
         explanation = "Speicher welche Gas oder grün erzeugtes Methan speichern können.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 2
     ),
@@ -1122,7 +1084,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Überschüssige Energie wird im Sommer für den Winter gespeichert.",
         explanation = "Ammoniak speichert Wasserstoff, der bei Bedarf freigesetzt und zur Energiegewinnung genutzt werden kann.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 2
     ),
@@ -1149,7 +1110,6 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Speicher entlasten das Netz, weil sie überschüssige Energie speichern und später abgeben, wenn zu wenig produziert wird.",
         explanation = "Luft wird in unterirdische Kavernen gepresst und kann bei Bedarf durch eine Turbine expandiert werden zur Energiefreisetzung.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 1
     ),
@@ -1173,7 +1133,6 @@ val startOilHeating = TechnologyCardData(
 
     requirementsDescription = "",
     explanation = "Eine Erdölheizung erzeugt durch Ölverbrennung Wärme für deine Heizung.",
-    modifierCollection = ModifierCollection(),
 
     phaseIndex = 0
 )
@@ -1208,7 +1167,6 @@ val startGenerationCardsWithCoal: TechnologyColumn = listOf(
         ),
         requirementsDescription = "Strom und Wärme müssen verteilt werden. CO2 muss aus dem Abgas entfernt werden.",
         explanation = "Verbrennung von Kohle erzeugt Strom und die Abwärme ist nutzbar für Fernwärme.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Coal)
@@ -1244,7 +1202,6 @@ val startGenerationCardsWithNuclear: TechnologyColumn = listOf(
         ),
         requirementsDescription = "Strom muss verteilt und ein Endlager für radioaktiven Abfall gefunden werden.",
         explanation = "Durch Spaltung von Uran wird Strom und Wärme erzeugt.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0,
         tags = tagsOf(Nuclear)
@@ -1269,7 +1226,6 @@ val startDistributionCards: TechnologyColumn = listOf(
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Bundesstraßen. Sie transportiert den  Strom überirdisch zwischen Regionen.",
-        modifierCollection = ModifierCollection(),
 
         phaseIndex = 0
     )).map { it.toTechnologyCard() },

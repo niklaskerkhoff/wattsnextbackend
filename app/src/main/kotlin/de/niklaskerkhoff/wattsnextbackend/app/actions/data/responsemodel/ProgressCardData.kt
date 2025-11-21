@@ -14,12 +14,12 @@ data class ProgressCardData(
     val moneyCosts: ModifiableValue<Int>,
     val resourceCosts: ModifiableValue<Int>,
     val points: ModifiableValue<ProgressPointsData>?,
-    val supply: Supply?,
+    val supply: ModifiableValue<Supply?>,
     val isPlayable: Boolean,
     val gameBeforeEffect: GameData?,
     val type: String // 'technology' or 'climateAction'
 ) {
-    constructor(card: ProgressCard, result: Result<*>) : this(
+    constructor(card: ProgressCard, result: Result<*>, targetPosition: Int? = null) : this(
         id = card.publicId,
         name = card.name,
         image = card.imageSrc,
@@ -27,19 +27,20 @@ data class ProgressCardData(
         explanation = card.explanation,
         moneyCosts = ModifiableValue(
             originalValue = card.moneyCosts.base,
-            // TODO: second needs to be target position!
-            modifiedValue = card.moneyCosts.modified(card, result.game, Pair(result.game, -1))
+            modifiedValue = card.moneyCosts.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
         ),
         resourceCosts = ModifiableValue(
             originalValue = card.resourceCosts.base,
-            // TODO: second needs to be target position!
-            modifiedValue = card.resourceCosts.modified(card, result.game, Pair(result.game, -1))
+            modifiedValue = card.resourceCosts.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
         ),
         points = ModifiableValue(
             originalValue = ProgressPointsData(card, result),
             modifiedValue = ProgressPointsData(card, result)
         ),
-        supply = card.supply,
+        supply = ModifiableValue(
+            originalValue = card.supply.base,
+            modifiedValue = card.supply.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
+        ),
         isPlayable = /*result.playableCards.any { it.id == card.publicId },*/ true,
         gameBeforeEffect = null,
         type = when (card) {

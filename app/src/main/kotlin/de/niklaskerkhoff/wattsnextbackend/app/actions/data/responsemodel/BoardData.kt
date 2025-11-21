@@ -22,16 +22,16 @@ data class BoardData(
         result: Result<*>,
     ) : this(
         generationCards =
-            generationCards.map { column ->
-                column.lastOrNull()?.let { card -> ProgressCardData(card, result) }
+            generationCards.mapIndexed { index, column ->
+                column.lastOrNull()?.let { card -> ProgressCardData(card, result, index) }
             },
         distributionCards =
-            distributionCards.map { column ->
-                column.lastOrNull()?.let { card -> ProgressCardData(card, result) }
+            distributionCards.mapIndexed { index, column ->
+                column.lastOrNull()?.let { card -> ProgressCardData(card, result, index) }
             },
         storageCards =
-            storageCards.map { column ->
-                column.lastOrNull()?.let { card -> ProgressCardData(card, result) }
+            storageCards.mapIndexed { index, column ->
+                column.lastOrNull()?.let { card -> ProgressCardData(card, result, index) }
             },
         climateActionCards = climateActionCards.map { card -> ProgressCardData(card, result) },
         eventCards = eventCards.map { card -> EventCardData(card, result) },

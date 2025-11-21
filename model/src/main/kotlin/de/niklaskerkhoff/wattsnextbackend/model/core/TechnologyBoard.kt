@@ -40,12 +40,26 @@ data class TechnologyBoard(
 
     fun getColumnSize() = generationCards.size
 
+    fun getSameTechnologyCardStack(technology: Technology, targetPosition: Int): List<ProgressCard.TechnologyCard> =
+        getTechnologyColumn(technology).let { column ->
+            require(0 <= targetPosition && targetPosition < column.size) {
+                "targetPosition out of bounds: $targetPosition"
+            }
+            val stack = column[targetPosition]
+            if (stack.isEmpty()) {
+                emptyList()
+            } else {
+                val name = stack.last().name
+                stack.takeLastWhile { it.name == name }
+            }
+        }
+
     private fun TechnologyColumn.playIfRightTechnology(
         technology: Technology,
         card: ProgressCard.TechnologyCard,
         position: Int
     ): TechnologyColumn =
-        if (technology == card.supply.technology)
+        if (technology == card.supply.base.technology)
             this.mapIndexed { index, cards -> if (index == position) cards + card else cards }
         else this
 

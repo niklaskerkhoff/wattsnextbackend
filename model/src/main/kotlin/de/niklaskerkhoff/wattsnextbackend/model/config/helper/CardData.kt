@@ -5,13 +5,14 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.SimpleModifiedValue
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.WithIntModifiedValue
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
 import java.util.*
 
 data class TechnologyCardData(
     val id: String,
     val name: String,
-    val modifierCollection: ModifierCollection,
+    val modifierCollection: ModifierCollection? = null,
     val effect: CardEffect = { Pair(it, emptyList()) },
     val phaseIndex: Int,
 
@@ -32,11 +33,16 @@ data class TechnologyCardData(
         ProgressCard.TechnologyCard(
             id = UUID.fromString(id),
             name = name,
-            modifierCollection = modifierCollection,
+            modifierCollection = if (modifierCollection == null && supply.size == 1) ModifierCollection(
+                supplyModifierConfig = ModifierConfig(
+                    rank = 10,
+                    modify = SupplyModifier.Stack.modify,
+                )
+            ) else ModifierCollection(),
             effect = effect,
             phaseIndex = phaseIndex,
 
-            supply = supply,
+            supply = WithIntModifiedValue(supply) { supplyModifierConfig } as WithIntModifiedValue<Supply.Energy>,
             basePoints = basePoints,
             systemPoints = systemPoints,
             supplyRequirementsForSystem =
@@ -78,7 +84,7 @@ data class ClimateCardData(
             effect = effect,
             phaseIndex = phaseIndex,
 
-            supply = supply,
+            supply = WithIntModifiedValue(supply) { supplyModifierConfig } as WithIntModifiedValue<Supply.Achievement?>,
             basePoints = basePoints,
             systemPoints = systemPoints,
             supplyRequirementsForSystem =

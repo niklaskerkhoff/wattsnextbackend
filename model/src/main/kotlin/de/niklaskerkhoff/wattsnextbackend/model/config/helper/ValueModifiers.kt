@@ -45,11 +45,27 @@ enum class CardCostModifier(
 }
 
 enum class SupplyModifier(
-    val modify: SimpleModifierFunction<Supply?>
+    val modify: WithIntModifierFunction<Supply?>
 ) {
     NoSupplyFromOverheadPowerLine({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.contains(OverheadPowerLine) }) null else acc
     }),
+
+    Stack({ acc, modifiedCard, (game, targetPosition) ->
+        if (targetPosition < 0) acc
+        else if (modifiedCard !is TechnologyCard) acc
+        else if (modifiedCard !=
+            game.technologyBoard.getCurrentTechnologyCard(modifiedCard.technology, targetPosition)
+        ) acc
+        else {
+            val stack = game.technologyBoard.getSameTechnologyCardStack(modifiedCard.technology, targetPosition)
+            Supply.Energy(
+                technology = modifiedCard.technology,
+                form = modifiedCard.supply.base.form,
+                size = stack.sumOf { it.supply.base.size }
+            )
+        }
+    })
 }
 
 enum class SupplyListModifier(
@@ -64,7 +80,7 @@ enum class SupplyListModifier(
     }),
 
     BasePointsForLargeGeneration({ acc, modifiedCard, _ ->
-        if (matches(modifiedCard) { technology == Technology.Generation && supply.size >= 3 }) {
+        if (matches(modifiedCard) { technology == Technology.Generation && supply.base.size >= 3 }) {
             acc + Supply.Never
         } else {
             acc

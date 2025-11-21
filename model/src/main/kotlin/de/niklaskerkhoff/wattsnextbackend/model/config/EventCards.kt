@@ -1,23 +1,11 @@
 package de.niklaskerkhoff.wattsnextbackend.model.config
 
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.CardCostModifier
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.SupplyListModifier
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.SupplyModifier
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.and
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.ifSolarIsExisting
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.ifWindIsExisting
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.nuclearCatastropheIfExistingEffect
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateCurrentPhaseTarget
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateMoneyEffect
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateMoneyPerPlayerEffect
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.updateResourcesEffect
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.*
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard.EffectDescription
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
-import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType.MoneyAndResources
-import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType.Points
-import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType.EnergySystem
+import de.niklaskerkhoff.wattsnextbackend.model.values.EffectType.*
 import java.util.*
 
 

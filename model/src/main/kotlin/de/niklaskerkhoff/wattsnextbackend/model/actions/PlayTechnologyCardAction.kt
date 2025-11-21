@@ -50,7 +50,7 @@ class PlayTechnologyCardAction(
 
     private fun recycle(game: Game): Result<RecyclingInfo> {
         val currentCard = game.technologyBoard.getCurrentTechnologyCard(
-            intent.technologyCard.supply.technology,
+            intent.technologyCard.supply.base.technology,
             intent.targetPosition
         ) ?: throw IllegalStateException("Previous card not found.")
 

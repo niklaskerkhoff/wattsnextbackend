@@ -7,7 +7,7 @@ import java.util.*
 
 sealed class ProgressCard : Card() {
 
-    abstract val supply: Supply?
+    abstract val supply: WithIntModifiedValue<Supply?>
     abstract val basePoints: Int
     abstract val systemPoints: Int
     abstract val supplyRequirementsForSystem: SimpleModifiedValue<List<Supply>>
@@ -25,7 +25,7 @@ sealed class ProgressCard : Card() {
         override val effect: CardEffect,
         override val phaseIndex: Int,
 
-        override val supply: Supply.Energy,
+        override val supply: WithIntModifiedValue<Supply.Energy>,
         override val basePoints: Int,
         override val systemPoints: Int,
         override val supplyRequirementsForSystem: SimpleModifiedValue<List<Supply>>,
@@ -38,7 +38,7 @@ sealed class ProgressCard : Card() {
 
         val tags: List<String> = emptyList(),
     ) : ProgressCard() {
-        val technology: Technology get() = supply.technology
+        val technology: Technology get() = supply.base.technology
     }
 
     class ClimateCard(
@@ -48,7 +48,7 @@ sealed class ProgressCard : Card() {
         override val effect: CardEffect,
         override val phaseIndex: Int,
 
-        override val supply: Supply.Achievement?,
+        override val supply: WithIntModifiedValue<Supply.Achievement?>,
         override val basePoints: Int,
         override val systemPoints: Int,
         override val supplyRequirementsForSystem: SimpleModifiedValue<List<Supply>>,

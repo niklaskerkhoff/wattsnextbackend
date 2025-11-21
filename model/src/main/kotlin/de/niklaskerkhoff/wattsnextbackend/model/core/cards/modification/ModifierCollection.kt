@@ -41,7 +41,7 @@ class ModifierCollection(
 
     val cardMoneyCostsModifierConfig: ModifierConfig<WithIntModifierFunction<Int>>? = null,
     val cardResourceCostsModifierConfig: ModifierConfig<WithIntModifierFunction<Int>>? = null,
-    val supplyModifierConfig: ModifierConfig<SimpleModifierFunction<Supply?>>? = null,
+    val supplyModifierConfig: ModifierConfig<WithIntModifierFunction<Supply?>>? = null,
     val supplyRequirementsForSystemModifierConfig: ModifierConfig<SimpleModifierFunction<List<Supply>>>? = null,
 
 

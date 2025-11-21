@@ -39,6 +39,11 @@ data class ActionResponse(
         private fun getActionInfoDto(result: Result<*>): Map<String, Any>? {
             val actionInfo = result.actionInfo ?: return null
 
+            val targetPosition =
+                actionInfo::class.memberProperties
+                    .find { it.name == "targetPosition" }
+                    ?.getter?.call(actionInfo) as? Int?
+
             val resultMap = mutableMapOf<String, Any>()
 
             for (prop in actionInfo::class.memberProperties) {
@@ -49,7 +54,7 @@ data class ActionResponse(
                     when (raw) {
                         is Int -> raw
                         is Boolean -> raw
-                        is ProgressCard -> ProgressCardData(raw, result)
+                        is ProgressCard -> ProgressCardData(raw, result, targetPosition)
                         else -> throw IllegalArgumentException("Unknown type: ${raw::class.simpleName}")
                     }
 
