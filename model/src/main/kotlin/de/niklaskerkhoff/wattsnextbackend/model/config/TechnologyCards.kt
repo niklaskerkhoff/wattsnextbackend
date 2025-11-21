@@ -1115,30 +1115,31 @@ val technologyCards = listOf(
     ),
 ).map { it.toTechnologyCard() }
 
-val startOilHeating = TechnologyCardData(
-    id = "079f1c00-f57b-41c9-8a2d-8c9cd8ea4f85",
-    name = "Ölheizung",
-    imageSrc = "Ölheizung.png",
-    supply = Energy(
-        technology = Generation,
-        form = Heat,
-        size = 1,
-    ),
+private val startWithOilHeatingCard =
+    TechnologyCardData(
+        id = "079f1c00-f57b-41c9-8a2d-8c9cd8ea4f85",
+        name = "Ölheizung",
+        imageSrc = "Ölheizung.png",
+        supply = Energy(
+            technology = Generation,
+            form = Heat,
+            size = 1,
+        ),
 
-    moneyCosts = 2,
-    resourceCosts = 2,
-    basePoints = 0,
-    systemPoints = 1,
-    supplyRequirementsForSystem = listOf(),
+        moneyCosts = 2,
+        resourceCosts = 2,
+        basePoints = 0,
+        systemPoints = 1,
+        supplyRequirementsForSystem = listOf(),
 
-    requirementsDescription = "",
-    explanation = "Eine Erdölheizung erzeugt durch Ölverbrennung Wärme für deine Heizung.",
+        requirementsDescription = "",
+        explanation = "Eine Erdölheizung erzeugt durch Ölverbrennung Wärme für deine Heizung.",
 
-    phaseIndex = 0
-)
+        phaseIndex = 0
+    ).toTechnologyCard()
 
-val startGenerationCardsWithCoal: TechnologyColumn = listOf(
-    listOf(TechnologyCardData(
+private val startWithCoalCard =
+    TechnologyCardData(
         id = "f8705fb3-a3fd-4301-8a79-6c32d67f8ea8",
         name = "Kohlekraftwerk",
         imageSrc = "Kohlekraftwerk.png",
@@ -1170,15 +1171,10 @@ val startGenerationCardsWithCoal: TechnologyColumn = listOf(
 
         phaseIndex = 0,
         tags = tagsOf(Coal)
-    )).map { it.toTechnologyCard() },
-    listOf(startOilHeating).map { it.toTechnologyCard() },
-    emptyList(),
-)
+    ).toTechnologyCard()
 
-val startGenerationCardsWithNuclear: TechnologyColumn = listOf(
-    emptyList(),
-    listOf(startOilHeating).map { it.toTechnologyCard() },
-    listOf(TechnologyCardData(
+private val startWithNuclearCard =
+    TechnologyCardData(
         id = "fa0e41f2-98f7-4d5d-a417-1a534eae7c17",
         name = "Atomkraftwerk",
         imageSrc = "Atomkraftwerk.png",
@@ -1205,11 +1201,10 @@ val startGenerationCardsWithNuclear: TechnologyColumn = listOf(
 
         phaseIndex = 0,
         tags = tagsOf(Nuclear)
-    )).map { it.toTechnologyCard() },
-)
+    ).toTechnologyCard()
 
-val startDistributionCards: TechnologyColumn = listOf(
-    listOf(TechnologyCardData(
+private val startDistributionCard =
+    TechnologyCardData(
         id = "64a64ef7-f94a-41fc-943f-f2590e8a981d",
         name = "Freileitungen für überregionale Verteilung",
         imageSrc = "Freileitungen für überregionale Verteilung.png",
@@ -1228,7 +1223,26 @@ val startDistributionCards: TechnologyColumn = listOf(
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Bundesstraßen. Sie transportiert den  Strom überirdisch zwischen Regionen.",
 
         phaseIndex = 0
-    )).map { it.toTechnologyCard() },
+    ).toTechnologyCard()
+
+val startCards = listOf(startWithOilHeatingCard, startWithCoalCard, startWithNuclearCard, startDistributionCard)
+
+val startGenerationCardsWithCoal: TechnologyColumn =
+    listOf(
+        listOf(startWithCoalCard),
+        listOf(startWithOilHeatingCard),
+        emptyList(),
+    )
+
+val startGenerationCardsWithNuclear: TechnologyColumn =
+    listOf(
+        emptyList(),
+        listOf(startWithOilHeatingCard),
+        listOf(startWithNuclearCard),
+    )
+
+val startDistributionCards: TechnologyColumn = listOf(
+    listOf(startDistributionCard),
     emptyList(),
     emptyList()
 )

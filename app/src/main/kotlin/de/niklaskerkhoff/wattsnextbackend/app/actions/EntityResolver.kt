@@ -2,6 +2,7 @@ package de.niklaskerkhoff.wattsnextbackend.app.actions
 
 import de.niklaskerkhoff.wattsnextbackend.model.config.climateCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.eventCards
+import de.niklaskerkhoff.wattsnextbackend.model.config.startCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.technologyCards
 import de.niklaskerkhoff.wattsnextbackend.model.core.Player
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
@@ -12,7 +13,8 @@ class EntityResolver(
     players: List<Player>,
 ) {
     private val playerMap: Map<UUID, Player> = players.associateBy { it.publicId }
-    private val technologyCardMap: Map<UUID, ProgressCard.TechnologyCard> = technologyCards.associateBy { it.publicId }
+    private val technologyCardMap: Map<UUID, ProgressCard.TechnologyCard> =
+        (technologyCards + startCards).associateBy { it.publicId }
     private val climateCardMap: Map<UUID, ProgressCard.ClimateCard> = climateCards.associateBy { it.publicId }
     private val eventCardMap: Map<UUID, EventCard> = eventCards.associateBy { it.publicId }
 
