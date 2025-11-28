@@ -21,7 +21,7 @@ val climateCards = listOf(
         basePoints = 2,
         systemPoints = 2,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Ihr erhaltet jeweils 2 Einheiten Ressourcen und Geld.",
+        requirementsDescription = "Erhaltet jeweils 2 Einheiten Ressourcen und Geld.",
         explanation = "Gut isolierte Gebäude brauchen weniger Energie zum Heizen/Kühlen.",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2) and updateMoneyEffect(2),
@@ -48,8 +48,8 @@ val climateCards = listOf(
                 size = 3,
             ),
         ),
-        requirementsDescription = "",
-        explanation = "Das Nutzen von öffentlichen Verkehrsmitteln reduziert Emissionen. Der Ausbau steigert die Attraktivität. Am Besten mit grünem Strom antreiben.",
+        requirementsDescription = "Für den Betrieb der Eisenbahn muss die Stromproduktion und -verteilung sichergestellt sein.",
+        explanation = "Das Nutzen öffentlicher Verkehrsmittel reduziert Emissionen. Der Ausbau steigert die Attraktivität. ",
         modifierCollection = ModifierCollection(),
         phaseIndex = 0
     ),
@@ -74,8 +74,8 @@ val climateCards = listOf(
                 size = 2,
             ),
         ),
-        requirementsDescription = "Ihr erhaltet 2 Ressourcen.",
-        explanation = "Das Verbieten von Neuzulassungen von Verbrennern ist eine sozialgerechte und effektive Möglichkeit die Emissionen im Verkehrssektor zu senken.",
+        requirementsDescription = "Erhaltet 2 Ressourcen. Für den Umstieg auf E-Mobilität muss die Stromproduktion und -verteilung sichergestellt sein.",
+        explanation = "Das Verbrenner-Verbot ist eine sozialgerechte und effektive Möglichkeit, die Emissionen im Verkehrssektor zu senken.",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2),
         phaseIndex = 0
@@ -101,7 +101,7 @@ val climateCards = listOf(
                 size = 2,
             ),
         ),
-        requirementsDescription = "",
+        requirementsDescription = "Zum Laden der Autos muss die Stromproduktion und -verteilung sichergestellt sein.",
         explanation = "Elektromobilität ist ein wichtiger Pfeiler der Verkehrswende.",
         modifierCollection = ModifierCollection(),
         phaseIndex = 0
@@ -122,8 +122,8 @@ val climateCards = listOf(
                 size = 3,
             ),
         ),
-        requirementsDescription = "Ihr erhaltet 2 Ressourcen.",
-        explanation = "Das von Kraftwerken ausgestoßene CO2 wird herausgefiltert. Dieses abgeschiedene CO2 kann als Rohstoff z.B. in der Chemie-Industrie dienen.",
+        requirementsDescription = "Erhaltet 2 Ressourcen. Carbon Capture ist energieintensiv, daher muss ausreichend Strom produziert werden.",
+        explanation = "Das von Kraftwerken ausgestoßene CO2 wird herausgefiltert. Dieses abgeschiedene CO2 kann als Rohstoff dienen.",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2),
         phaseIndex = 1
@@ -140,8 +140,8 @@ val climateCards = listOf(
         supplyRequirementsForSystem = listOf(
             Achievement(AchievementName.ChemicalEnergy)
         ),
-        requirementsDescription = "",
-        explanation = "Wasserstoff (H2) gilt als alternativer grüner Kraftstoff. Die Nutzung bietet sich vor allem auf langen Strecken an, da Batterien nicht die notwendige Reichweite bieten können.",
+        requirementsDescription = "Wasserstoff muss durch „Power-to-X“ aus grünem Strom hergestellt werden.",
+        explanation = "Auf langen Strecken, für die Batterien nicht ausreichen, bietet sich die Nutzung von Wasserstoff als Kraftstoff an.",
         modifierCollection = ModifierCollection(),
         phaseIndex = 2
     ),
@@ -166,8 +166,8 @@ val climateCards = listOf(
                 size = 3,
             ),
         ),
-        requirementsDescription = "Ihr erhaltet 2 Ressourcen.",
-        explanation = "Das Nutzen von öffentlichen Verkehrsmitteln reduziert Emissionen. Auf dem Land ist die Verfügbarkeit jedoch noch sehr dünn.\u200B",
+        requirementsDescription = "Erhaltet 2 Ressourcen. Zum Laden der Busse muss die Stromproduktion und -verteilung sichergestellt sein.",
+        explanation = "Das Nutzen öffentlicher Verkehrsmittel reduziert Emissionen. Auf dem Land gibt es diese jedoch kaum.",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2),
         phaseIndex = 1
@@ -188,14 +188,9 @@ val climateCards = listOf(
                     form = Electricity,
                     size = 3,
                 ),
-                Energy(
-                    technology = Distribution,
-                    form = Electricity,
-                    size = 3,
-                ),
             ),
-            requirementsDescription = "Für ein gebautes Gaskraftwerk erhaltet ihr 5 zusätzliche Fortschrittspunkte.",
-            explanation = "Power-to-X Technologien speichern Stromüberschüsse aus erneuerbaren Energien und wandeln sie in chemische Energieträger (z.B. H2) für Langfristspeicherung und Verkehr um.",
+            requirementsDescription = "Es muss ausreichend Strom aus erneuerbaren Quellen produziert werden. Für ein gebautes Gaskraftwerk erhaltet ihr 5 zusätzliche Fortschrittspunkte.",
+            explanation = "Power-to-X Technologien können Stromüberschüsse aus erneuerbaren Energien langfristig, z. B. in Form von H2, speichern.",
             modifierCollection = ModifierCollection(),
             // TODO: Is the condition of a Gaskraftwerk missing in this effect?
             effect = updateProgressPointsEffect(5),
@@ -214,8 +209,8 @@ val climateCards = listOf(
         supplyRequirementsForSystem = listOf(
             Achievement(AchievementName.ChemicalEnergy)
         ),
-        requirementsDescription = "",
-        explanation = "Die Nutzung von synthetischem Kerosin bietet eine grünere Alternative zu fossilem Kraftstoff, die für Flugzeuge geeignet ist.",
+        requirementsDescription = "Grünes Kerosin aus „Power-to-X“-Technologie muss als Kraftstoff eingesetzt werden.",
+        explanation = "Synthetisches Kerosin bietet eine grünere Alternative zu fossilem Kraftstoff und ist für Flugzeuge geeignet.",
         modifierCollection = ModifierCollection(),
         phaseIndex = 2
     ),
@@ -240,8 +235,8 @@ val climateCards = listOf(
                 size = 2,
             ),
         ),
-        requirementsDescription = "Ihr erhaltet 2 Ressourcen.",
-        explanation = "Kurzstreckenflüge sind ineffizient, da Start und Landung viel Energie verbrauchen. Sie verursachen pro Person deutlich mehr CO₂ als Züge oder Busse.\u200B",
+        requirementsDescription = "Erhaltet 2 Ressourcen.",
+        explanation = "Kurzstreckenflüge sind ineffizient, da Start und Landung viel Energie verbrauchen, was zu hohem CO₂-Ausstoß führt.",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2),
         phaseIndex = 0
@@ -268,8 +263,8 @@ val climateCards = listOf(
                     size = 2,
                 ),
             ),
-            requirementsDescription = "Ihr erhaltet jeweils 2 Einheiten Ressourcen und Geld.",
-            explanation = "Recycelter Kunststoff wird gereinigt, zerkleinert und geschmolzen, um neue Produkte wie Verpackungen oder Bauteile herzustellen.",
+            requirementsDescription = "Erhaltet jeweils 2 Einheiten Ressourcen und Geld. Recycling ist energieintensiv, daher müssen Stromerzeugung und -verteilung sichergestellt sein.",
+            explanation = "Recycelter Kunststoff wird sortiert, zerkleinert, gereinigt und geschmolzen, um neue Produkte herzustellen.",
             modifierCollection = ModifierCollection(),
             effect = updateResourcesEffect(2) and updateMoneyEffect(2),
             phaseIndex = 1
@@ -277,22 +272,16 @@ val climateCards = listOf(
     },
     ClimateCardData(
         id = "b57e711a-4cc5-4ef8-8bde-92d202b70d13",
-        name = "Subventionierung von Erneuerbaren",
+        name = "Subventionierung erneuerbarer Energien",
         imageSrc = "Klima.png",
         supply = null,
         moneyCosts = 2,
         resourceCosts = 0,
         basePoints = 0,
         systemPoints = 2,
-        supplyRequirementsForSystem = listOf(
-            Energy(
-                technology = Distribution,
-                form = Electricity,
-                size = 2,
-            ),
-        ),
+        supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Alle Wind- und Photovoltaik-Technologien kosten 2 Geldeinheiten weniger, aber mindestens 1 Geldeinheit.",
-        explanation = "Das Fördern von Erneuerbaren soll deren Ausbau Beschleunigen.",
+        explanation = "Das Fördern von Erneuerbaren soll deren Ausbau beschleunigen.",
         modifierCollection = ModifierCollection(
             cardMoneyCostsModifierConfig = ModifierConfig(
                 rank = 10,
@@ -327,8 +316,8 @@ val climateCards = listOf(
                     size = 2,
                 ),
             ),
-            requirementsDescription = "Ihr erhaltet jeweils 2 Einheiten Ressourcen und Geld.",
-            explanation = "Recycling von Batterien ist wichtig, um wertvolle Rohstoffe zurückzugewinnen und sorgt für eine nachhaltigere Nutzung von Ressourcen.",
+            requirementsDescription = "Erhaltet jeweils 2 Einheiten Ressourcen und Geld. Recycling ist energieintensiv, daher müssen Stromerzeugung und -verteilung sichergestellt sein.",
+            explanation = "Durch Batterie-Recycling werden wertvolle Rohstoffe zurückgewonnen. ",
             modifierCollection = ModifierCollection(),
             effect = updateResourcesEffect(2) and updateMoneyEffect(2),
             phaseIndex = 1
@@ -345,7 +334,7 @@ val climateCards = listOf(
         systemPoints = 2,
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Ihr erhaltet 2 Ressourcen.",
-        explanation = "Ab jetzt pendelt ihr mit dem Fahrrad zur Schule/Uni/Arbeit.",
+        explanation = "Das Fahrrad ist eine CO2-neutrale Fortbewegungsmöglichkeit.",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2),
         phaseIndex = 0
@@ -361,7 +350,7 @@ val climateCards = listOf(
         systemPoints = 2,
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Ihr erhaltet 2 Ressourcen.",
-        explanation = "Statt viel Geld für immer neue Dinge auszugeben tauscht oder leiht ihr. Wenn dies nicht möglich ist, kauft ihr second-hand.",
+        explanation = "Statt viel Geld für neue Dinge auszugeben, tauscht und leiht ihr oder kauft second-hand.",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2),
         phaseIndex = 0
@@ -377,7 +366,7 @@ val climateCards = listOf(
         systemPoints = 2,
         supplyRequirementsForSystem = listOf(),
         requirementsDescription = "Ihr erhaltet 2 Ressourcen.",
-        explanation = "Ihr verzichtet weitestgehend auf tierische Produkte, achtest auf Regionalität und Saisonalität und verringert Lebensmittelverschwendung.",
+        explanation = "Ihr verzichtet weitestgehend auf tierische Produkte, achtet auf Regionalität und verringert Lebensmittelverschwendung. ",
         modifierCollection = ModifierCollection(),
         effect = updateResourcesEffect(2),
         phaseIndex = 0

@@ -13,7 +13,7 @@ val eventCards = listOf(
     EventCard(
         id = UUID.fromString("c1ea1fd9-6882-4247-a5b3-6db5c311fc86"),
         name = "Langer und kalter Winter",
-        eventDescription = "Im Winter sind die Temperaturen niedriger als üblich und unzureichend isolierte Häuser benötigen mehr Energie zum Heizen als in normalen Wintern.",
+        eventDescription = "Diesen Winter sind die Temperaturen niedriger als üblich und unzureichend isolierte Häuser benötigen mehr Energie zum Heizen als in normalen Wintern.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Die Nachfrage nach  Energie steigt. Das Phasenziel für Erzeugung und Verteilung wird um 1 Energieeinheit erhöht.",
@@ -108,7 +108,7 @@ val eventCards = listOf(
     EventCard(
         id = UUID.fromString("235dfaae-ee5d-4ecf-bb0d-9868660fc8a4"),
         name = "Nukleare Katastrophe",
-        eventDescription = "Eine nukleares Desaster zerstört ein Kernkraftwerk und eine Kernschmelze löst eine weltweite nukleare Katastrophe aus.",
+        eventDescription = "Eine Kernschmelze löst eine weltweite nukleare Katastrophe aus.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Das Energiesystem wird auf den Startzustand zurückgesetzt.  War ein Atomkraftwerk auf dem Startfeld, wird auch dieses entfernt.",
@@ -157,7 +157,7 @@ val eventCards = listOf(
             ),
             EffectDescription(
                 text = "Große Erzeugungstechnologien (≥3 Energieeinheiten) zählen nur mit ihrer Basispunktzahl in die Fortschrittspunkte.",
-                type = EnergySystem,
+                type = Points,
             ),
         ),
         modifierCollection = ModifierCollection(
@@ -173,7 +173,7 @@ val eventCards = listOf(
     EventCard(
         id = UUID.fromString("c6e271d1-aa0d-4fce-ab4b-0a3c174705c3"),
         name = "Rebound-Effekt",
-        eventDescription = "Der Großteil der Wohngebäude wurde neu gedämmt. Mit dem guten Gefühl dadurch Geld zu sparen und etwas Gutes fürs Klima zu machen, heizen die Bewohner*innen jetzt umso wärmer, weshalb keine Energie eingespart wird.",
+        eventDescription = "Der Großteil der Wohngebäude wurde neu gedämmt. Mit dem guten Gefühl, dadurch Geld zu sparen und etwas Gutes fürs Klima zu machen, heizen die Bewohner*innen jetzt umso mehr, weshalb keine Energie eingespart wird.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 1 Einheit reduziert.",
@@ -212,11 +212,11 @@ val eventCards = listOf(
     ),
     EventCard(
         id = UUID.fromString("c433dc78-f691-461a-aacb-88695b8d6ad2"),
-        name = "Viruspandemie: Lockdown",
+        name = "Lockdown wegen Viruspandemie",
         eventDescription = "Bei einem Lockdown stehen viele Bereiche still: Weniger Produktion, weniger Verkehr, mehr Homeoffice. Weniger Mobilität und Produktion bedeuten auch weniger Energieverbrauch.",
         effectDescriptions = listOf(
             EffectDescription(
-                text = "Geld wird um 1 Einheiten reduziert.",
+                text = "Geld wird um 1 Einheit reduziert.",
                 type = MoneyAndResources,
             ),
             EffectDescription(
@@ -235,7 +235,7 @@ val eventCards = listOf(
         eventDescription = "Photovoltaikanlagen sind jetzt langlebiger. Außerdem wurde eine Recycling-Methode entwickelt. Das spart Geld und Ressourcen.",
         effectDescriptions = listOf(
             EffectDescription(
-                text = "Geld und Ressourcen werden jeweils um zwei Einheiten erhöht.",
+                text = "Geld und Ressourcen werden jeweils um 2 Einheiten erhöht, falls Photovoltaik-Technologien im Energiesystem vorhanden sind.",
                 type = MoneyAndResources,
             ),
         ),
@@ -289,7 +289,7 @@ val eventCards = listOf(
             ),
             // TODO: Eigentlich nur "Bereits gebaute oberirdische Stromleitungen ..."
             EffectDescription(
-                text = "Oberirdische Stromleitungen zählen nicht zur Erfüllung der Voraussetzung anderer Fortschrittskarten und der Phasenziele.",
+                text = "Bereits gebaute oberirdische Stromleitungen zählen nicht zur Erfüllung der Voraussetzung anderer Fortschrittskarten und der Phasenziele. ",
                 type = EnergySystem,
             ),
         ),
@@ -380,7 +380,7 @@ val eventCards = listOf(
                 type = MoneyAndResources,
             ),
             EffectDescription(
-                text = "Wasser- und Pumpspeicherkraftwerke zählen nur mit den Basispunkten in die Fortschrittspunkte.",
+                text = "Pumpspeicher- und Wasserkraftwerke zählen nur mit den Basispunkten in die Fortschrittspunkte.",
                 type = Points,
             ),
         ),
@@ -412,7 +412,7 @@ val eventCards = listOf(
     EventCard(
         id = UUID.fromString("e15be36e-f257-475d-b2c8-53f972f619cf"),
         name = "Blackout",
-        eventDescription = "Das Stromnetz bricht zusammen, weil zu viel Strom verbraucht oder zu wenig erzeugt wird. Die Stromversorgung muss aufwendig neu gestartet werden. Teure Reparaturarbeiten an Kraftwerken sind notwendig.",
+        eventDescription = "Nach einem großflächigen Stromausfall ist ein sogenannter Schwarzstart erforderlich. Unter anderem sind viele erneuerbare Energietechnologien nicht dafür ausgelegt. Das Energiesystem wird durch schwarzstartfähige Anlagen schrittweise wieder hochgefahren.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 6 Einheiten und Ressourcen um 2 Einheiten reduziert.",
@@ -420,7 +420,7 @@ val eventCards = listOf(
             ),
             EffectDescription(
                 text = "Karten mit der Voraussetzung Verteilung zählen in dieser Runde nur mit den Basispunkten in die Fortschrittspunkte.",
-                type = EnergySystem,
+                type = Points,
             ),
         ),
         modifierCollection = ModifierCollection(
