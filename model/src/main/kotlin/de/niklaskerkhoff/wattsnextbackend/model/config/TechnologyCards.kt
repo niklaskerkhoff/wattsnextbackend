@@ -1163,7 +1163,9 @@ private val startWithOilHeatingCard =
         resourceCosts = 2,
         basePoints = 0,
         systemPoints = 1,
-        supplyRequirementsForSystem = listOf(),
+        supplyRequirementsForSystem = listOf(
+            Achievement(AchievementName.ChemicalEnergy)
+        ),
 
         requirementsDescription = "",
         explanation = "Eine Erdölheizung erzeugt durch Ölverbrennung Wärme für deine Heizung.",

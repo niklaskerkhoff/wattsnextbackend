@@ -13,7 +13,8 @@ data class ProgressPointsData(
     constructor(card: ProgressCard, result: Result<*>) : this(
         baseProgressPoints = card.basePoints,
         systemProgressPoints = card.systemPoints,
-        conditions = emptyList(),
+        // TODO: I have no idea what I am doing here
+        conditions = card.supplyRequirementsForSystem.modified(card, result.game, result.game),
         conditionsFulfilled = false,
     )
 }
