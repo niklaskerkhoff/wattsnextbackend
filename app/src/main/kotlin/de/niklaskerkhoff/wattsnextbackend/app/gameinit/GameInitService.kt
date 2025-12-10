@@ -31,6 +31,14 @@ class GameInitService(
         return GameInitWithPlayerIdResponse(gameInit, gameInit.players.last().id)
     }
 
+    fun leaveGameBeforeStart(gameId: UUID, playerId: UUID): Boolean {
+        val gameInit = getGameInitOrThrow(gameId)
+        val removed = gameInit.removePlayer(playerId)
+
+        gameMessageSender.sendGameState(gameId, gameInit)
+        return removed
+    }
+
     fun startGame(gameId: UUID) {
         val gameInit = getGameInitOrThrow(gameId)
 
@@ -41,18 +49,7 @@ class GameInitService(
         gameMessageSender.sendGameState(gameId, GameData(game))
     }
 
-    // TODO: It seems like there is still a gameInit object when the game has already started, so check for a game object
-    // first
     fun getGameState(gameId: UUID): Any {
-        /*val gameInit = gameInitMap[gameId]
-        if (gameInit != null) return gameInit
-
-        val game = gameManagerRepo.getGameManager(gameId)?.let { gameManager ->
-            GameData(gameManager.game)
-        }
-
-        return game ?: throw IllegalArgumentException("Game not found")*/
-
         val game = gameManagerRepo.getGameManager(gameId)?.let { gameManager ->
             GameData(gameManager.game)
         }

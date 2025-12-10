@@ -23,6 +23,13 @@ class GameInit(
         _players.add(PlayerInit(playerName))
     }
 
+    fun removePlayer(playerId: UUID): Boolean {
+        val player = _players.find { it.id == playerId } ?: return false
+        _players.remove(player)
+        return true
+    }
+
+
     val players get() = _players.toList()
 
     enum class Mode {

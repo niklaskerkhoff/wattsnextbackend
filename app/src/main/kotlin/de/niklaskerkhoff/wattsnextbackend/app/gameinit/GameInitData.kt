@@ -12,6 +12,11 @@ data class JoinGameRequest(
     val playerName: String
 )
 
+data class LeaveGameRequest(
+    val gameId: UUID,
+    val playerId: UUID
+)
+
 data class StartGameRequest(
     val gameId: UUID,
 )
