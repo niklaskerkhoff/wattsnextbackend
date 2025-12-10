@@ -12,6 +12,7 @@ data class PhaseData(
     val heat: TargetableValue,
 ) {
     constructor(result: Result<*>, phaseIndex: Int) : this(
+        // TODO: Values have to be set correctly
         generation = TargetableValue(
             value = 0,
             target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]

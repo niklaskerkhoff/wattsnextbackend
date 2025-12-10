@@ -35,7 +35,7 @@ object GameFactory {
         val game = Game(
             id = gameInit.id,
             state = GameState.RUNNING,
-            money = 10,
+            money = 5,
             resources = 20,
             technologyBoard = TechnologyBoard(
                 generationCards = startGenerationCards,
