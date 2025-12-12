@@ -54,6 +54,7 @@ data class ActionResponse(
                     when (raw) {
                         is Int -> raw
                         is Boolean -> raw
+                        is String -> raw
                         is ProgressCard -> ProgressCardData(raw, result, targetPosition)
                         else -> throw IllegalArgumentException("Unknown type: ${raw::class.simpleName}")
                     }

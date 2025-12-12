@@ -68,11 +68,14 @@ data class Game(
 
     fun withUpdatedResources(delta: Int): Game = copy(resources = resources + delta)
 
+    fun withUpdatedState(state: GameState): Game = copy(state = state)
+
     fun getAllProgressCards(): List<ProgressCard?> = technologyBoard.getAllCurrentProgressCards() + climateCards
 
     fun getAllCards(): List<Card?> =
         technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCards + catastropheEventCard
 
+    // TODO: Check for end of phase?
     override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
             if (nextTurnInPhase == secondEventCardTurnInPhase) {
@@ -283,7 +286,7 @@ data class Game(
     private fun handleNextPhase(nextPhase: Int): Result<Unit> =
         if (nextPhase == numberOfPhases) {
             val requirementsFulfilled = hasReachedTargets()
-            val updatedState = if (requirementsFulfilled) GameState.WON else GameState.LOST
+            val updatedState = if (requirementsFulfilled) GameState.Won else GameState.Lost
             Result(
                 copy(state = updatedState),
                 baseInfo = BaseInfo(

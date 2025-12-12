@@ -21,6 +21,11 @@ data class StartGameRequest(
     val gameId: UUID,
 )
 
+data class CancelGameRequest(
+    val gameId: UUID,
+    val playerId: UUID
+)
+
 data class GameInitWithPlayerIdResponse(
     val game: GameInit,
     val playerId: UUID,

@@ -5,7 +5,6 @@ import de.niklaskerkhoff.wattsnextbackend.app.gameinit.GameInit.Mode.StartWithCo
 import de.niklaskerkhoff.wattsnextbackend.app.gameinit.GameInit.Mode.StartWithNuclear
 import de.niklaskerkhoff.wattsnextbackend.model.config.climateCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.eventCards
-import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag
 import de.niklaskerkhoff.wattsnextbackend.model.config.startDistributionCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.startGenerationCardsWithCoal
 import de.niklaskerkhoff.wattsnextbackend.model.config.startGenerationCardsWithNuclear
@@ -15,7 +14,6 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.GameState
 import de.niklaskerkhoff.wattsnextbackend.model.core.Player
 import de.niklaskerkhoff.wattsnextbackend.model.core.TechnologyBoard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 
 object GameFactory {
@@ -34,7 +32,7 @@ object GameFactory {
 
         val game = Game(
             id = gameInit.id,
-            state = GameState.RUNNING,
+            state = GameState.Running,
             money = 5,
             resources = 20,
             technologyBoard = TechnologyBoard(

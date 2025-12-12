@@ -23,6 +23,12 @@ class GameInitController(private val gameInitService: GameInitService) {
         gameInitService.startGame(request.gameId)
     }
 
+    @DeleteMapping("cancel")
+    fun cancelGame(@RequestBody request: CancelGameRequest): Boolean {
+        return gameInitService.cancelGame(request.gameId, request.playerId)
+    }
+
     @GetMapping("{gameId}")
     fun getGameState(@PathVariable gameId: UUID): Any = gameInitService.getGameState(gameId)
+
 }

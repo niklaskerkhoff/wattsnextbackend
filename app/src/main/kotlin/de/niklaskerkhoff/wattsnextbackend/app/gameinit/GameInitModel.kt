@@ -1,5 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.app.gameinit
 
+import de.niklaskerkhoff.wattsnextbackend.model.core.GameState
 import java.util.UUID
 
 class GameInit(
@@ -7,7 +8,7 @@ class GameInit(
     creatorName: String,
 ) {
     val id: UUID = UUID.randomUUID()
-    val state = "Preparing"
+    var state = GameState.Preparing
 
     private val _players: MutableList<PlayerInit> = mutableListOf(PlayerInit(creatorName))
 
@@ -31,6 +32,10 @@ class GameInit(
 
 
     val players get() = _players.toList()
+
+    fun getPlayer(playerId: UUID): PlayerInit? {
+        return _players.find { it.id == playerId }
+    }
 
     enum class Mode {
         StartWithNuclear,

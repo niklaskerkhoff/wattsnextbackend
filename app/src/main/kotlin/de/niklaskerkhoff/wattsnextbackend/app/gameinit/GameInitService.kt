@@ -4,6 +4,7 @@ import de.niklaskerkhoff.wattsnextbackend.app.actions.GameManager
 import de.niklaskerkhoff.wattsnextbackend.app.actions.GameManagerRepo
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.responsemodel.GameData
 import de.niklaskerkhoff.wattsnextbackend.app.actions.websockets.GameMessageSender
+import de.niklaskerkhoff.wattsnextbackend.model.core.GameState
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
 import java.util.*
@@ -35,6 +36,10 @@ class GameInitService(
         val gameInit = getGameInitOrThrow(gameId)
         val removed = gameInit.removePlayer(playerId)
 
+        if (gameInit.players.isEmpty()) {
+            gameInitMap.remove(gameId)
+        }
+
         gameMessageSender.sendGameState(gameId, gameInit)
         return removed
     }
@@ -47,6 +52,34 @@ class GameInitService(
         gameManagerRepo.addGameManager(gameManager)
 
         gameMessageSender.sendGameState(gameId, GameData(game))
+    }
+
+    fun cancelGame(gameId: UUID, playerId: UUID): Boolean {
+        val gameManager = gameManagerRepo.getGameManager(gameId)
+        if (gameManager != null) {
+            val player = gameManager.entityResolver.getPlayer(playerId)
+            if (player != null) {
+                gameManager.handleCancelGame(player.name)
+                gameMessageSender.sendGameState(gameId, GameData(gameManager.game))
+                return true
+            } else {
+                return false
+            }
+        } else {
+            val gameInit = gameInitMap[gameId]
+            if (gameInit != null) {
+                val player = gameInit.getPlayer(playerId)
+                if (player != null) {
+                    gameInit.state = GameState.Cancelled
+                    gameMessageSender.sendGameState(gameId, gameInit)
+                    gameInitMap.remove(gameId)
+                    return true
+                } else {
+                    return false
+                }
+            }
+        }
+        return false
     }
 
     fun getGameState(gameId: UUID): Any {
