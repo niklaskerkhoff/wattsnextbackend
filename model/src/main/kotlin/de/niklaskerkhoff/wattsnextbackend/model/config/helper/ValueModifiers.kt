@@ -26,7 +26,7 @@ enum class CardCostModifier(
     }),
 
     CostsWithBatteryImproved({ acc, modifiedCard, _ ->
-        if (matches(modifiedCard) { tags.contains(Battery) }) max(acc - 2, 1) else acc
+        if (matches(modifiedCard) { tags.contains(Battery) }) max(acc - 2, 0) else acc
     });
 
     companion object {

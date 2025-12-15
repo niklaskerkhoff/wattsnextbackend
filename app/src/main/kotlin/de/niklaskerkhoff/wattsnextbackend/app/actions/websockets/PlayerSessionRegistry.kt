@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 
-// TODO: put in adequate location
 // Maps session ids of connected clients to the according game and player id to identify clients when they send a
 // message
 @Component

@@ -9,8 +9,6 @@ import org.springframework.web.socket.messaging.SessionConnectEvent
 import org.springframework.web.socket.messaging.SessionDisconnectEvent
 import java.util.*
 
-// TODO: put in adequate location
-
 // Listen to connects and disconnects to keep PlayerSessionRegistry up-to-date
 @Component
 class StompSessionEventListener(

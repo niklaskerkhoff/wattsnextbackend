@@ -3,8 +3,6 @@ package de.niklaskerkhoff.wattsnextbackend.app.actions.websockets
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Component
 
-// TODO: move to adequate location
-
 @Component
 class WebSocketAuthHelper(
     private val playerSessionRegistry: PlayerSessionRegistry

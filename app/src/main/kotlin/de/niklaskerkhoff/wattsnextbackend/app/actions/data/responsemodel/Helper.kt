@@ -7,7 +7,7 @@ data class TargetableValue(
 
 data class ModifiableValue<T>(
     val originalValue: T,
-    val modifiedValue: T, // TODO: Optional or not?
+    val modifiedValue: T,
     val modifications: List<Modification> = emptyList()
 )
 

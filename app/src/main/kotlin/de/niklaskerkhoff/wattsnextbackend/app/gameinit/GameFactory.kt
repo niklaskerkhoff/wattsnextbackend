@@ -76,12 +76,12 @@ object GameFactory {
         progressCardDeck: List<ProgressCard>
     ): Pair<List<Player>, List<ProgressCard>> {
         val playerCount = gameInit.players.size
-        // TODO: There is also a number of players with 2 cards per player
         val cardsPerPlayer = when (playerCount) {
             1 -> 6
             2 -> 5
             3 -> 4
-            else -> 3
+            4 -> 3
+            else -> 2
         }
         val totalPlayerCardCount = cardsPerPlayer * playerCount
 

@@ -200,7 +200,6 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(
-            // TODO: Isn't there a parameter 2 missing
             cardMoneyCostsModifierConfig = ModifierConfig(
                 rank = 5,
                 modify = CardCostModifier.CostsWithBatteryImproved.modify

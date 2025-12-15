@@ -75,7 +75,6 @@ data class Game(
     fun getAllCards(): List<Card?> =
         technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCards + catastropheEventCard
 
-    // TODO: Check for end of phase?
     override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
             if (nextTurnInPhase == secondEventCardTurnInPhase) {
