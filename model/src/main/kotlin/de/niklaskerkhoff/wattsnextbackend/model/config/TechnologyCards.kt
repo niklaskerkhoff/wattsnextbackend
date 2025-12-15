@@ -1271,9 +1271,9 @@ val startGenerationCardsWithCoal: TechnologyColumn =
 
 val startGenerationCardsWithNuclear: TechnologyColumn =
     listOf(
-        emptyList(),
-        listOf(startWithOilHeatingCard),
         listOf(startWithNuclearCard),
+        listOf(startWithOilHeatingCard),
+        emptyList(),
     )
 
 val startDistributionCards: TechnologyColumn = listOf(
@@ -1282,4 +1282,4 @@ val startDistributionCards: TechnologyColumn = listOf(
     emptyList()
 )
 
-private fun tagsOf(vararg tags: Tag): List<String> = tags.map { it.name }
+private fun tagsOf(vararg tags: Tag): List<Tag> = tags.map { it }

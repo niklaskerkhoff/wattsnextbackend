@@ -101,6 +101,22 @@ data class Game(
 
     fun withUpdatedState(state: GameState): Game = copy(state = state)
 
+    fun withUpdatedGenerationAndDistributionTargets(delta: Int): Game =
+        copy(
+            energyTargetsPerPhase = energyTargetsPerPhase.map { phaseTargets ->
+                mapOf(
+                    Technology.Generation to (phaseTargets[Technology.Generation] ?: 0) + delta,
+                    Technology.Distribution to (phaseTargets[Technology.Distribution] ?: 0) + delta,
+                    Technology.Storage to (phaseTargets[Technology.Storage] ?: 0)
+                )
+            }
+        )
+
+    fun withNuclearCatastrophe(): Game = copy(
+        technologyBoard = technologyBoard.withNuclearCatastrophe(),
+        climateCards = emptyList()
+    )
+
     fun prepare(): Result<Unit> {
         val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
         val updatedStandardEventCards = standardEventCards + drawnCard

@@ -21,7 +21,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = updateCurrentPhaseTarget(1),
+        effect = updateCurrentGenerationAndDistributionPhaseTarget(1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -117,7 +117,7 @@ val eventCards = listOf(
         ),
         effectConditionDescription = "Falls Atomkraftwerk im Energiesystem vorhanden:",
         modifierCollection = ModifierCollection(),
-        effect = nuclearCatastropheIfExistingEffect(),
+        effect = ifNuclearIsExisting(nuclearCatastropheEffect()),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -185,7 +185,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = updateMoneyEffect(-1) and updateCurrentPhaseTarget(1),
+        effect = updateMoneyEffect(-1) and updateCurrentGenerationAndDistributionPhaseTarget(1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -224,7 +224,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = updateMoneyEffect(-1) and updateCurrentPhaseTarget(-1),
+        effect = updateMoneyEffect(-1) and updateCurrentGenerationAndDistributionPhaseTarget(-1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -258,7 +258,7 @@ val eventCards = listOf(
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = updateMoneyEffect(2) and updateCurrentPhaseTarget(-1),
+        effect = updateMoneyEffect(2) and updateCurrentGenerationAndDistributionPhaseTarget(-1),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -326,7 +326,7 @@ val eventCards = listOf(
                 modify = SupplyListModifier.BasePointsForCoalAndGasAndNuclear.modify
             )
         ),
-        effect = updateMoneyEffect(-2) and updateCurrentPhaseTarget(1),
+        effect = updateMoneyEffect(-2) and updateCurrentGenerationAndDistributionPhaseTarget(1),
         phaseIndex = 0,
         isCatastrophe = true
     ),

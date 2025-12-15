@@ -27,7 +27,7 @@ data class TechnologyCardData(
     val requirementsDescription: String,
     val imageSrc: String,
 
-    val tags: List<String> = emptyList(),
+    val tags: List<Tag> = emptyList(),
 ) {
     fun toTechnologyCard() =
         ProgressCard.TechnologyCard(

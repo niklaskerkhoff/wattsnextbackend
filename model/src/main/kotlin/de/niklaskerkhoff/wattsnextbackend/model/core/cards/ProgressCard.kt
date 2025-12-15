@@ -1,5 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core.cards
 
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
@@ -36,7 +37,7 @@ sealed class ProgressCard : Card() {
         override val requirementsDescription: String,
         override val imageSrc: String,
 
-        val tags: List<String> = emptyList(),
+        val tags: List<Tag> = emptyList(),
     ) : ProgressCard() {
         val technology: Technology get() = supply.base.technology
     }

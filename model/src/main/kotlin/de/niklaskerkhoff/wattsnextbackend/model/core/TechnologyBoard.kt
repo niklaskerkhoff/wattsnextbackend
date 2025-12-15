@@ -1,5 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core
 
+import de.niklaskerkhoff.wattsnextbackend.model.config.helper.Tag
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 
@@ -23,6 +24,32 @@ data class TechnologyBoard(
             position
         ),
         storageCards = storageCards.playIfRightTechnology(Technology.Storage, card, position),
+    )
+
+    fun withNuclearCatastrophe(): TechnologyBoard = copy(
+        generationCards = generationCards.mapIndexed { index, stack ->
+            when {
+                index <= 1 -> {
+                    val bottom = stack.firstOrNull()
+                    if (index == 0 && bottom?.tags?.contains(Tag.Nuclear) == true) {
+                        emptyList()
+                    } else {
+                        bottom?.let { listOf(it) } ?: emptyList()
+                    }
+                }
+                else -> emptyList()
+            }
+        },
+
+        distributionCards = distributionCards.mapIndexed { index, stack ->
+            if (index == 0) {
+                stack.firstOrNull()?.let { listOf(it) } ?: emptyList()
+            } else {
+                emptyList()
+            }
+        },
+
+        storageCards = storageCards.map { emptyList() }
     )
 
     fun getCurrentTechnologyCard(technology: Technology, targetPosition: Int): ProgressCard.TechnologyCard? =

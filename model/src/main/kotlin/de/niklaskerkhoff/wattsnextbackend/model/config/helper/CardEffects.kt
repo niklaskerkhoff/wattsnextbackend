@@ -19,16 +19,17 @@ fun updateProgressPointsEffect(progressPoints: Int): CardEffect = { game ->
     )
 }
 
-fun updateCurrentPhaseTarget(target: Int): CardEffect = { game ->
-    Pair(game, emptyList())//Impl
+fun updateCurrentGenerationAndDistributionPhaseTarget(delta: Int): CardEffect = { game ->
+    Pair(game.withUpdatedGenerationAndDistributionTargets(delta),
+        listOf(CardEffectInfo.GenerationAndDistributionTargets(delta)))
 }
 
 fun updateMoneyPerPlayerEffect(multiplier: Int): CardEffect = { game ->
     updateMoneyEffect(game.players.count() * multiplier)(game)
 }
 
-fun nuclearCatastropheIfExistingEffect(): CardEffect = { game ->
-    Pair(game, emptyList())//Impl
+fun nuclearCatastropheEffect(): CardEffect = { game ->
+    Pair(game.withNuclearCatastrophe(), listOf(CardEffectInfo.NuclearCatastrophe))
 }
 
 fun ifGasIsExisting(effect: CardEffect): CardEffect = ifTagIsExisting(Tag.Gas, effect)
@@ -37,9 +38,11 @@ fun ifSolarIsExisting(effect: CardEffect): CardEffect = ifTagIsExisting(Tag.Sola
 
 fun ifWindIsExisting(effect: CardEffect): CardEffect = ifTagIsExisting(Tag.Wind, effect)
 
+fun ifNuclearIsExisting(effect: CardEffect): CardEffect = ifTagIsExisting(Tag.Nuclear, effect)
+
 private fun ifTagIsExisting(tag: Tag, effect: CardEffect): CardEffect = { game ->
     val isExisting = game.getAllCards().any {
-        it is ProgressCard.TechnologyCard && it.tags.contains(tag.name)
+        it is ProgressCard.TechnologyCard && it.tags.contains(tag)
     }
 
     if (isExisting) effect(game) else Pair(game, emptyList())

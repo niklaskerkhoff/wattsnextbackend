@@ -109,9 +109,9 @@ enum class SupplyListModifier(
 }
 
 
-private fun List<String>.contains(tag: Tag) = this.contains(tag.name)
+private fun List<Tag>.contains(tag: Tag) = this.contains(tag)
 
-private fun List<String>.containsAny(vararg tags: Tag) = tags.any { this.contains(it.name) }
+private fun List<Tag>.containsAny(vararg tags: Tag) = tags.any { this.contains(it) }
 
 private fun matches(card: ProgressCard, condition: TechnologyCard.() -> Boolean): Boolean =
     card is TechnologyCard && condition(card)
