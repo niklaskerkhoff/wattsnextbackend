@@ -80,16 +80,12 @@ data class Game(
         val progressCards = getAllProgressCards().filterNotNull()
         val (energy, achievements) = calculateTotalSupply(progressCards)
 
-        val (technologyCards, climateCards) =
-            progressCards.partitionByType<ProgressCard.TechnologyCard, ProgressCard.ClimateCard>()
-
-        val technologyResult = getBaseAndSystemTechnologyCards(technologyCards, energy, achievements)
-        val climateResult = getBaseAndSystemClimateCards(climateCards, energy, achievements)
+        val cardResult = getBaseAndSystemProgressCards(progressCards, energy, achievements)
 
         return ProgressPointInfo(
-            baseCards = technologyResult.baseCards + climateResult.baseCards,
-            systemCards = technologyResult.systemCards + climateResult.systemCards,
-            progressPoints = technologyResult.progressPoints + climateResult.progressPoints + progressPointsDelta,
+            baseCards = cardResult.baseCards,
+            systemCards = cardResult.systemCards,
+            progressPoints = cardResult.progressPoints + progressPointsDelta,
         )
     }
 
@@ -162,36 +158,35 @@ data class Game(
             }
         }
 
-    private fun getBaseAndSystemClimateCards(
-        climateCards: List<ProgressCard.ClimateCard>,
+    private fun getBaseAndSystemProgressCards(
+        progressCards: List<ProgressCard>,
         totalEnergySupply: Map<Technology, Map<EnergyForm, Int>>,
         totalAchievementsSupply: Set<Supply.Achievement>,
     ): ProgressPointInfo {
 
-        var climateProgressPoints = 0
+        var progressPoints = 0
         var systemCards = listOf<ProgressCard>()
         var baseCards = listOf<ProgressCard>()
 
-        for (climateCard in climateCards) {
+        for (progressCard in progressCards) {
             if (canUseSystemPoints(
-                    climateCard.supplyRequirementsForSystem.modified(climateCard),
+                    progressCard.supplyRequirementsForSystem.modified(progressCard),
                     totalEnergySupply,
                     totalAchievementsSupply
                 )
             ) {
-                systemCards += climateCard
-                climateProgressPoints += climateCard.systemPoints
+                systemCards += progressCard
+                progressPoints += progressCard.systemPoints
             } else {
-                baseCards += climateCard
-                climateProgressPoints += climateCard.basePoints
+                baseCards += progressCard
+                progressPoints += progressCard.basePoints
             }
         }
-
 
         return ProgressPointInfo(
             baseCards = baseCards,
             systemCards = systemCards,
-            progressPoints = climateProgressPoints
+            progressPoints = progressPoints
         )
     }
 
@@ -215,6 +210,8 @@ data class Game(
         return true
     }
 
+    // expert mode
+    /*
     private fun getBaseAndSystemTechnologyCards(
         technologyCards: List<ProgressCard.TechnologyCard>,
         totalEnergySupply: Map<Technology, Map<EnergyForm, Int>>,
@@ -298,7 +295,7 @@ data class Game(
             }
         }
         return true
-    }
+    }*/
 
     private fun calculateTotalSupply(
         progressCards: List<ProgressCard>
