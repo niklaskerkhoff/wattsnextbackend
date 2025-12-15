@@ -51,8 +51,8 @@ object GameFactory {
             progressPointsDelta = 0,
             energyTargetsPerPhase = listOf(
                 mapOf(
-                    Technology.Generation to 3,
-                    Technology.Distribution to 3,
+                    Technology.Generation to 4,
+                    Technology.Distribution to 4,
                     Technology.Storage to 0
                 ),
                 mapOf(
