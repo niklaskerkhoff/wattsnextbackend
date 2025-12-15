@@ -54,6 +54,11 @@ data class TechnologyBoard(
             }
         }
 
+    fun getPositionOf(card: ProgressCard.TechnologyCard) =
+        getTechnologyColumn(card.technology).indexOfFirst(
+            { it.lastOrNull() == card }
+        )
+
     private fun TechnologyColumn.playIfRightTechnology(
         technology: Technology,
         card: ProgressCard.TechnologyCard,

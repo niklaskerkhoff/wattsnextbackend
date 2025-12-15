@@ -86,6 +86,13 @@ class GameManagerRepo {
                     catastropheEventCardDeck = game.get("catastropheEventCardDeck")
                         .map { tempEntityResolver.getEventCard(UUID.fromString(it.asText()))!! },
 
+                    standardEventCards = game.get("standardEventCards")
+                        .map { tempEntityResolver.getEventCard(UUID.fromString(it.asText()))!! },
+
+                    catastropheEventCard = game.get("catastropheEventCard")
+                        ?.takeUnless { it.isNull }
+                        ?.let { tempEntityResolver.getEventCard(UUID.fromString(it.asText())) },
+
                     phase = game.get("phase").asInt(),
                     turnInPhase = game.get("turnInPhase").asInt(),
 

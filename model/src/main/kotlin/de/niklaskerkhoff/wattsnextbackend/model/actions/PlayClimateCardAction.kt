@@ -23,7 +23,7 @@ class PlayClimateCardAction(
 
         val moneyAfterCardPlayed = game.money - climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1))
         val resourcesAfterCardPlayed =
-            game.money - climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1))
+            game.resources - climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1))
 
         val currentPlayerProgressCardsWithoutPlayedCard = game.currentPlayer.progressCards.removed(climateCard)
 

@@ -40,7 +40,7 @@ data class GameData(
         turnInPhase = result.game.turnInPhase,
         turnsPerPhase = result.game.numberOfTurnsPerPhase,
         phases = (0..<result.game.numberOfPhases).map { PhaseData(result, it) },
-        progressCardPileSize = 0,
+        progressCardPileSize = result.game.progressCardDeck.size,
         progressPoints = result.game.calculateProgressPointInfo().progressPoints,
     )
 }

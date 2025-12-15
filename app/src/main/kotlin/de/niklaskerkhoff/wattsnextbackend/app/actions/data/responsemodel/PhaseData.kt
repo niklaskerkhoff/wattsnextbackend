@@ -12,27 +12,32 @@ data class PhaseData(
     val heat: TargetableValue,
 ) {
     constructor(result: Result<*>, phaseIndex: Int) : this(
-        // TODO: Values have to be set correctly
         generation = TargetableValue(
-            value = 0,
+            value = result.game.getGeneration(),
             target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]
                 ?: throw IllegalStateException("No generation target found.")
         ),
         distribution = TargetableValue(
-            value = 0,
+            value = result.game.getDistribution(),
             target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]
                 ?: throw IllegalStateException("No distribution target found.")
         ),
         storage = TargetableValue(
-            value = 0,
+            value = result.game.getStorage(),
             target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]
                 ?: throw IllegalStateException("No storage target found.")
         ),
         progressPoints = TargetableValue(
-            value = 0,
+            value = result.game.calculateProgressPointInfo().progressPoints,
             target = result.game.pointTargetsPerPhase[phaseIndex]
         ),
-        electricity = TargetableValue(0, 0),
-        heat = TargetableValue(0, 0),
+        electricity = TargetableValue(
+            value = if (result.game.doesElectricityExist()) 1 else 0,
+            target = 1
+        ),
+        heat = TargetableValue(
+            value = if (result.game.doesHeatExist()) 1 else 0,
+            target = 1
+        ),
     )
 }
