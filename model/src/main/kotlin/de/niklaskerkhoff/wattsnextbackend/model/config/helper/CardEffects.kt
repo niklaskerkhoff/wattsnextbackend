@@ -31,18 +31,18 @@ fun nuclearCatastropheIfExistingEffect(): CardEffect = { game ->
     Pair(game, emptyList())//Impl
 }
 
-fun ifSolarIsExisting(effect: CardEffect): CardEffect = { game ->
-    val solarExisting = game.getAllCards().any {
-        it is ProgressCard.TechnologyCard && it.tags.contains(Tag.Solar.name)
-    }
-    if (solarExisting) effect(game) else Pair(game, emptyList())
-}
+fun ifGasIsExisting(effect: CardEffect): CardEffect = ifTagIsExisting(Tag.Gas, effect)
 
-fun ifWindIsExisting(effect: CardEffect): CardEffect = { game ->
-    val windExisting = game.getAllCards().any {
-        it is ProgressCard.TechnologyCard && it.tags.contains(Tag.Wind.name)
+fun ifSolarIsExisting(effect: CardEffect): CardEffect = ifTagIsExisting(Tag.Solar, effect)
+
+fun ifWindIsExisting(effect: CardEffect): CardEffect = ifTagIsExisting(Tag.Wind, effect)
+
+private fun ifTagIsExisting(tag: Tag, effect: CardEffect): CardEffect = { game ->
+    val isExisting = game.getAllCards().any {
+        it is ProgressCard.TechnologyCard && it.tags.contains(tag.name)
     }
-    if (windExisting) effect(game) else Pair(game, emptyList())
+
+    if (isExisting) effect(game) else Pair(game, emptyList())
 }
 
 infix fun CardEffect.and(other: CardEffect): CardEffect = { game ->

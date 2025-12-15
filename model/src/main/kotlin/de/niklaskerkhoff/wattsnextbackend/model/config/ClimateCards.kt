@@ -192,8 +192,7 @@ val climateCards = listOf(
             requirementsDescription = "Es muss ausreichend Strom aus erneuerbaren Quellen produziert werden. Für ein gebautes Gaskraftwerk erhaltet ihr 5 zusätzliche Fortschrittspunkte.",
             explanation = "Power-to-X Technologien können Stromüberschüsse aus erneuerbaren Energien langfristig, z. B. in Form von H2, speichern.",
             modifierCollection = ModifierCollection(),
-            // TODO: Is the condition of a Gaskraftwerk missing in this effect?
-            effect = updateProgressPointsEffect(5),
+            effect = ifGasIsExisting(updateProgressPointsEffect(5)),
             phaseIndex = 1
         )
     },

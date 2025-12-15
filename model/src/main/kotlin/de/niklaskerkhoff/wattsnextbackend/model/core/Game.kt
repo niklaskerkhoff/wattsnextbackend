@@ -35,13 +35,14 @@ data class Game(
     val phase: Int = 0,
     val turnInPhase: Int = 0,
 
-    // TODO: What is this?
     val progressPointsDelta: Int = 0,
 
     val energyTargetsPerPhase: List<Map<Technology, Int>>,
     val pointTargetsPerPhase: List<Int>,
     val numberOfPhases: Int,
     val numberOfTurnsPerPhase: Int,
+
+//    val frozenPhaseValues: List<PhaseValue> = emptyList(),
 ) : ModificationBase, EffectBase {
 
 
@@ -60,7 +61,37 @@ data class Game(
         require(pointTargetsPerPhase.size == numberOfPhases)
     }
 
-    override fun provideModifiers() = getAllCards().filterNotNull()
+    fun getAllProgressCards(): List<ProgressCard?> = technologyBoard.getAllCurrentProgressCards() + climateCards
+
+    fun getAllCards(): List<Card?> =
+        technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCards + catastropheEventCard
+
+    fun getGeneration(): Int = technologyBoard.generationCards.sumModifiedSupply()
+
+    fun getDistribution(): Int = technologyBoard.distributionCards.sumModifiedSupply()
+
+    fun getStorage(): Int = technologyBoard.storageCards.sumModifiedSupply()
+
+    fun doesElectricityExist(): Boolean = formExists(EnergyForm.Electricity)
+
+    fun doesHeatExist(): Boolean = formExists(EnergyForm.Heat)
+
+    fun calculateProgressPointInfo(): ProgressPointInfo {
+        val progressCards = getAllProgressCards().filterNotNull()
+        val (energy, achievements) = calculateTotalSupply(progressCards)
+
+        val (technologyCards, climateCards) =
+            progressCards.partitionByType<ProgressCard.TechnologyCard, ProgressCard.ClimateCard>()
+
+        val technologyResult = getBaseAndSystemTechnologyCards(technologyCards, energy, achievements)
+        val climateResult = getBaseAndSystemClimateCards(climateCards, energy, achievements)
+
+        return ProgressPointInfo(
+            baseCards = technologyResult.baseCards + climateResult.baseCards,
+            systemCards = technologyResult.systemCards + climateResult.systemCards,
+            progressPoints = technologyResult.progressPoints + climateResult.progressPoints + progressPointsDelta,
+        )
+    }
 
     fun withAdditionalProgressPoints(delta: Int): Game = copy(progressPointsDelta = delta)
 
@@ -70,10 +101,23 @@ data class Game(
 
     fun withUpdatedState(state: GameState): Game = copy(state = state)
 
-    fun getAllProgressCards(): List<ProgressCard?> = technologyBoard.getAllCurrentProgressCards() + climateCards
+    fun prepare(): Result<Unit> {
+        val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
+        val updatedStandardEventCards = standardEventCards + drawnCard
 
-    fun getAllCards(): List<Card?> =
-        technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCards + catastropheEventCard
+        val (gameAfterStandardEffect, standardEffectInfos) = drawnCard.effect(this)
+
+        return Result(
+            gameAfterStandardEffect.copy(
+                standardEventCards = updatedStandardEventCards,
+                standardEventCardDeck = updatedStandardEventCardDeck,
+            ),
+            BaseInfo(gotNewStandardEventCard = true),
+            cardEffectInfos = standardEffectInfos,
+        )
+    }
+
+    override fun provideModifiers() = getAllCards().filterNotNull()
 
     override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
@@ -101,24 +145,6 @@ data class Game(
                 handleNextPhase(phase + 1)
             }
         }
-
-
-    fun calculateProgressPointInfo(): ProgressPointInfo {
-        val progressCards = getAllProgressCards().filterNotNull()
-        val (energy, achievements) = calculateTotalSupply(progressCards)
-
-        val (technologyCards, climateCards) =
-            progressCards.partitionByType<ProgressCard.TechnologyCard, ProgressCard.ClimateCard>()
-
-        val technologyResult = getBaseAndSystemTechnologyCards(technologyCards, energy, achievements)
-        val climateResult = getBaseAndSystemClimateCards(climateCards, energy, achievements)
-
-        return ProgressPointInfo(
-            baseCards = technologyResult.baseCards + climateResult.baseCards,
-            systemCards = technologyResult.systemCards + climateResult.systemCards,
-            progressPoints = technologyResult.progressPoints + climateResult.progressPoints + progressPointsDelta,
-        )
-    }
 
     private fun getBaseAndSystemClimateCards(
         climateCards: List<ProgressCard.ClimateCard>,
@@ -262,24 +288,24 @@ data class Game(
         progressCards: List<ProgressCard>
     ): Pair<Map<Technology, Map<EnergyForm, Int>>, Set<Supply.Achievement>> {
 
-        val supplies = progressCards.map { it.supply }
+        val supplies = progressCards.map { it.supply.modified(it, this@Game, Pair(this@Game, it.getPosition() ?: -1)) }
 
-        val energy = mutableMapOf<Technology, MutableMap<EnergyForm, Int>>()
-        val achievements = mutableSetOf<Supply.Achievement>()
+        val totalEnergySupplies = mutableMapOf<Technology, MutableMap<EnergyForm, Int>>()
+        val totalAchievementSupplies = mutableSetOf<Supply.Achievement>()
 
         for (supply in supplies) {
             when (supply) {
-                is Supply.Achievement -> achievements += supply
+                is Supply.Achievement -> totalAchievementSupplies += supply
                 is Supply.Energy -> {
-                    val formMap = energy.getOrPut(supply.technology) { mutableMapOf() }
-                    formMap[supply.form] = formMap.getOrPut(supply.form) { 0 } + energy.size
+                    val formMap = totalEnergySupplies.getOrPut(supply.technology) { mutableMapOf() }
+                    formMap[supply.form] = formMap.getOrPut(supply.form) { 0 } + supply.size
                 }
 
                 else -> {}
             }
         }
 
-        return Pair(energy, achievements)
+        return Pair(totalEnergySupplies, totalAchievementSupplies)
     }
 
     private fun handleNextPhase(nextPhase: Int): Result<Unit> =
@@ -340,6 +366,23 @@ data class Game(
 
     private fun <T> ModifiedValue<T, ModificationBase>.modified(modifiedCard: ProgressCard) =
         modified(modifiedCard, this@Game, this@Game)
+
+    private fun List<List<ProgressCard.TechnologyCard>>.sumModifiedSupply(): Int =
+        sumOf { it.lastOrNull()?.getModifiedSupply()?.size ?: 0 }
+
+    private fun formExists(form: EnergyForm): Boolean =
+        technologyBoard.generationCards.any {
+            it.lastOrNull()?.let { card -> card.supply.base.form == form } ?: false
+        }
+
+    private fun ProgressCard.TechnologyCard.getModifiedSupply(): Supply.Energy =
+        supply.modified(this, this@Game, Pair(this@Game, getPosition()!!))
+
+    private fun ProgressCard.getPosition(): Int? =
+        when (this) {
+            is ProgressCard.TechnologyCard -> technologyBoard.getPositionOf(this)
+            is ProgressCard.ClimateCard -> null
+        }
 
     data class BaseInfo(
         val phaseCompleted: Boolean = false,

@@ -66,7 +66,7 @@ object GameFactory {
                     Technology.Storage to 6
                 )
             ),
-        )
+        ).prepare().game
 
         return Pair(game, EntityResolver(players))
     }
