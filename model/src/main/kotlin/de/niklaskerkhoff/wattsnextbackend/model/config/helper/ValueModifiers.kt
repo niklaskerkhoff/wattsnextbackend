@@ -95,8 +95,11 @@ enum class SupplyListModifier(
         if (matches(modifiedCard) { tags.containsAny(Water, PumpStorage) }) acc + Supply.Never else acc
     }),
 
-    BasePointsForDistribution({ acc, modifiedCard, _ ->
-        if (matches(modifiedCard) { technology == Technology.Distribution }) acc + Supply.Never else acc
+    BasePointsForDistributionCondition({ acc, modifiedCard, _ ->
+        if (progressCardMatches(modifiedCard)
+            { supplyRequirementsForSystem.base.any { it is Supply.Energy && it.technology == Technology.Distribution } })
+            acc + Supply.Never
+        else acc
     }),
 
     SystemPointsForSolar({ acc, modifiedCard, _ ->
@@ -115,4 +118,6 @@ private fun List<Tag>.containsAny(vararg tags: Tag) = tags.any { this.contains(i
 
 private fun matches(card: ProgressCard, condition: TechnologyCard.() -> Boolean): Boolean =
     card is TechnologyCard && condition(card)
+
+private fun progressCardMatches(card: ProgressCard, condition: ProgressCard.()-> Boolean): Boolean = condition(card)
 

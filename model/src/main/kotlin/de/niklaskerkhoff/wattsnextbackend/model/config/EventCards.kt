@@ -95,6 +95,7 @@ val eventCards = listOf(
             ),
         ),
         effectConditionDescription = "Falls Solartechnologien im Energiesystem vorhanden:",
+        // TODO: Only if solar exists
         modifierCollection = ModifierCollection(
             supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 4,
@@ -136,6 +137,7 @@ val eventCards = listOf(
             ),
         ),
         effectConditionDescription = "Falls Windtechnologien im Energiesystem vorhanden:",
+        // TODO: Only if Wind exists
         modifierCollection = ModifierCollection(
             supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 5,
@@ -232,14 +234,15 @@ val eventCards = listOf(
         id = UUID.fromString("ede9c64a-f8c0-43d1-9d1e-9185707915fb"),
         name = "Neues aus der Photovoltaikforschung",
         eventDescription = "Photovoltaikanlagen sind jetzt langlebiger. Außerdem wurde eine Recycling-Methode entwickelt. Das spart Geld und Ressourcen.",
+        effectConditionDescription = "Falls Photovoltaik-Technologien im Energiesystem vorhanden sind:",
         effectDescriptions = listOf(
             EffectDescription(
-                text = "Geld und Ressourcen werden jeweils um 2 Einheiten erhöht, falls Photovoltaik-Technologien im Energiesystem vorhanden sind.",
+                text = "Geld und Ressourcen werden jeweils um 2 Einheiten erhöht.",
                 type = MoneyAndResources,
             ),
         ),
         modifierCollection = ModifierCollection(),
-        effect = updateResourcesEffect(2) and updateMoneyEffect(2),
+        effect = ifSolarIsExisting(updateResourcesEffect(2) and updateMoneyEffect(2)),
         phaseIndex = 0,
         isCatastrophe = false
     ),
@@ -425,7 +428,7 @@ val eventCards = listOf(
         modifierCollection = ModifierCollection(
             supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 10,
-                modify = SupplyListModifier.BasePointsForDistribution.modify
+                modify = SupplyListModifier.BasePointsForDistributionCondition.modify
             )
         ),
         effect = updateMoneyEffect(-6) and updateResourcesEffect(-2),
