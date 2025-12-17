@@ -103,12 +103,16 @@ data class Game(
 
     fun withUpdatedGenerationAndDistributionTargets(delta: Int): Game =
         copy(
-            energyTargetsPerPhase = energyTargetsPerPhase.map { phaseTargets ->
-                mapOf(
-                    Technology.Generation to (phaseTargets[Technology.Generation] ?: 0) + delta,
-                    Technology.Distribution to (phaseTargets[Technology.Distribution] ?: 0) + delta,
-                    Technology.Storage to (phaseTargets[Technology.Storage] ?: 0)
-                )
+            energyTargetsPerPhase = energyTargetsPerPhase.mapIndexed { index, phaseTargets ->
+                if (index != phase) {
+                    phaseTargets
+                } else {
+                    mapOf(
+                        Technology.Generation to (phaseTargets[Technology.Generation] ?: 0) + delta,
+                        Technology.Distribution to (phaseTargets[Technology.Distribution] ?: 0) + delta,
+                        Technology.Storage to (phaseTargets[Technology.Storage] ?: 0)
+                    )
+                }
             }
         )
 
