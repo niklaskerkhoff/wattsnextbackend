@@ -76,6 +76,12 @@ data class Game(
 
     fun getStorage(): Int = technologyBoard.storageCards.sumModifiedSupply()
 
+    fun fulfillsConditions(progressCard: ProgressCard): Boolean {
+        val playedCards = getAllProgressCards().filterNotNull()
+        val (energy, achievements) = calculateTotalSupply(playedCards)
+        return canUseSystemPoints(progressCard.supplyRequirementsForSystem.modified(progressCard, this, this), energy, achievements)
+    }
+
     fun doesElectricityExist(): Boolean = formExists(EnergyForm.Electricity)
 
     fun doesHeatExist(): Boolean = formExists(EnergyForm.Heat)

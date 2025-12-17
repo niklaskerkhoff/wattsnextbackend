@@ -14,6 +14,6 @@ data class ProgressPointsData(
         baseProgressPoints = card.basePoints,
         systemProgressPoints = card.systemPoints,
         conditions = card.supplyRequirementsForSystem.modified(card, result.game, result.game),
-        conditionsFulfilled = result.game.calculateProgressPointInfo().systemCards.contains(card),
+        conditionsFulfilled = result.game.fulfillsConditions(card),
     )
 }
