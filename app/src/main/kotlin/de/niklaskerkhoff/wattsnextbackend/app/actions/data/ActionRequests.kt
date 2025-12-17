@@ -14,3 +14,7 @@ data class PlayTechnologyCardIntentRequest(
 data class PlayTechnologyCardRequest(
     val shallRecycle: Boolean,
 )
+
+data class ChangeCardRequest(
+    val progressCardId: UUID ,
+)

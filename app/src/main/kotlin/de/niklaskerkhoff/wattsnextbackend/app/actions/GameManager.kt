@@ -2,6 +2,7 @@ package de.niklaskerkhoff.wattsnextbackend.app.actions
 
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.ActionResponse
 import de.niklaskerkhoff.wattsnextbackend.model.actions.CancelGameAction
+import de.niklaskerkhoff.wattsnextbackend.model.actions.ChangeCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardAction
 import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
@@ -57,6 +58,16 @@ class GameManager(
             previousAction,
             previousActionInfo
         )
+        return executeAction(action)
+    }
+
+    fun handleChangeCard(progressCardId: UUID): ActionResponse {
+        if (previousAction is PlayTechnologyCardActionIntent) {
+            return illegalActionResponse()
+        }
+
+        val progressCard = entityResolver.getProgressCard(progressCardId) ?: return illegalActionResponse()
+        val action = ChangeCardAction(progressCard)
         return executeAction(action)
     }
 
