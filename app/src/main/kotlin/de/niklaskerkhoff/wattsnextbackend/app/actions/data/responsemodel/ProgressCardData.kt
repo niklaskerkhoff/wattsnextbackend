@@ -41,8 +41,8 @@ data class ProgressCardData(
             originalValue = card.supply.base,
             modifiedValue = card.supply.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
         ),
-        isPlayable = /*result.playableCards.any { it.id == card.publicId },*/ true,
-        gameBeforeEffect = null,
+        isPlayable = result.game.getPlayableHandcards(targetPosition).contains(card),
+        gameBeforeEffect = null, // TODO (or delete)
         type = when (card) {
             is ProgressCard.TechnologyCard -> "technology"
             is ProgressCard.ClimateCard -> "climateAction"

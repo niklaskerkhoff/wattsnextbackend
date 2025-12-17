@@ -6,7 +6,6 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModificationBase
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifiedValue
-import de.niklaskerkhoff.wattsnextbackend.model.lib.partitionByType
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.EnergyForm
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
@@ -65,6 +64,11 @@ data class Game(
 
     fun getAllCards(): List<Card?> =
         technologyBoard.getAllCurrentProgressCards() + climateCards + standardEventCards + catastropheEventCard
+
+    fun getPlayableHandcards(targetPosition: Int? = null): List<ProgressCard?> =
+        players
+            .flatMap { it.progressCards }
+            .filter { it?.isPlayable(targetPosition) ?: false }
 
     fun getGeneration(): Int = technologyBoard.generationCards.sumModifiedSupply()
 
@@ -396,6 +400,20 @@ data class Game(
             is ProgressCard.TechnologyCard -> technologyBoard.getPositionOf(this)
             is ProgressCard.ClimateCard -> null
         }
+
+    private fun ProgressCard.isPlayable(targetPosition: Int? = null): Boolean {
+        val positions: List<Int> =
+            if (targetPosition != null) listOf(targetPosition)
+            else if (this is ProgressCard.TechnologyCard) listOf(0,1,2)
+            else listOf(-1)
+
+        return positions.any { position ->
+            val modifiedMoney = moneyCosts.modified(this, this@Game, Pair(this@Game, position))
+            val modifiedResources = resourceCosts.modified(this, this@Game, Pair(this@Game, position))
+
+            modifiedMoney <= this@Game.money && modifiedResources <= this@Game.resources
+        }
+    }
 
     data class BaseInfo(
         val phaseCompleted: Boolean = false,
