@@ -137,11 +137,10 @@ val eventCards = listOf(
             ),
         ),
         effectConditionDescription = "Falls Windtechnologien im Energiesystem vorhanden:",
-        // TODO: Only if Wind exists
         modifierCollection = ModifierCollection(
             supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 5,
-                modify = SupplyListModifier.SystemPointsForStorage.modify
+                modify = ifWindIsExistingModifier(SupplyListModifier.SystemPointsForStorage.modify)
             )
         ),
         effect = ifWindIsExisting(updateMoneyEffect(2)),

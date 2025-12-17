@@ -111,6 +111,31 @@ enum class SupplyListModifier(
     }),
 }
 
+fun <T> ifWindIsExistingModifier(modifier: SimpleModifierFunction<T>) = ifTagIsExistingModifier(Tag.Wind, modifier)
+
+private fun <T> ifTagIsExistingModifier(
+    tag: Tag,
+    modifier: SimpleModifierFunction<T>
+): SimpleModifierFunction<T> =
+    ifCondition(
+        condition = { base ->
+            base.technologyBoard.getAllCurrentProgressCards().any {
+                it?.tags?.contains(tag) ?: false
+            }
+        },
+        modifier = modifier
+    )
+
+private fun <T> ifCondition(
+    condition: (ModificationBase) -> Boolean,
+    modifier: SimpleModifierFunction<T>
+): SimpleModifierFunction<T> =
+    { acc, modifiedCard, modificationBase ->
+        if (condition(modificationBase))
+            modifier(acc, modifiedCard, modificationBase)
+        else
+            acc
+    }
 
 private fun List<Tag>.contains(tag: Tag) = this.contains(tag)
 
