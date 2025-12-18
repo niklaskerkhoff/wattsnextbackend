@@ -1,9 +1,14 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core.cards
 
-sealed class CardEffectInfo {
-    data class Money(val amount: Int) : CardEffectInfo()
-    data class Resources(val amount: Int) : CardEffectInfo()
-    data class ProgressPoints(val amount: Int) : CardEffectInfo()
-    data class GenerationAndDistributionTargets(val amount: Int) : CardEffectInfo()
-    object NuclearCatastrophe : CardEffectInfo()
+data class CardEffectInfo(
+    val type: CardEffectType,
+    val amount: Int? = null
+)
+
+enum class CardEffectType {
+    Money,
+    Resources,
+    ProgressPoints,
+    GenerationAndDistributionTargets,
+    NuclearCatastrophe
 }
