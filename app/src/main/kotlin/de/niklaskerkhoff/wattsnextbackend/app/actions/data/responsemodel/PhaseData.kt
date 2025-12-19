@@ -19,12 +19,12 @@ data class PhaseData(
         ),
         distribution = TargetableValue(
             value = result.game.getDistribution(),
-            target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]
+            target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Distribution]
                 ?: throw IllegalStateException("No distribution target found.")
         ),
         storage = TargetableValue(
             value = result.game.getStorage(),
-            target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]
+            target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Storage]
                 ?: throw IllegalStateException("No storage target found.")
         ),
         progressPoints = TargetableValue(
