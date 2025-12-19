@@ -48,7 +48,7 @@ enum class SupplyModifier(
     val modify: WithIntModifierFunction<Supply?>
 ) {
     NoSupplyFromOverheadPowerLine({ acc, modifiedCard, _ ->
-        if (matches(modifiedCard) { tags.contains(OverheadPowerLine) }) null else acc
+        if (matches(modifiedCard) { tags.contains(OverheadPowerLine) } && acc is Supply.Energy) acc.copy(size = 0) else acc
     }),
 
     Stack({ acc, modifiedCard, (game, targetPosition) ->
@@ -111,7 +111,7 @@ enum class SupplyListModifier(
     }),
 }
 
-fun <T> ifWindIsExistingModifier(modifier: SimpleModifierFunction<T>) = ifTagIsExistingModifier(Tag.Wind, modifier)
+fun <T> ifWindIsExistingModifier(modifier: SimpleModifierFunction<T>) = ifTagIsExistingModifier(Wind, modifier)
 
 private fun <T> ifTagIsExistingModifier(
     tag: Tag,
