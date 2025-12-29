@@ -314,7 +314,7 @@ val technologyCards = listOf(
                 size = 3,
             ),
         ),
-        requirementsDescription = "Bei Bau auf „Kleiner Windpark“: Zahle nur 1 Geldeinheiten und 1 Ressource. Der Strom muss verteilt und in windreichen Stunden gespeichert werden.",
+        requirementsDescription = "Bei Bau auf „Kleiner Windpark“: Zahle nur 1 Geldeinheiten und 1 Ressource.",
         explanation = "Viele Windkraftanalgen erzeugen aus Wind im großen Maße Strom.",
 
         phaseIndex = 1,

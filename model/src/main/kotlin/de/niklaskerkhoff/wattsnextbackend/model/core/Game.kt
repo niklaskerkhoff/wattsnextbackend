@@ -124,7 +124,6 @@ data class Game(
 
     fun withNuclearCatastrophe(): Game = copy(
         technologyBoard = technologyBoard.withNuclearCatastrophe(),
-        climateCards = emptyList()
     )
 
     fun prepare(): Result<Unit> {
