@@ -803,7 +803,7 @@ val technologyCards = listOf(
     ),
     *Array(3) {
         TechnologyCardData(
-            id = "dd1124ef-3e86-4c0f-93b8-2fa1c7aa5eea",
+            id = "dd1124ef-3e86-4c0f-93b8-2fa1c7aa5ee$it",
             name = "Batteriespeicher im Haus",
             imageSrc = "Batteriespeicher im Haus.png",
             supply = Energy(
