@@ -10,6 +10,7 @@ data class PhaseData(
     val progressPoints: TargetableValue,
     val electricity: TargetableValue,
     val heat: TargetableValue,
+    val money: TargetableValue,
 ) {
     constructor(result: Result<*>, phaseIndex: Int) : this(
         generation = TargetableValue(
@@ -39,5 +40,28 @@ data class PhaseData(
             value = if (result.game.doesHeatExist()) 1 else 0,
             target = 1
         ),
+        money = TargetableValue(
+            value =
+                minOf(
+                    minOf(result.game.getGeneration(), result.game.getDistribution()),
+                    minOf(
+                        result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,
+                        result.game.energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
+                    )
+                ) +
+                        minOf(
+                            result.game.getStorage(),
+                            result.game.energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
+                        ),
+            target =
+                minOf(
+                    result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,
+                    result.game.energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
+                ) +
+                        result.game.energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
+        )
+
+
     )
+
 }

@@ -220,7 +220,7 @@ val climateCards = listOf(
         supply = null,
         moneyCosts = 0,
         resourceCosts = 0,
-        basePoints = 2,
+        basePoints = 0,
         systemPoints = 2,
         supplyRequirementsForSystem = listOf(
             Energy(

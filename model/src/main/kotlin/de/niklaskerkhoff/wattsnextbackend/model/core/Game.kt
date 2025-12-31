@@ -351,12 +351,25 @@ data class Game(
             val updatedStandardEventCards = listOf(drawnStandardEventCard)
 
             val requirementsFulfilled = hasReachedTargets()
+            val moneyEarned = minOf(
+                minOf(getGeneration(), getDistribution()),
+                minOf(
+                    energyTargetsPerPhase[phase][Technology.Generation]!!,
+                    energyTargetsPerPhase[phase][Technology.Distribution]!!
+                )
+            ) +
+                    minOf(
+                        getStorage(),
+                        energyTargetsPerPhase[phase][Technology.Storage]!!
+                    )
+
+            val gameAfterMoneyEarned: Game = copy(money = money + moneyEarned)
 
             val (drawnCatastropheCard, updatedCatastropheEventCardDeck) =
                 if (requirementsFulfilled) Pair(null, catastropheEventCardDeck)
                 else catastropheEventCardDeck.removedLast()
 
-            val (gameAfterStandardEffect, standardEffectInfos) = drawnStandardEventCard.effect(this)
+            val (gameAfterStandardEffect, standardEffectInfos) = drawnStandardEventCard.effect(gameAfterMoneyEarned)
             val (gameAfterCatastropheEffect, catastropheEffectInfos) =
                 drawnCatastropheCard?.effect(gameAfterStandardEffect) ?: Pair(gameAfterStandardEffect, emptyList())
 
