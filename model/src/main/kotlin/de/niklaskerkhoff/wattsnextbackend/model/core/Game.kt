@@ -344,7 +344,9 @@ data class Game(
                     phaseCompleted = true,
                     hasGameStateChanged = true,
                     requirementsFulfilled = requirementsFulfilled
-                )
+                ),
+                actionInfo = null,
+                cardEffectInfos = emptyList(),
             )
         } else {
             val (drawnStandardEventCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()

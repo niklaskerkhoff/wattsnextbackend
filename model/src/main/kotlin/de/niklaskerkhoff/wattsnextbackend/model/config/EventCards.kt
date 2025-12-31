@@ -413,14 +413,14 @@ val eventCards = listOf(
     EventCard(
         id = UUID.fromString("e15be36e-f257-475d-b2c8-53f972f619cf"),
         name = "Blackout",
-        eventDescription = "Nach einem großflächigen Stromausfall ist ein sogenannter Schwarzstart erforderlich. Unter anderem sind viele erneuerbare Energietechnologien nicht dafür ausgelegt. Das Energiesystem wird durch schwarzstartfähige Anlagen schrittweise wieder hochgefahren.",
+        eventDescription = "Nach einem großflächigen Stromausfall ist ein Schwarzstart erforderlich. Viele erneuerbare Energietechnologien sind dafür nicht ausgelegt. Das Energiesystem wird durch schwarzstartfähige Anlagen schrittweise wieder hochgefahren.",
         effectDescriptions = listOf(
             EffectDescription(
                 text = "Geld wird um 6 Einheiten und Ressourcen um 2 Einheiten reduziert.",
                 type = MoneyAndResources,
             ),
             EffectDescription(
-                text = "Karten mit der Voraussetzung Verteilung zählen in dieser Runde nur mit den Basispunkten in die Fortschrittspunkte.",
+                text = "Karten mit der Voraussetzung Verteilung zählen nur mit den Basispunkten in die Fortschrittspunkte.",
                 type = Points,
             ),
         ),

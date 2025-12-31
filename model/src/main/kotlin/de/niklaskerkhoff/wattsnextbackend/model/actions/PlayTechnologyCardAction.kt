@@ -35,6 +35,7 @@ class PlayTechnologyCardAction(
 
         return Result(
             game = resultAfterCardPlayed.game,
+            baseInfo = resultAfterCardPlayed.baseInfo,
             actionInfo = ActionInfo(
                 playedCard = intent.technologyCard,
                 targetPosition = intent.targetPosition,
@@ -44,7 +45,8 @@ class PlayTechnologyCardAction(
                 didRecycle = shallRecycle,
                 payedMoneyForRecycling = recyclingInfo?.payedMoneyForRecycling,
                 gainedResourcesForRecycling = recyclingInfo?.gainedResourcesForRecycling,
-            )
+            ),
+            cardEffectInfos = resultAfterCardPlayed.cardEffectInfos,
         )
     }
 
