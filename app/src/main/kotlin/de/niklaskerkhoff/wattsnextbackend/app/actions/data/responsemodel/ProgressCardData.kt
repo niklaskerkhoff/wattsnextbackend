@@ -25,6 +25,7 @@ data class ProgressCardData(
         image = card.imageSrc,
         text = card.requirementsDescription,
         explanation = card.explanation,
+        // TODO: Set modifications
         moneyCosts = ModifiableValue(
             originalValue = card.moneyCosts.base,
             modifiedValue = card.moneyCosts.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
