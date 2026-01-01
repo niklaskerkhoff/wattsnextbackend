@@ -1,5 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.app.actions.data.responsemodel
 
+import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 
@@ -12,36 +13,58 @@ data class PhaseData(
     val heat: TargetableValue,
     val money: TargetableValue,
 ) {
+
     constructor(result: Result<*>, phaseIndex: Int) : this(
-        generation = TargetableValue(
-            value = result.game.getGeneration(),
+        generation = targetable(
+            result = result,
+            phaseIndex = phaseIndex,
+            snapshotValue = { it.generation },
+            liveValue = { result.game.getGeneration() },
             target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]
                 ?: throw IllegalStateException("No generation target found.")
         ),
-        distribution = TargetableValue(
-            value = result.game.getDistribution(),
+        distribution = targetable(
+            result = result,
+            phaseIndex = phaseIndex,
+            snapshotValue = { it.distribution },
+            liveValue = { result.game.getDistribution() },
             target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Distribution]
                 ?: throw IllegalStateException("No distribution target found.")
         ),
-        storage = TargetableValue(
-            value = result.game.getStorage(),
+        storage = targetable(
+            result = result,
+            phaseIndex = phaseIndex,
+            snapshotValue = { it.storage },
+            liveValue = { result.game.getStorage() },
             target = result.game.energyTargetsPerPhase[phaseIndex][Technology.Storage]
                 ?: throw IllegalStateException("No storage target found.")
         ),
-        progressPoints = TargetableValue(
-            value = result.game.calculateProgressPointInfo().progressPoints,
+        progressPoints = targetable(
+            result = result,
+            phaseIndex = phaseIndex,
+            snapshotValue = { it.progressPoints },
+            liveValue = { result.game.calculateProgressPointInfo().progressPoints },
             target = result.game.pointTargetsPerPhase[phaseIndex]
         ),
-        electricity = TargetableValue(
-            value = if (result.game.doesElectricityExist()) 1 else 0,
+        electricity = targetable(
+            result = result,
+            phaseIndex = phaseIndex,
+            snapshotValue = { if (it.electricity) 1 else 0 },
+            liveValue = { if (result.game.doesElectricityExist()) 1 else 0 },
             target = 1
         ),
-        heat = TargetableValue(
-            value = if (result.game.doesHeatExist()) 1 else 0,
+        heat = targetable(
+            result = result,
+            phaseIndex = phaseIndex,
+            snapshotValue = { if (it.heat) 1 else 0 },
+            liveValue = { if (result.game.doesHeatExist()) 1 else 0 },
             target = 1
         ),
-        money = TargetableValue(
-            value =
+        money = targetable(
+            result = result,
+            phaseIndex = phaseIndex,
+            snapshotValue = { it.moneyEarned },
+            liveValue = {
                 minOf(
                     minOf(result.game.getGeneration(), result.game.getDistribution()),
                     minOf(
@@ -52,7 +75,8 @@ data class PhaseData(
                         minOf(
                             result.game.getStorage(),
                             result.game.energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
-                        ),
+                        )
+            },
             target =
                 minOf(
                     result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,
@@ -60,8 +84,24 @@ data class PhaseData(
                 ) +
                         result.game.energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
         )
-
-
     )
 
+    companion object {
+
+        private fun targetable(
+            result: Result<*>,
+            phaseIndex: Int,
+            snapshotValue: (Game.PhaseSnapshot) -> Int,
+            liveValue: () -> Int,
+            target: Int
+        ): TargetableValue {
+
+            val snapshot = result.game.phaseSnapshots.getOrNull(phaseIndex)
+
+            return TargetableValue(
+                value = snapshot?.let(snapshotValue) ?: liveValue(),
+                target = target
+            )
+        }
+    }
 }

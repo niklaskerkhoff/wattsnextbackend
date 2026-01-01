@@ -38,6 +38,7 @@ data class Game(
 
     val energyTargetsPerPhase: List<Map<Technology, Int>>,
     val pointTargetsPerPhase: List<Int>,
+    val phaseSnapshots: List<PhaseSnapshot> = emptyList(),
     val numberOfPhases: Int,
     val numberOfTurnsPerPhase: Int,
 
@@ -352,23 +353,12 @@ data class Game(
             val (drawnStandardEventCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
             val updatedStandardEventCards = listOf(drawnStandardEventCard)
 
-            val requirementsFulfilled = hasReachedTargets()
-            val moneyEarned = minOf(
-                minOf(getGeneration(), getDistribution()),
-                minOf(
-                    energyTargetsPerPhase[phase][Technology.Generation]!!,
-                    energyTargetsPerPhase[phase][Technology.Distribution]!!
-                )
-            ) +
-                    minOf(
-                        getStorage(),
-                        energyTargetsPerPhase[phase][Technology.Storage]!!
-                    )
+            val phaseSnapshot = createPhaseSnapshot(phase)
 
-            val gameAfterMoneyEarned: Game = copy(money = money + moneyEarned)
+            val gameAfterMoneyEarned: Game = copy(money = money + phaseSnapshot.moneyEarned)
 
             val (drawnCatastropheCard, updatedCatastropheEventCardDeck) =
-                if (requirementsFulfilled) Pair(null, catastropheEventCardDeck)
+                if (phaseSnapshot.targetsFulfilled) Pair(null, catastropheEventCardDeck)
                 else catastropheEventCardDeck.removedLast()
 
             val (gameAfterStandardEffect, standardEffectInfos) = drawnStandardEventCard.effect(gameAfterMoneyEarned)
@@ -379,6 +369,7 @@ data class Game(
                 gameAfterCatastropheEffect.copy(
                     turnInPhase = 0,
                     phase = nextPhase,
+                    phaseSnapshots = phaseSnapshots + phaseSnapshot,
                     standardEventCards = updatedStandardEventCards,
                     standardEventCardDeck = updatedStandardEventCardDeck,
                     catastropheEventCardDeck = updatedCatastropheEventCardDeck,
@@ -387,7 +378,7 @@ data class Game(
                 BaseInfo(
                     phaseCompleted = true,
                     gotNewStandardEventCard = true,
-                    requirementsFulfilled = requirementsFulfilled
+                    requirementsFulfilled = phaseSnapshot.targetsFulfilled
                 ),
                 cardEffectInfos = standardEffectInfos + catastropheEffectInfos
             )
@@ -403,6 +394,32 @@ data class Game(
         supplyTarget.forEach { (technology, size) -> if ((technologySupply[technology] ?: 0) < size) return false }
 
         return true
+    }
+
+    private fun createPhaseSnapshot(phaseIndex: Int): PhaseSnapshot {
+        val moneyEarned =
+            minOf(
+                minOf(getGeneration(), getDistribution()),
+                minOf(
+                    energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,
+                    energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
+                )
+            ) +
+                    minOf(
+                        getStorage(),
+                        energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
+                    )
+
+        return PhaseSnapshot(
+            generation = getGeneration(),
+            distribution = getDistribution(),
+            storage = getStorage(),
+            progressPoints = calculateProgressPointInfo().progressPoints,
+            electricity = doesElectricityExist(),
+            heat = doesHeatExist(),
+            moneyEarned = moneyEarned,
+            targetsFulfilled = hasReachedTargets(),
+        )
     }
 
     private fun <T> ModifiedValue<T, ModificationBase>.modified(modifiedCard: ProgressCard) =
@@ -450,5 +467,16 @@ data class Game(
         val baseCards: List<ProgressCard>,
         val systemCards: List<ProgressCard>,
         val progressPoints: Int,
+    )
+
+    data class PhaseSnapshot(
+        val generation: Int,
+        val distribution: Int,
+        val storage: Int,
+        val progressPoints: Int,
+        val electricity: Boolean,
+        val heat: Boolean,
+        val moneyEarned: Int,
+        val targetsFulfilled: Boolean,
     )
 }

@@ -106,6 +106,19 @@ class GameManagerRepo {
 
                     pointTargetsPerPhase = game.get("pointTargetsPerPhase").map { it.asInt() },
 
+                    phaseSnapshots = game.get("phaseSnapshots")?.map { snapshot ->
+                        Game.PhaseSnapshot(
+                            generation = snapshot.get("generation").asInt(),
+                            distribution = snapshot.get("distribution").asInt(),
+                            storage = snapshot.get("storage").asInt(),
+                            progressPoints = snapshot.get("progressPoints").asInt(),
+                            electricity = snapshot.get("electricity").asBoolean(),
+                            heat = snapshot.get("heat").asBoolean(),
+                            moneyEarned = snapshot.get("moneyEarned").asInt(),
+                            targetsFulfilled = snapshot.get("targetsFulfilled").asBoolean(),
+                        )
+                    } ?: emptyList(),
+
                     numberOfPhases = game.get("numberOfPhases").asInt(),
                     numberOfTurnsPerPhase = game.get("numberOfTurnsPerPhase").asInt(),
                 )
@@ -164,6 +177,20 @@ class GameManagerRepo {
 
                     "energyTargetsPerPhase" to energyTargetsPerPhase,
                     "pointTargetsPerPhase" to pointTargetsPerPhase,
+
+                    "phaseSnapshots" to phaseSnapshots.map { snapshot ->
+                        mapOf(
+                            "generation" to snapshot.generation,
+                            "distribution" to snapshot.distribution,
+                            "storage" to snapshot.storage,
+                            "progressPoints" to snapshot.progressPoints,
+                            "electricity" to snapshot.electricity,
+                            "heat" to snapshot.heat,
+                            "moneyEarned" to snapshot.moneyEarned,
+                            "targetsFulfilled" to snapshot.targetsFulfilled,
+                        )
+                    },
+
                     "numberOfPhases" to numberOfPhases,
                     "numberOfTurnsPerPhase" to numberOfTurnsPerPhase,
                 )
