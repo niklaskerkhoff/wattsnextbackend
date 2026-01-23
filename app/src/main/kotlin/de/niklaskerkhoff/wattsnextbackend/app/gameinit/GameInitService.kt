@@ -48,7 +48,7 @@ class GameInitService(
         val gameInit = getGameInitOrThrow(gameId)
 
         val (game, entityResolver) = GameFactory.buildGame(gameInit)
-        val gameManager = GameManager(game, entityResolver)
+        val gameManager = GameManager(game, entityResolver, System.currentTimeMillis())
         gameManagerRepo.addGameManager(gameManager)
 
         gameMessageSender.sendGameState(gameId, GameData(game))

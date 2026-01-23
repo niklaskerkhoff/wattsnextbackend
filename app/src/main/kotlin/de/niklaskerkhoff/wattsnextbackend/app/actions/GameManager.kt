@@ -1,12 +1,7 @@
 package de.niklaskerkhoff.wattsnextbackend.app.actions
 
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.ActionResponse
-import de.niklaskerkhoff.wattsnextbackend.model.actions.CancelGameAction
-import de.niklaskerkhoff.wattsnextbackend.model.actions.ChangeCardAction
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayClimateCardAction
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardAction
-import de.niklaskerkhoff.wattsnextbackend.model.actions.PlayTechnologyCardActionIntent
-import de.niklaskerkhoff.wattsnextbackend.model.actions.RollDiceAction
+import de.niklaskerkhoff.wattsnextbackend.model.actions.*
 import de.niklaskerkhoff.wattsnextbackend.model.core.Action
 import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.Result
@@ -15,8 +10,12 @@ import java.util.*
 class GameManager(
     game: Game,
     val entityResolver: EntityResolver,
+    lastActionTime: Long,
 ) {
     var game: Game = game
+        private set
+
+    var lastActionTime: Long = lastActionTime
         private set
 
     private var previousAction: Action<*>? = null
@@ -38,7 +37,7 @@ class GameManager(
 
     fun handlePlayTechnologyCardIntent(
         technologyCardId: UUID,
-        targetPosition: Int
+        targetPosition: Int,
     ): ActionResponse {
         val technologyCard = entityResolver.getTechnologyCard(technologyCardId) ?: return illegalActionResponse()
 
@@ -85,6 +84,7 @@ class GameManager(
         previousActionResult = result
         this.game = result.game
 
+        lastActionTime = System.currentTimeMillis()
         return ActionResponse(result, ActionResponse.Status.Ok)
     }
 

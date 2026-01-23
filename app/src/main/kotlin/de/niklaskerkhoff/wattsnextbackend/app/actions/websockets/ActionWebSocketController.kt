@@ -71,5 +71,5 @@ class ActionWebSocketController(
     }
 
     private fun GameManagerRepo.getGameManagerOrThrow(gameId: UUID) =
-        this.getGameManager(gameId) ?: throw IllegalArgumentException("Game not found")
+        this.getGameManager(gameId) ?: throw IllegalArgumentException("GAME_NOT_FOUND: $gameId")
 }
