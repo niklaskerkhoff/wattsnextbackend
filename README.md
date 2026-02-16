@@ -34,10 +34,11 @@ and both a build cache and a configuration cache (see `gradle.properties`).
 
 ## Open Issues
 
-- Offer separate game modi for standard and expert. Expert mode adds recycling, only being able to use supply once and more. 
+- Offer separate game modi for standard and expert. Expert mode adds recycling, stacking for small technologies, only being able to use supply once and more. 
 - Separate cards by phases and introduce them to the deck in the according phase.
 - Make the displayed game id shorter (for example only the first 6 characters), so sharing it with other players becomes easier.
 - Set `gameBeforeEffect` in ProgressCardData.kt.
 - Implement event conditions (see *Sonniges Wetter* event card).
 - Implement temporal differentiation for event conditions (see *Sturmschäden* event card).
+- Add the technology energy matrix to the GameData telling the current energy supply totals.
 - possibly more ...
