@@ -25,7 +25,6 @@ data class ProgressCardData(
         image = card.imageSrc,
         text = card.requirementsDescription,
         explanation = card.explanation,
-        // TODO: Set modifications (for all modifiable values)
         moneyCosts = ModifiableValue(
             originalValue = card.moneyCosts.base,
             modifiedValue = card.moneyCosts.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
@@ -34,10 +33,9 @@ data class ProgressCardData(
             originalValue = card.resourceCosts.base,
             modifiedValue = card.resourceCosts.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
         ),
-        // TODO: original and modified value cannot be calculated in the exact same way
         points = ModifiableValue(
-            originalValue = ProgressPointsData(card, result),
-            modifiedValue = ProgressPointsData(card, result)
+            originalValue = ProgressPointsData.from(card, result, false),
+            modifiedValue = ProgressPointsData.from(card, result, true)
         ),
         supply = ModifiableValue(
             originalValue = card.supply.base,

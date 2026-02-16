@@ -100,6 +100,30 @@ data class Game(
         )
     }
 
+    fun calculateProgressPoints(card: ProgressCard, modified: Boolean): ProgressPoints {
+        val playedCards = getAllProgressCards().filterNotNull()
+        val (energy, achievements) = calculateTotalSupply(playedCards)
+
+        val conditions = if (modified) {
+            card.supplyRequirementsForSystem.modified(card)
+        } else {
+            card.supplyRequirementsForSystem.base
+        }
+
+        val fulfilled = canUseSystemPoints(
+            conditions,
+            energy,
+            achievements
+        )
+
+        return ProgressPoints(
+            basePoints = card.basePoints,
+            systemPoints = card.systemPoints,
+            conditions = conditions,
+            conditionsFulfilled = fulfilled
+        )
+    }
+
     fun withAdditionalProgressPoints(delta: Int): Game = copy(progressPointsDelta = delta)
 
     fun withUpdatedMoney(delta: Int): Game = copy(money = money + delta)
@@ -355,7 +379,7 @@ data class Game(
 
             val phaseSnapshot = createPhaseSnapshot(phase)
 
-            val gameAfterMoneyEarned: Game = copy(money = money + phaseSnapshot.moneyEarned)
+            val gameAfterMoneyEarned: Game = copy(money = money + phaseSnapshot.moneyEarned, phase = nextPhase)
 
             val (drawnCatastropheCard, updatedCatastropheEventCardDeck) =
                 if (phaseSnapshot.targetsFulfilled) Pair(null, catastropheEventCardDeck)
@@ -368,7 +392,6 @@ data class Game(
             Result(
                 gameAfterCatastropheEffect.copy(
                     turnInPhase = 0,
-                    phase = nextPhase,
                     phaseSnapshots = phaseSnapshots + phaseSnapshot,
                     standardEventCards = updatedStandardEventCards,
                     standardEventCardDeck = updatedStandardEventCardDeck,
@@ -478,5 +501,12 @@ data class Game(
         val heat: Boolean,
         val moneyEarned: Int,
         val targetsFulfilled: Boolean,
+    )
+
+    data class ProgressPoints (
+        val basePoints: Int,
+        val systemPoints: Int,
+        val conditions: List<Supply>,
+        val conditionsFulfilled: Boolean
     )
 }
