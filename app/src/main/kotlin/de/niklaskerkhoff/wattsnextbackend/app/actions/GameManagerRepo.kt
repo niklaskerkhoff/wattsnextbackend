@@ -10,6 +10,7 @@ import jakarta.annotation.PreDestroy
 import org.slf4j.LoggerFactory
 import org.springframework.boot.context.event.ApplicationReadyEvent
 import org.springframework.context.event.EventListener
+import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -36,6 +37,22 @@ class GameManagerRepo {
         gameManagers.remove(gameId)
     }
 
+    @Scheduled(fixedRate = /*1000 * 10*/ 1000 * 3600 * 24) // run daily
+    fun cleanup() {
+        println("cleanup")
+        val lifetimeAfterLastAction = /*1000 * 5*/ 1000 * 3600 * 24 * 14 // two weeks
+        val forceQuitTime = System.currentTimeMillis() - lifetimeAfterLastAction
+        val quitGameStates = listOf(GameState.Cancelled, GameState.Won, GameState.Lost)
+
+        gameManagers.keys.forEach { gameId ->
+            val gameManager = gameManagers[gameId] ?: throw IllegalStateException("Game manager not found.")
+
+            if (gameManager.lastActionTime < forceQuitTime || gameManager.game.state in quitGameStates) {
+                removeGameManager(gameId)
+            }
+        }
+    }
+
     @EventListener(ApplicationReadyEvent::class)
     fun load() {
         log.info("Loading game managers from file.")
@@ -51,6 +68,8 @@ class GameManagerRepo {
             data.map { game ->
 
                 val tempEntityResolver = EntityResolver(emptyList())
+
+                val lastActionTime = game.get("lastActionTime")?.asLong() ?: System.currentTimeMillis()
 
                 val game = Game(
                     id = UUID.fromString(game.get("id").asText()),
@@ -125,7 +144,7 @@ class GameManagerRepo {
 
                 val withPlayersEntityResolver = EntityResolver(game.players)
 
-                GameManager(game, withPlayersEntityResolver)
+                GameManager(game, withPlayersEntityResolver, lastActionTime)
             }
 
         loadedGameManagers.forEach { gameManager ->
@@ -143,6 +162,7 @@ class GameManagerRepo {
         val gameManagerData = gameManagers.map { gameManager ->
             with(gameManager.value.game) {
                 mapOf(
+                    "lastActionTime" to gameManager.value.lastActionTime,
                     "id" to publicId,
                     "state" to state,
                     "players" to players.map {
