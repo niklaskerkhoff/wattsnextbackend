@@ -171,6 +171,8 @@ data class Game(
 
     override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
+            // Do not draw event cards during the phase as this is too confusing at the moment
+            /*
             if (nextTurnInPhase == secondEventCardTurnInPhase) {
                 val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
                 val updatedStandardEventCards = standardEventCards + drawnCard
@@ -186,7 +188,8 @@ data class Game(
                     BaseInfo(gotNewStandardEventCard = true),
                     cardEffectInfos = standardEffectInfos,
                 )
-            } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
+            } else */
+            if (nextTurnInPhase < numberOfTurnsPerPhase) {
                 Result(
                     copy(turnInPhase = nextTurnInPhase),
                     BaseInfo()
