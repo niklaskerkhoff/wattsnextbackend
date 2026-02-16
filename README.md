@@ -1,10 +1,20 @@
 # wattsnextbackend
 
+This is the Spring Boot backend of the online multiplayer implementation of the board game Watts Next. 
+The frontend can be found [here](https://github.com/Roundabout49/wattsnext-frontend).
+
+## What is Watts Next?
+
+Watts Next is a cooperative board game on the energy transition.
+Visit the [website](https://www.enzo.kit.edu/wattsnext) for more information.
+
+## About Gradle
+
 This project uses [Gradle](https://gradle.org/).
 To build and run the application, use the *Gradle* tool window by clicking the Gradle icon in the right-hand toolbar,
 or run it directly from the terminal:
 
-* Run `./gradlew run` to build and run the application.
+* Run `./gradlew bootRun` to build and run the application.
 * Run `./gradlew build` to only build the application.
 * Run `./gradlew check` to run all checks, including tests.
 * Run `./gradlew clean` to clean all build outputs.
@@ -16,8 +26,18 @@ This is the suggested way to use Gradle in production projects.
 
 [Learn more about Gradle tasks](https://docs.gradle.org/current/userguide/command_line_interface.html#common_tasks).
 
-This project follows the suggested multi-module setup and consists of the `app` and `utils` subprojects.
+This project follows the suggested multi-module setup and consists of the `app` and `model` subprojects.
 The shared build logic was extracted to a convention plugin located in `buildSrc`.
 
 This project uses a version catalog (see `gradle/libs.versions.toml`) to declare and version dependencies
 and both a build cache and a configuration cache (see `gradle.properties`).
+
+## Open Issues
+
+- Offer separate game modi for standard and expert. Expert mode adds recycling, only being able to use supply once and more. 
+- Separate cards by phases and introduce them to the deck in the according phase.
+- Make the displayed game id shorter (for example only the first 6 characters), so sharing it with other players becomes easier.
+- Set `gameBeforeEffect` in ProgressCardData.kt.
+- Implement event conditions (see *Sonniges Wetter* event card).
+- Implement temporal differentiation for event conditions (see *Sturmschäden* event card).
+- possibly more ...
