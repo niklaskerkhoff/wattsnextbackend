@@ -47,7 +47,7 @@ object GameFactory {
             catastropheEventCardDeck = catastropheEventCardDeck,
             pointTargetsPerPhase = listOf(30, 60, 100),
             numberOfPhases = 3,
-            numberOfTurnsPerPhase = 5,
+            numberOfTurnsPerPhase = 12,
             progressPointsDelta = 0,
             energyTargetsPerPhase = listOf(
                 mapOf(
