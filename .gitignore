@@ -47,3 +47,9 @@ bin/
 
 
 /data
+app/data/
+
+### Claude Code ###
+CLAUDE.md
+CLAUDE.local.md
+.claude/
