@@ -16,6 +16,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.random.Random
 
 @Component
 class GameManagerRepo {
@@ -140,6 +141,11 @@ class GameManagerRepo {
 
                     numberOfPhases = game.get("numberOfPhases").asInt(),
                     numberOfTurnsPerPhase = game.get("numberOfTurnsPerPhase").asInt(),
+
+                    secondEventCardTurnInPhase = game.get("secondEventCardTurnInPhase")
+                        ?.takeUnless { it.isNull }
+                        ?.asInt()
+                        ?: Random.nextInt(2, game.get("numberOfTurnsPerPhase").asInt() - 2),
                 )
 
                 val withPlayersEntityResolver = EntityResolver(game.players)
@@ -213,6 +219,8 @@ class GameManagerRepo {
 
                     "numberOfPhases" to numberOfPhases,
                     "numberOfTurnsPerPhase" to numberOfTurnsPerPhase,
+
+                    "secondEventCardTurnInPhase" to secondEventCardTurnInPhase,
                 )
             }
         }

@@ -13,6 +13,9 @@ import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 import java.util.*
 import kotlin.random.Random
 
+private fun randomSecondEventCardTurn(numberOfTurnsPerPhase: Int): Int =
+    Random.nextInt(2, numberOfTurnsPerPhase - 2)
+
 data class Game(
     private val id: UUID,
     val state: GameState,
@@ -42,11 +45,10 @@ data class Game(
     val numberOfPhases: Int,
     val numberOfTurnsPerPhase: Int,
 
+    val secondEventCardTurnInPhase: Int = randomSecondEventCardTurn(numberOfTurnsPerPhase),
+
 //    val frozenPhaseValues: List<PhaseValue> = emptyList(),
 ) : ModificationBase, EffectBase {
-
-
-    val secondEventCardTurnInPhase = Random.nextInt(2, numberOfTurnsPerPhase - 2)
 
     private val totalMove = numberOfTurnsPerPhase * phase + turnInPhase
 
@@ -386,6 +388,7 @@ data class Game(
             Result(
                 gameAfterCatastropheEffect.copy(
                     turnInPhase = 0,
+                    secondEventCardTurnInPhase = randomSecondEventCardTurn(numberOfTurnsPerPhase),
                     phaseSnapshots = phaseSnapshots + phaseSnapshot,
                     standardEventCards = updatedStandardEventCards,
                     standardEventCardDeck = updatedStandardEventCardDeck,
