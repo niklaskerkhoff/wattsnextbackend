@@ -1,3 +1,8 @@
 spring:
   application:
     name: app
+
+server:
+  # Behind the nginx reverse proxy: honor X-Forwarded-* headers so the
+  # backend knows the external scheme (https).
+  forward-headers-strategy: framework
