@@ -80,6 +80,19 @@ data class Game(
 
     fun getStorage(): Int = technologyBoard.storageCards.sumModifiedSupply()
 
+    /**
+     * Money earned at the end of the given phase: the covered generation/distribution demand
+     * (capped by the phase target) plus the covered storage demand (capped by the phase target).
+     */
+    fun getMoneyEarned(phaseIndex: Int): Int {
+        val generationTarget = energyTargetsPerPhase[phaseIndex][Technology.Generation]!!
+        val distributionTarget = energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
+        val storageTarget = energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
+
+        return minOf(minOf(getGeneration(), getDistribution()), minOf(generationTarget, distributionTarget)) +
+                minOf(getStorage(), storageTarget)
+    }
+
     fun doesElectricityExist(): Boolean = formExists(EnergyForm.Electricity)
 
     fun doesHeatExist(): Boolean = formExists(EnergyForm.Heat)
@@ -432,19 +445,6 @@ data class Game(
     }
 
     private fun createPhaseSnapshot(phaseIndex: Int): PhaseSnapshot {
-        val moneyEarned =
-            minOf(
-                minOf(getGeneration(), getDistribution()),
-                minOf(
-                    energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,
-                    energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
-                )
-            ) +
-                    minOf(
-                        getStorage(),
-                        energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
-                    )
-
         return PhaseSnapshot(
             generation = getGeneration(),
             distribution = getDistribution(),
@@ -452,7 +452,7 @@ data class Game(
             progressPoints = calculateProgressPointInfo().progressPoints,
             electricity = doesElectricityExist(),
             heat = doesHeatExist(),
-            moneyEarned = moneyEarned,
+            moneyEarned = getMoneyEarned(phaseIndex),
             targetsFulfilled = hasReachedTargets(),
         )
     }
