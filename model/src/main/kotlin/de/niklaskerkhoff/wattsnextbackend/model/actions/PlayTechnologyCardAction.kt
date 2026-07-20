@@ -5,7 +5,6 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.Game
 import de.niklaskerkhoff.wattsnextbackend.model.core.Result
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removed
-import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
 import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
 import kotlin.math.floor
 
@@ -93,7 +92,7 @@ class PlayTechnologyCardAction(
         )
 
         // Draw a ProgressCard
-        val (drawnCard, updatedProgressDeck) = game.progressCardDeck.removedLast()
+        val (drawnCard, updatedProgressDeck, updatedProgressDiscardPile) = game.drawProgressCard()
 
         val currentPlayerProgressCardsWithoutPlayedCardWithDrawnCard =
             currentPlayerProgressCardsWithoutPlayedCard + drawnCard
@@ -109,6 +108,7 @@ class PlayTechnologyCardAction(
             resources = resourcesAfterCardPlayed,
             technologyBoard = technologyBoardWithPlayedCard,
             progressCardDeck = updatedProgressDeck,
+            progressCardDiscardPile = updatedProgressDiscardPile,
         )
 
         val (gameAfterEffect, cardEffectInfos) = intent.technologyCard.effect(updatedGame)

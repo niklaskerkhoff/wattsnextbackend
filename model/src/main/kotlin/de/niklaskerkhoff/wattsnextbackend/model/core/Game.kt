@@ -28,6 +28,7 @@ data class Game(
     val climateCards: List<ProgressCard.ClimateCard>,
 
     val progressCardDeck: List<ProgressCard>,
+    val progressCardDiscardPile: List<ProgressCard> = emptyList(),
     val standardEventCardDeck: List<EventCard>,
     val catastropheEventCardDeck: List<EventCard>,
 
@@ -164,6 +165,20 @@ data class Game(
     }
 
     override fun provideModifiers() = getAllCards().filterNotNull()
+
+    /**
+     * Draws the top progress card. When the draw pile is empty the discard pile (cards changed out
+     * via [de.niklaskerkhoff.wattsnextbackend.model.actions.ChangeCardAction]) is reshuffled back
+     * into it. Returns the drawn card together with the updated draw and discard piles.
+     */
+    fun drawProgressCard(): Triple<ProgressCard, List<ProgressCard>, List<ProgressCard>> =
+        if (progressCardDeck.isNotEmpty()) {
+            val (card, remaining) = progressCardDeck.removedLast()
+            Triple(card, remaining, progressCardDiscardPile)
+        } else {
+            val (card, remaining) = progressCardDiscardPile.shuffled().removedLast()
+            Triple(card, remaining, emptyList())
+        }
 
     override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
