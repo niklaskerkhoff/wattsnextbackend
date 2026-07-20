@@ -53,7 +53,8 @@ class PlayClimateCardAction(
                 game = it.game,
                 baseInfo = it.baseInfo,
                 actionInfo = ActionInfo(climateCard, drawnCard),
-                cardEffectInfos = cardEffectInfos + it.cardEffectInfos,
+                cardEffectInfos = cardEffectInfos,
+                eventEffectInfos = it.eventEffectInfos,
             )
         }
     }

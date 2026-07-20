@@ -7,4 +7,5 @@ data class Result<T>(
     val baseInfo: Game.BaseInfo? = null,
     val actionInfo: T? = null,
     val cardEffectInfos: List<CardEffectInfo> = emptyList(),
+    val eventEffectInfos: List<CardEffectInfo> = emptyList(),
 )

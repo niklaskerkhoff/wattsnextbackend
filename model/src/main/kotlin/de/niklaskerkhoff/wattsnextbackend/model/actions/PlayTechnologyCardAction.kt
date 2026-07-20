@@ -47,6 +47,7 @@ class PlayTechnologyCardAction(
                 gainedResourcesForRecycling = recyclingInfo?.gainedResourcesForRecycling,
             ),
             cardEffectInfos = resultAfterCardPlayed.cardEffectInfos,
+            eventEffectInfos = resultAfterCardPlayed.eventEffectInfos,
         )
     }
 
@@ -121,7 +122,8 @@ class PlayTechnologyCardAction(
                     payedMoneyForCard = moneyToPay,
                     payedResourcesForCard = resourcesToPay,
                 ),
-                cardEffectInfos = cardEffectInfos + it.cardEffectInfos,
+                cardEffectInfos = cardEffectInfos,
+                eventEffectInfos = it.eventEffectInfos,
             )
         }
     }

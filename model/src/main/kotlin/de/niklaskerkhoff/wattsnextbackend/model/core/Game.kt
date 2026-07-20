@@ -159,7 +159,7 @@ data class Game(
                 standardEventCardDeck = updatedStandardEventCardDeck,
             ),
             BaseInfo(gotNewStandardEventCard = true),
-            cardEffectInfos = standardEffectInfos,
+            eventEffectInfos = standardEffectInfos,
         )
     }
 
@@ -180,7 +180,7 @@ data class Game(
                         standardEventCardDeck = updatedStandardEventCardDeck,
                     ),
                     BaseInfo(gotNewStandardEventCard = true),
-                    cardEffectInfos = standardEffectInfos,
+                    eventEffectInfos = standardEffectInfos,
                 )
             } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
                 Result(
@@ -400,7 +400,7 @@ data class Game(
                     gotNewStandardEventCard = true,
                     requirementsFulfilled = phaseSnapshot.targetsFulfilled
                 ),
-                cardEffectInfos = standardEffectInfos + catastropheEffectInfos
+                eventEffectInfos = standardEffectInfos + catastropheEffectInfos
             )
         }
 
