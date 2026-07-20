@@ -16,12 +16,12 @@ class GameInit(
         var nameKey = 2
         var name = playerName
 
-        while (_players.any { it.name == playerName }) {
-            name += " $nameKey"
+        while (_players.any { it.name == name }) {
+            name = "$playerName $nameKey"
             nameKey++
         }
 
-        _players.add(PlayerInit(playerName))
+        _players.add(PlayerInit(name))
     }
 
     fun removePlayer(playerId: UUID): Boolean {
