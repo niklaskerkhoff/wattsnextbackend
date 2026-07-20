@@ -5,7 +5,6 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.SimpleModifiedValue
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.WithIntModifiedValue
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierCollection
-import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifierConfig
 import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Supply
 import java.util.*
 
@@ -33,12 +32,13 @@ data class TechnologyCardData(
         ProgressCard.TechnologyCard(
             id = UUID.fromString(id),
             name = name,
-            modifierCollection = if (modifierCollection == null && supply.size == 1) ModifierCollection(
-                supplyModifierConfig = ModifierConfig(
-                    rank = 10,
-                    modify = SupplyModifier.Stack.modify,
-                )
-            ) else ModifierCollection(),
+            // A provided collection is kept as-is (previously it was silently dropped).
+            // No auto-stack modifier is injected: stacking (summing same-name cards on a
+            // slot) is an advanced-mode mechanic. In the standard mode a card played onto an
+            // occupied slot simply overbuilds it. The mechanic itself is still available via
+            // SupplyModifier.Stack / TechnologyBoard.getSameTechnologyCardStack and must be
+            // wired up again (ideally per-game) once an advanced mode is introduced.
+            modifierCollection = modifierCollection ?: ModifierCollection(),
             effect = effect,
             phaseIndex = phaseIndex,
 

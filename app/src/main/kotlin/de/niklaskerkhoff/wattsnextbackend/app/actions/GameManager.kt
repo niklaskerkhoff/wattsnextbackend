@@ -52,8 +52,9 @@ class GameManager(
 
         if (previousAction == null || previousActionInfo == null) return illegalActionResponse()
 
+        // Recycling is an advanced-mode mechanic and currently disabled; ignore the client's flag.
         val action = PlayTechnologyCardAction(
-            shallRecycle,
+            false,
             previousAction,
             previousActionInfo
         )
