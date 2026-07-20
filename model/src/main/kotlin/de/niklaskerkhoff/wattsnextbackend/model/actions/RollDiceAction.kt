@@ -20,7 +20,7 @@ class RollDiceAction(
                 game = it.game,
                 baseInfo = it.baseInfo,
                 actionInfo = Info(value),
-                cardEffectInfos = it.cardEffectInfos,
+                eventEffectInfos = it.eventEffectInfos,
             )
         }
     }

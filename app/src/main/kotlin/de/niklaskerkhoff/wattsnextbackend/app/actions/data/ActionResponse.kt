@@ -15,6 +15,7 @@ data class ActionResponse(
     val baseInfo: Game.BaseInfo? = null,
     val actionInfo: Map<String, Any>? = null,
     val cardEffectInfo: List<CardEffectInfo> = emptyList(),
+    val eventEffectInfo: List<CardEffectInfo> = emptyList(),
 ) {
     enum class Status {
         Ok,
@@ -33,6 +34,7 @@ data class ActionResponse(
         baseInfo = result.baseInfo,
         actionInfo = getActionInfoDto(result),
         cardEffectInfo = result.cardEffectInfos,
+        eventEffectInfo = result.eventEffectInfos,
     )
 
     companion object {
