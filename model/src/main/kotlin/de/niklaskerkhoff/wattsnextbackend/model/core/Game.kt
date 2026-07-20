@@ -121,7 +121,7 @@ data class Game(
         )
     }
 
-    fun withAdditionalProgressPoints(delta: Int): Game = copy(progressPointsDelta = delta)
+    fun withAdditionalProgressPoints(delta: Int): Game = copy(progressPointsDelta = progressPointsDelta + delta)
 
     fun withUpdatedMoney(delta: Int): Game = copy(money = money + delta)
 
