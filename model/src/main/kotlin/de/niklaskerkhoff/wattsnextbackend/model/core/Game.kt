@@ -272,7 +272,12 @@ data class Game(
         return true
     }
 
-    // expert mode
+    // === Advanced mode (dormant, not currently offered) ===
+    // Kept intentionally for a future advanced mode: computes the optimal base/system-points split
+    // across technology cards via combinatorial search (shared, exhaustible supply). The standard
+    // mode uses getBaseAndSystemProgressCards instead. Do not delete — see also the stacking
+    // mechanic (SupplyModifier.Stack) and recycling in PlayTechnologyCardAction, which are likewise
+    // dormant.
     /*
     private fun getBaseAndSystemTechnologyCards(
         technologyCards: List<ProgressCard.TechnologyCard>,
