@@ -105,6 +105,9 @@ class GameManagerRepo {
                     progressCardDiscardPile = game.get("progressCardDiscardPile")
                         ?.map { tempEntityResolver.getProgressCard(UUID.fromString(it.asText()))!! }
                         ?: emptyList(),
+                    upcomingProgressCards = game.get("upcomingProgressCards")
+                        ?.map { tempEntityResolver.getProgressCard(UUID.fromString(it.asText()))!! }
+                        ?: emptyList(),
                     standardEventCardDeck = game.get("standardEventCardDeck")
                         .map { tempEntityResolver.getEventCard(UUID.fromString(it.asText()))!! },
                     catastropheEventCardDeck = game.get("catastropheEventCardDeck")
@@ -202,6 +205,7 @@ class GameManagerRepo {
 
                     "progressCardDeck" to progressCardDeck.map { it.publicId },
                     "progressCardDiscardPile" to progressCardDiscardPile.map { it.publicId },
+                    "upcomingProgressCards" to upcomingProgressCards.map { it.publicId },
                     "standardEventCardDeck" to standardEventCardDeck.map { it.publicId },
                     "catastropheEventCardDeck" to catastropheEventCardDeck.map { it.publicId },
 

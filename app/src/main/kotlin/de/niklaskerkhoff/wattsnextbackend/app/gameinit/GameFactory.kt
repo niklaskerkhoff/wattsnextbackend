@@ -25,8 +25,12 @@ object GameFactory {
                 StartWithNuclear -> startGenerationCardsWithNuclear
             }
 
-        val progressCardDeck = (technologyCards + climateCards).shuffled()
-        val (players, progressCardDeckWithoutStartCards) = buildPlayers(gameInit, progressCardDeck)
+        // Only phase-0 cards are available at the start, including the initial hands. Later phases
+        // are mixed into the draw pile at each phase transition (see Game.handleNextPhase).
+        val (phaseZeroProgressCards, upcomingProgressCards) =
+            (technologyCards + climateCards).partition { it.phaseIndex == 0 }
+        val (players, progressCardDeckWithoutStartCards) =
+            buildPlayers(gameInit, phaseZeroProgressCards.shuffled())
 
         val (standardEventCardDeck, catastropheEventCardDeck) = eventCards.shuffled().partition { !it.isCatastrophe }
 
@@ -43,6 +47,7 @@ object GameFactory {
             players = players,
             climateCards = emptyList(),
             progressCardDeck = progressCardDeckWithoutStartCards,
+            upcomingProgressCards = upcomingProgressCards,
             standardEventCardDeck = standardEventCardDeck,
             catastropheEventCardDeck = catastropheEventCardDeck,
             pointTargetsPerPhase = listOf(30, 60, 100),

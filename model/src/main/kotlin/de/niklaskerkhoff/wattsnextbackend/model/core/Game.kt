@@ -29,6 +29,9 @@ data class Game(
 
     val progressCardDeck: List<ProgressCard>,
     val progressCardDiscardPile: List<ProgressCard> = emptyList(),
+    // Progress cards of later phases. The cards of the new phase are mixed into the draw pile at
+    // each phase transition (see handleNextPhase).
+    val upcomingProgressCards: List<ProgressCard> = emptyList(),
     val standardEventCardDeck: List<EventCard>,
     val catastropheEventCardDeck: List<EventCard>,
 
@@ -412,6 +415,11 @@ data class Game(
             val (drawnStandardEventCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
             val updatedStandardEventCards = listOf(drawnStandardEventCard)
 
+            // Mix the new phase's progress cards into whatever remains of the draw pile.
+            val (newlyAvailableProgressCards, stillUpcomingProgressCards) =
+                upcomingProgressCards.partition { it.phaseIndex == nextPhase }
+            val updatedProgressCardDeck = (progressCardDeck + newlyAvailableProgressCards).shuffled()
+
             val phaseSnapshot = createPhaseSnapshot(phase)
 
             val gameAfterMoneyEarned: Game = copy(money = money + phaseSnapshot.moneyEarned, phase = nextPhase)
@@ -432,7 +440,9 @@ data class Game(
                     standardEventCards = updatedStandardEventCards,
                     standardEventCardDeck = updatedStandardEventCardDeck,
                     catastropheEventCardDeck = updatedCatastropheEventCardDeck,
-                    catastropheEventCard = drawnCatastropheCard
+                    catastropheEventCard = drawnCatastropheCard,
+                    progressCardDeck = updatedProgressCardDeck,
+                    upcomingProgressCards = stillUpcomingProgressCards,
                 ),
                 BaseInfo(
                     phaseCompleted = true,
