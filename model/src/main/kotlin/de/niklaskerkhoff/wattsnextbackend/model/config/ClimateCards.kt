@@ -243,7 +243,7 @@ val climateCards = listOf(
     *Array(2) {
         ClimateCardData(
             id = "f2660f7f-b8ef-454e-987c-a04bb97236a$it",
-            name = "Kunsstoff-Recycling",
+            name = "Kunststoff-Recycling",
             imageSrc = "Klima.png",
             supply = null,
             moneyCosts = 2,

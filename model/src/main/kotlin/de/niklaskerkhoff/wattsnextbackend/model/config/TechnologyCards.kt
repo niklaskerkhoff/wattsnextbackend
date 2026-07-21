@@ -100,7 +100,7 @@ val technologyCards = listOf(
                 ),
             ),
             requirementsDescription = "Um das volle Potenzial nutzen zu können, muss in sonnenreichen Stunden Strom gespeichert werden.",
-            explanation = "Eine kleine Photovoltaikanalage auf deinem Balkon generiert aus Sonnenlicht Strom.",
+            explanation = "Eine kleine Photovoltaikanlage auf deinem Balkon generiert aus Sonnenlicht Strom.",
 
             phaseIndex = 0,
             tags = tagsOf(Solar, Photovoltaic)
@@ -283,7 +283,7 @@ val technologyCards = listOf(
             Achievement(AchievementName.CarbonCapture)
         ),
         requirementsDescription = "Strom und Wärme müssen verteilt werden. CO2 muss aus dem Abgas entfernt werden.",
-        explanation = "Durch das Verbrennen von Gas kann Stromerzeugt werden, die Abwärme kann für Fernwärme genutzt werden.",
+        explanation = "Durch das Verbrennen von Gas kann Strom erzeugt werden, die Abwärme kann für Fernwärme genutzt werden.",
 
         phaseIndex = 0,
         tags = tagsOf(Gas)
@@ -315,7 +315,7 @@ val technologyCards = listOf(
             ),
         ),
         requirementsDescription = "Bei Bau auf „Kleiner Windpark“: Zahle nur 1 Geldeinheiten und 1 Ressource.",
-        explanation = "Viele Windkraftanalgen erzeugen aus Wind im großen Maße Strom.",
+        explanation = "Viele Windkraftanlagen erzeugen aus Wind im großen Maße Strom.",
 
         phaseIndex = 1,
         tags = tagsOf(Wind)
@@ -341,7 +341,7 @@ val technologyCards = listOf(
                 size = 2,
             ),
         ),
-        requirementsDescription = "Die Wärme muss  verteilt werden.",
+        requirementsDescription = "Die Wärme muss verteilt werden.",
         explanation = "Durch Geothermie kann Erdwärme genutzt und ins Fernwärmenetz eingespeist werden.",
 
         phaseIndex = 0
@@ -578,7 +578,7 @@ val technologyCards = listOf(
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
 
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht dieses Kabel den Straßen innerhalb eines Ortes.",
 
         phaseIndex = 0
@@ -619,7 +619,7 @@ val technologyCards = listOf(
         basePoints = 0,
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese überirdische Freileitung den Bundesstraßen.",
 
         phaseIndex = 0,
@@ -640,7 +640,7 @@ val technologyCards = listOf(
         basePoints = 0,
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht dieses unterirdische Erdkabel den Autobahnen. ",
 
         phaseIndex = 1
@@ -660,7 +660,7 @@ val technologyCards = listOf(
         basePoints = 0,
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese überirdische Freileitung den Autobahnen.",
 
         phaseIndex = 1,
@@ -681,7 +681,7 @@ val technologyCards = listOf(
         basePoints = 0,
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Im Norden erzeugter Strom aus Wind wird über diese \"Stromautobahn\" überirdisch in den Süden transportiert.",
 
         phaseIndex = 1,
@@ -702,7 +702,7 @@ val technologyCards = listOf(
         basePoints = 0,
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Im Norden erzeugter Strom aus Wind wird über diese \"Stromautobahn\" unterirdisch in den Süden transportiert.",
 
         phaseIndex = 1
@@ -722,7 +722,7 @@ val technologyCards = listOf(
         basePoints = 0,
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "(Ab-)wärme aus der Industrie wird in nahen Wohngebieten für die Wärmeversorgung zu Hause verwendet.",
 
         phaseIndex = 0
@@ -743,7 +743,7 @@ val technologyCards = listOf(
             basePoints = 0,
             systemPoints = 0,
             supplyRequirementsForSystem = listOf(),
-            requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+            requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
             explanation = "(Ab-)wärme aus der Industrie wird kilometerweit transportiert und für die Wärmeversorgung zu Hause verwendet.",
 
             phaseIndex = 0
@@ -1256,8 +1256,8 @@ private val startDistributionCard =
         basePoints = 0,
         systemPoints = 0,
         supplyRequirementsForSystem = listOf(),
-        requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
-        explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Bundesstraßen. Sie transportiert den  Strom überirdisch zwischen Regionen.",
+        requirementsDescription = "Diese Karte allein gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
+        explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Bundesstraßen. Sie transportiert den Strom überirdisch zwischen Regionen.",
 
         phaseIndex = 0,
         tags = tagsOf(OverheadPowerLine)
