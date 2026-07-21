@@ -79,10 +79,8 @@ class PlayTechnologyCardAction(
             intent.targetPosition
         )
 
-        val moneyToPay = intent.technologyCard.moneyCosts
-            .modified(intent.technologyCard, game, Pair(game, intent.targetPosition))
-        val resourcesToPay = intent.technologyCard.resourceCosts
-            .modified(intent.technologyCard, game, Pair(game, intent.targetPosition))
+        val moneyToPay = game.getModifiedMoneyCost(intent.technologyCard, intent.targetPosition)
+        val resourcesToPay = game.getModifiedResourceCost(intent.technologyCard, intent.targetPosition)
 
         val moneyAfterCardPlayed = game.money - moneyToPay
         val resourcesAfterCardPlayed = game.resources - resourcesToPay

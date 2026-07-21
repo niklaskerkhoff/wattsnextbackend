@@ -27,11 +27,11 @@ data class ProgressCardData(
         explanation = card.explanation,
         moneyCosts = ModifiableValue(
             originalValue = card.moneyCosts.base,
-            modifiedValue = card.moneyCosts.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
+            modifiedValue = result.game.getModifiedMoneyCost(card, targetPosition ?: -1)
         ),
         resourceCosts = ModifiableValue(
             originalValue = card.resourceCosts.base,
-            modifiedValue = card.resourceCosts.modified(card, result.game, Pair(result.game, targetPosition ?: -1))
+            modifiedValue = result.game.getModifiedResourceCost(card, targetPosition ?: -1)
         ),
         points = ModifiableValue(
             originalValue = ProgressPointsData.from(card, result, false),

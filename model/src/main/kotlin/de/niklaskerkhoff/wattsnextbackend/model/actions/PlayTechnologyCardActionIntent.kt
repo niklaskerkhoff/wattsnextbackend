@@ -10,8 +10,8 @@ class PlayTechnologyCardActionIntent(
     internal val targetPosition: Int,
 ) : Action<PlayTechnologyCardActionIntent.Info>() {
     override fun canExecute(game: Game): Boolean {
-        return game.money >= technologyCard.moneyCosts.modified(technologyCard, game, Pair(game, targetPosition)) &&
-                game.resources >= technologyCard.resourceCosts.modified(technologyCard, game, Pair(game, targetPosition))
+        return game.money >= game.getModifiedMoneyCost(technologyCard, targetPosition) &&
+                game.resources >= game.getModifiedResourceCost(technologyCard, targetPosition)
     }
 
     override fun execute(game: Game): Result<Info> {
@@ -24,8 +24,8 @@ class PlayTechnologyCardActionIntent(
                 canRecycle = false,
                 moneyForRecycling = null,
                 gainingResourcesForRecycling = null,
-                moneyForPlayingCard = technologyCard.moneyCosts.modified(technologyCard, game, Pair(game, targetPosition)),
-                resourcesForPlayingCard = technologyCard.resourceCosts.modified(technologyCard, game, Pair(game, targetPosition)),
+                moneyForPlayingCard = game.getModifiedMoneyCost(technologyCard, targetPosition),
+                resourcesForPlayingCard = game.getModifiedResourceCost(technologyCard, targetPosition),
             )
         )
     }

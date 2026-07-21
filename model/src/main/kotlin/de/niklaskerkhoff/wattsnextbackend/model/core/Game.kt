@@ -93,6 +93,12 @@ data class Game(
                 minOf(getStorage(), storageTarget)
     }
 
+    fun getModifiedMoneyCost(card: ProgressCard, targetPosition: Int): Int =
+        card.moneyCosts.modified(card, modificationBaseIncluding(card), Pair(this, targetPosition))
+
+    fun getModifiedResourceCost(card: ProgressCard, targetPosition: Int): Int =
+        card.resourceCosts.modified(card, modificationBaseIncluding(card), Pair(this, targetPosition))
+
     fun doesElectricityExist(): Boolean = formExists(EnergyForm.Electricity)
 
     fun doesHeatExist(): Boolean = formExists(EnergyForm.Heat)
@@ -465,6 +471,15 @@ data class Game(
     private fun <T> ModifiedValue<T, ModificationBase>.modified(modifiedCard: ProgressCard) =
         modified(modifiedCard, this@Game, this@Game)
 
+    // A card's own cost modifiers (e.g. a build-on-existing discount) live in its own
+    // ModifierCollection, but a card in the hand is not part of provideModifiers(). Include the card
+    // itself as a provider so its own cost modifiers apply while it is being played.
+    private fun modificationBaseIncluding(card: Card): ModificationBase =
+        object : ModificationBase {
+            override val technologyBoard = this@Game.technologyBoard
+            override fun provideModifiers() = (this@Game.provideModifiers() + card).distinct()
+        }
+
     private fun List<List<ProgressCard.TechnologyCard>>.sumModifiedSupply(): Int =
         sumOf { it.lastOrNull()?.getModifiedSupply()?.size ?: 0 }
 
@@ -489,8 +504,8 @@ data class Game(
             else listOf(-1)
 
         return positions.any { position ->
-            val modifiedMoney = moneyCosts.modified(this, this@Game, Pair(this@Game, position))
-            val modifiedResources = resourceCosts.modified(this, this@Game, Pair(this@Game, position))
+            val modifiedMoney = getModifiedMoneyCost(this, position)
+            val modifiedResources = getModifiedResourceCost(this, position)
 
             modifiedMoney <= this@Game.money && modifiedResources <= this@Game.resources
         }
