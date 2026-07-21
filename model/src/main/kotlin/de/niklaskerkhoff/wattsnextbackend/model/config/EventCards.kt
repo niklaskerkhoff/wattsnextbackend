@@ -99,7 +99,7 @@ val eventCards = listOf(
         modifierCollection = ModifierCollection(
             supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 4,
-                modify = SupplyListModifier.SystemPointsForSolar.modify
+                modify = ifSolarIsExistingModifier(SupplyListModifier.SystemPointsForStorage.modify)
             )
         ),
         effect = ifSolarIsExisting(updateMoneyEffect(3)),

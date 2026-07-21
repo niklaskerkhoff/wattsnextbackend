@@ -21,6 +21,14 @@ enum class CardCostModifier(
         if (isBuildingIronOnCoal(modifiedCard, game, targetPosition)) 1 else acc
     }),
 
+    MoneyCostsBuildingBigWindOnSmallWind({ acc, modifiedCard, (game, targetPosition) ->
+        if (isBuildingBigWindOnSmallWind(modifiedCard, game, targetPosition)) 1 else acc
+    }),
+
+    ResourceCostsBuildingBigWindOnSmallWind({ acc, modifiedCard, (game, targetPosition) ->
+        if (isBuildingBigWindOnSmallWind(modifiedCard, game, targetPosition)) 1 else acc
+    }),
+
     CostsWithSubventionOfWindAndPhotovoltaic({ acc, modifiedCard, _ ->
         if (matches(modifiedCard) { tags.containsAny(Wind, Photovoltaic) }) max(acc - 2, 1) else acc
     }),
@@ -40,6 +48,21 @@ enum class CardCostModifier(
                     modificationBase.technologyBoard.getCurrentTechnologyCard(builtCard.technology, targetPosition)
                         .let { currentCard ->
                             currentCard != null && currentCard.tags.contains(Coal)
+                        }
+
+        // "Kleiner Windpark" and "Großer Windpark" share the Wind tag, so they are told apart by
+        // supply size (Kleiner = 2, Großer = 3).
+        private fun isBuildingBigWindOnSmallWind(
+            builtCard: ProgressCard,
+            modificationBase: ModificationBase,
+            targetPosition: Int
+        ): Boolean =
+            builtCard is TechnologyCard &&
+                    builtCard.tags.contains(Wind) &&
+                    builtCard.supply.base.size == 3 &&
+                    modificationBase.technologyBoard.getCurrentTechnologyCard(builtCard.technology, targetPosition)
+                        .let { currentCard ->
+                            currentCard != null && currentCard.tags.contains(Wind) && currentCard.supply.base.size == 2
                         }
     }
 }
@@ -112,6 +135,8 @@ enum class SupplyListModifier(
 }
 
 fun <T> ifWindIsExistingModifier(modifier: SimpleModifierFunction<T>) = ifTagIsExistingModifier(Wind, modifier)
+
+fun <T> ifSolarIsExistingModifier(modifier: SimpleModifierFunction<T>) = ifTagIsExistingModifier(Solar, modifier)
 
 private fun <T> ifTagIsExistingModifier(
     tag: Tag,
