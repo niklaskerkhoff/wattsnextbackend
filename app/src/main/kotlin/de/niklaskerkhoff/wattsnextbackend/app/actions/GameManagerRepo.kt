@@ -66,13 +66,14 @@ class GameManagerRepo {
 
 
         val loadedGameManagers: List<GameManager> =
-            data.map { game ->
+            data.mapNotNull { game ->
+                try {
 
                 val tempEntityResolver = EntityResolver(emptyList())
 
                 val lastActionTime = game.get("lastActionTime")?.asLong() ?: System.currentTimeMillis()
 
-                val game = Game(
+                val loadedGame = Game(
                     id = UUID.fromString(game.get("id").asText()),
                     state = GameState.valueOf(game.get("state").asText()),
                     players = game.get("players").map {
@@ -151,9 +152,16 @@ class GameManagerRepo {
                         ?: Random.nextInt(2, game.get("numberOfTurnsPerPhase").asInt() - 2),
                 )
 
-                val withPlayersEntityResolver = EntityResolver(game.players)
+                val withPlayersEntityResolver = EntityResolver(loadedGame.players)
 
-                GameManager(game, withPlayersEntityResolver, lastActionTime)
+                GameManager(loadedGame, withPlayersEntityResolver, lastActionTime)
+                } catch (e: Exception) {
+                    log.warn(
+                        "Skipping game that could not be loaded (id={}): {}",
+                        game.get("id")?.asText(), e.toString()
+                    )
+                    null
+                }
             }
 
         loadedGameManagers.forEach { gameManager ->
