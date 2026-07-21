@@ -12,17 +12,17 @@ class PlayClimateCardAction(
 ) : Action<PlayClimateCardAction.ActionInfo>() {
 
     override fun canExecute(game: Game): Boolean {
-        return game.money >= climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1)) &&
-                game.resources >= climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1)) &&
+        return game.money >= game.getModifiedMoneyCost(climateCard, -1) &&
+                game.resources >= game.getModifiedResourceCost(climateCard, -1) &&
                 game.climateCards.size < 10
     }
 
     override fun execute(game: Game): Result<ActionInfo> {
         val updatedClimateCards = game.climateCards + climateCard
 
-        val moneyAfterCardPlayed = game.money - climateCard.moneyCosts.modified(climateCard, game, Pair(game, -1))
+        val moneyAfterCardPlayed = game.money - game.getModifiedMoneyCost(climateCard, -1)
         val resourcesAfterCardPlayed =
-            game.resources - climateCard.resourceCosts.modified(climateCard, game, Pair(game, -1))
+            game.resources - game.getModifiedResourceCost(climateCard, -1)
 
         val currentPlayerProgressCardsWithoutPlayedCard = game.currentPlayer.progressCards.removed(climateCard)
 

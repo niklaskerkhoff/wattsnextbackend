@@ -279,6 +279,11 @@ val eventCards = listOf(
         phaseIndex = 0,
         isCatastrophe = true
     ),
+    // "Sturmschäden" is disabled: its rule ("only ALREADY-BUILT overhead power lines stop counting")
+    // cannot be modeled without tracking when each card was built, and applying it to every overhead
+    // power line was too harsh. Kept here (and SupplyModifier.NoSupplyFromOverheadPowerLine) in case
+    // build-time tracking is added later.
+    /*
     EventCard(
         id = UUID.fromString("9a949a40-6f18-4add-969e-18910b13033a"),
         name = "Sturmschäden",
@@ -288,7 +293,6 @@ val eventCards = listOf(
                 text = "Geld wird um 2 Einheiten reduziert.",
                 type = MoneyAndResources,
             ),
-            // TODO: Eigentlich nur "Bereits gebaute oberirdische Stromleitungen ..."
             EffectDescription(
                 text = "Bereits gebaute oberirdische Stromleitungen zählen nicht zur Erfüllung der Voraussetzung anderer Fortschrittskarten und der Phasenziele. ",
                 type = EnergySystem,
@@ -304,6 +308,7 @@ val eventCards = listOf(
         phaseIndex = 0,
         isCatastrophe = false
     ),
+    */
     EventCard(
         id = UUID.fromString("1298409a-9359-4104-bd01-c39b7b4048fa"),
         name = "Hitzewelle",
