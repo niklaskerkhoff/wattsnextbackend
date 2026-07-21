@@ -45,11 +45,16 @@ class GameInitService(
     }
 
     fun startGame(gameId: UUID) {
+        // Idempotent: once the game is running, ignore further start requests so the running
+        // game is never rebuilt/reset.
+        if (gameManagerRepo.getGameManager(gameId) != null) return
+
         val gameInit = getGameInitOrThrow(gameId)
 
         val (game, entityResolver) = GameFactory.buildGame(gameInit)
         val gameManager = GameManager(game, entityResolver, System.currentTimeMillis())
         gameManagerRepo.addGameManager(gameManager)
+        gameInitMap.remove(gameId)
 
         gameMessageSender.sendGameState(gameId, GameData(game))
     }

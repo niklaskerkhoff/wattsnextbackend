@@ -64,19 +64,7 @@ data class PhaseData(
             result = result,
             phaseIndex = phaseIndex,
             snapshotValue = { it.moneyEarned },
-            liveValue = {
-                minOf(
-                    minOf(result.game.getGeneration(), result.game.getDistribution()),
-                    minOf(
-                        result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,
-                        result.game.energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
-                    )
-                ) +
-                        minOf(
-                            result.game.getStorage(),
-                            result.game.energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
-                        )
-            },
+            liveValue = { result.game.getMoneyEarned(phaseIndex) },
             target =
                 minOf(
                     result.game.energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,

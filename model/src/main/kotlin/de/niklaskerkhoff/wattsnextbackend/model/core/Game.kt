@@ -28,6 +28,7 @@ data class Game(
     val climateCards: List<ProgressCard.ClimateCard>,
 
     val progressCardDeck: List<ProgressCard>,
+    val progressCardDiscardPile: List<ProgressCard> = emptyList(),
     val standardEventCardDeck: List<EventCard>,
     val catastropheEventCardDeck: List<EventCard>,
 
@@ -79,6 +80,19 @@ data class Game(
 
     fun getStorage(): Int = technologyBoard.storageCards.sumModifiedSupply()
 
+    /**
+     * Money earned at the end of the given phase: the covered generation/distribution demand
+     * (capped by the phase target) plus the covered storage demand (capped by the phase target).
+     */
+    fun getMoneyEarned(phaseIndex: Int): Int {
+        val generationTarget = energyTargetsPerPhase[phaseIndex][Technology.Generation]!!
+        val distributionTarget = energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
+        val storageTarget = energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
+
+        return minOf(minOf(getGeneration(), getDistribution()), minOf(generationTarget, distributionTarget)) +
+                minOf(getStorage(), storageTarget)
+    }
+
     fun doesElectricityExist(): Boolean = formExists(EnergyForm.Electricity)
 
     fun doesHeatExist(): Boolean = formExists(EnergyForm.Heat)
@@ -120,7 +134,7 @@ data class Game(
         )
     }
 
-    fun withAdditionalProgressPoints(delta: Int): Game = copy(progressPointsDelta = delta)
+    fun withAdditionalProgressPoints(delta: Int): Game = copy(progressPointsDelta = progressPointsDelta + delta)
 
     fun withUpdatedMoney(delta: Int): Game = copy(money = money + delta)
 
@@ -164,6 +178,20 @@ data class Game(
     }
 
     override fun provideModifiers() = getAllCards().filterNotNull()
+
+    /**
+     * Draws the top progress card. When the draw pile is empty the discard pile (cards changed out
+     * via [de.niklaskerkhoff.wattsnextbackend.model.actions.ChangeCardAction]) is reshuffled back
+     * into it. Returns the drawn card together with the updated draw and discard piles.
+     */
+    fun drawProgressCard(): Triple<ProgressCard, List<ProgressCard>, List<ProgressCard>> =
+        if (progressCardDeck.isNotEmpty()) {
+            val (card, remaining) = progressCardDeck.removedLast()
+            Triple(card, remaining, progressCardDiscardPile)
+        } else {
+            val (card, remaining) = progressCardDiscardPile.shuffled().removedLast()
+            Triple(card, remaining, emptyList())
+        }
 
     override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
@@ -244,7 +272,12 @@ data class Game(
         return true
     }
 
-    // expert mode
+    // === Advanced mode (dormant, not currently offered) ===
+    // Kept intentionally for a future advanced mode: computes the optimal base/system-points split
+    // across technology cards via combinatorial search (shared, exhaustible supply). The standard
+    // mode uses getBaseAndSystemProgressCards instead. Do not delete — see also the stacking
+    // mechanic (SupplyModifier.Stack) and recycling in PlayTechnologyCardAction, which are likewise
+    // dormant.
     /*
     private fun getBaseAndSystemTechnologyCards(
         technologyCards: List<ProgressCard.TechnologyCard>,
@@ -417,19 +450,6 @@ data class Game(
     }
 
     private fun createPhaseSnapshot(phaseIndex: Int): PhaseSnapshot {
-        val moneyEarned =
-            minOf(
-                minOf(getGeneration(), getDistribution()),
-                minOf(
-                    energyTargetsPerPhase[phaseIndex][Technology.Generation]!!,
-                    energyTargetsPerPhase[phaseIndex][Technology.Distribution]!!
-                )
-            ) +
-                    minOf(
-                        getStorage(),
-                        energyTargetsPerPhase[phaseIndex][Technology.Storage]!!
-                    )
-
         return PhaseSnapshot(
             generation = getGeneration(),
             distribution = getDistribution(),
@@ -437,7 +457,7 @@ data class Game(
             progressPoints = calculateProgressPointInfo().progressPoints,
             electricity = doesElectricityExist(),
             heat = doesHeatExist(),
-            moneyEarned = moneyEarned,
+            moneyEarned = getMoneyEarned(phaseIndex),
             targetsFulfilled = hasReachedTargets(),
         )
     }

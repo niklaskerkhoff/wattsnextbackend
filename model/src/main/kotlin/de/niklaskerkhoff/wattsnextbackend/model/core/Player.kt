@@ -1,7 +1,6 @@
 package de.niklaskerkhoff.wattsnextbackend.model.core
 
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
-import de.niklaskerkhoff.wattsnextbackend.model.lib.replacedFirst
 import java.util.UUID
 
 data class Player(
@@ -10,8 +9,4 @@ data class Player(
     private val id: UUID,
 ) {
     val publicId get() = id
-
-    fun replaceProgressCard(replacementCard: ProgressCard?, cardToReplace: ProgressCard?) = copy(
-        progressCards = progressCards.replacedFirst(replacementCard, cardToReplace)
-    )
 }

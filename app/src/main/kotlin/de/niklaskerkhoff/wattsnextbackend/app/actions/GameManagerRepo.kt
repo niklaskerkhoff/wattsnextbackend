@@ -101,6 +101,9 @@ class GameManagerRepo {
 
                     progressCardDeck = game.get("progressCardDeck")
                         .map { tempEntityResolver.getProgressCard(UUID.fromString(it.asText()))!! },
+                    progressCardDiscardPile = game.get("progressCardDiscardPile")
+                        ?.map { tempEntityResolver.getProgressCard(UUID.fromString(it.asText()))!! }
+                        ?: emptyList(),
                     standardEventCardDeck = game.get("standardEventCardDeck")
                         .map { tempEntityResolver.getEventCard(UUID.fromString(it.asText()))!! },
                     catastropheEventCardDeck = game.get("catastropheEventCardDeck")
@@ -190,6 +193,7 @@ class GameManagerRepo {
                     "climateCards" to climateCards.map { it.publicId },
 
                     "progressCardDeck" to progressCardDeck.map { it.publicId },
+                    "progressCardDiscardPile" to progressCardDiscardPile.map { it.publicId },
                     "standardEventCardDeck" to standardEventCardDeck.map { it.publicId },
                     "catastropheEventCardDeck" to catastropheEventCardDeck.map { it.publicId },
 
