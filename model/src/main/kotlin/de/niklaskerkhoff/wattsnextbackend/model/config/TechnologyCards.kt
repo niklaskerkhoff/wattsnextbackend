@@ -622,7 +622,8 @@ val technologyCards = listOf(
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese überirdische Freileitung den Bundesstraßen.",
 
-        phaseIndex = 0
+        phaseIndex = 0,
+        tags = tagsOf(OverheadPowerLine)
     ),
     TechnologyCardData(
         id = "123d010d-b44c-4f7b-907c-d538760f529f",
@@ -683,7 +684,8 @@ val technologyCards = listOf(
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Im Norden erzeugter Strom aus Wind wird über diese \"Stromautobahn\" überirdisch in den Süden transportiert.",
 
-        phaseIndex = 1
+        phaseIndex = 1,
+        tags = tagsOf(OverheadPowerLine)
     ),
     TechnologyCardData(
         id = "1f731e92-cada-4594-a199-b43ca6d39214",
@@ -1257,7 +1259,8 @@ private val startDistributionCard =
         requirementsDescription = "Diese Karte allein  gibt keine Punkte. Ein stabiles Energieverteilungsnetz ist eine Grundvoraussetzung für das Energiesystem.",
         explanation = "Vergleichen wir das Strom- mit dem Straßennetz, so entspricht diese Freileitung den Bundesstraßen. Sie transportiert den  Strom überirdisch zwischen Regionen.",
 
-        phaseIndex = 0
+        phaseIndex = 0,
+        tags = tagsOf(OverheadPowerLine)
     ).toTechnologyCard()
 
 val startCards = listOf(startWithOilHeatingCard, startWithCoalCard, startWithNuclearCard, startDistributionCard)
