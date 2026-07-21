@@ -316,6 +316,16 @@ val technologyCards = listOf(
         ),
         requirementsDescription = "Bei Bau auf „Kleiner Windpark“: Zahle nur 1 Geldeinheiten und 1 Ressource.",
         explanation = "Viele Windkraftanlagen erzeugen aus Wind im großen Maße Strom.",
+        modifierCollection = ModifierCollection(
+            cardMoneyCostsModifierConfig = ModifierConfig(
+                rank = 10,
+                modify = CardCostModifier.MoneyCostsBuildingBigWindOnSmallWind.modify
+            ),
+            cardResourceCostsModifierConfig = ModifierConfig(
+                rank = 10,
+                modify = CardCostModifier.ResourceCostsBuildingBigWindOnSmallWind.modify
+            ),
+        ),
 
         phaseIndex = 1,
         tags = tagsOf(Wind)
