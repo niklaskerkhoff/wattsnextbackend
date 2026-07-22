@@ -12,7 +12,7 @@ class GameInitController(private val gameInitService: GameInitService) {
 
     @PostMapping("join")
     fun joinGame(@RequestBody request: JoinGameRequest): GameInitWithPlayerIdResponse =
-        gameInitService.joinGame(request.gameId, request.playerName)
+        gameInitService.joinGame(request.shareCode, request.playerName)
 
     @PostMapping("leave")
     fun leaveGame(@RequestBody request: LeaveGameRequest): Boolean =

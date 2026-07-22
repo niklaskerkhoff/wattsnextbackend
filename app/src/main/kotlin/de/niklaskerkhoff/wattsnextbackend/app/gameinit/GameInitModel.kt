@@ -6,6 +6,9 @@ import java.util.UUID
 class GameInit(
     val mode: Mode,
     creatorName: String,
+    // Short, human-shareable code used to join the lobby. The full id stays the canonical
+    // identifier used for session, WebSocket and persistence.
+    val shareCode: String,
 ) {
     val id: UUID = UUID.randomUUID()
     var state = GameState.Preparing

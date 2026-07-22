@@ -19,17 +19,26 @@ class GameInitService(
     private val gameInitMap: MutableMap<UUID, GameInit> = ConcurrentHashMap()
 
     fun createGame(request: CreateGameRequest): GameInitWithPlayerIdResponse {
-        val gameInit = GameInit(request.gameMode, request.playerName)
+        val gameInit = GameInit(request.gameMode, request.playerName, generateUniqueShareCode())
         gameInitMap[gameInit.id] = gameInit
         return GameInitWithPlayerIdResponse(gameInit, gameInit.players.last().id)
     }
 
-    fun joinGame(gameId: UUID, playerName: String): GameInitWithPlayerIdResponse {
-        val gameInit = getGameInitOrThrow(gameId)
+    fun joinGame(shareCode: String, playerName: String): GameInitWithPlayerIdResponse {
+        val normalizedShareCode = shareCode.trim().uppercase()
+        val gameInit = gameInitMap.values.find { it.shareCode == normalizedShareCode }
+            ?: throw IllegalArgumentException("Game not found")
         gameInit.addPlayer(playerName)
 
-        gameMessageSender.sendGameState(gameId, gameInit)
+        gameMessageSender.sendGameState(gameInit.id, gameInit)
         return GameInitWithPlayerIdResponse(gameInit, gameInit.players.last().id)
+    }
+
+    private fun generateUniqueShareCode(): String {
+        while (true) {
+            val code = (1..SHARE_CODE_LENGTH).map { SHARE_CODE_ALPHABET.random() }.joinToString("")
+            if (gameInitMap.values.none { it.shareCode == code }) return code
+        }
     }
 
     fun leaveGameBeforeStart(gameId: UUID, playerId: UUID): Boolean {
@@ -102,5 +111,12 @@ class GameInitService(
 
     private fun getGameInitOrThrow(gameId: UUID): GameInit {
         return gameInitMap[gameId] ?: throw IllegalArgumentException("Game not found")
+    }
+
+    companion object {
+        private const val SHARE_CODE_LENGTH = 4
+
+        // Alphabet without easily confused characters (no 0/O, 1/I).
+        private const val SHARE_CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     }
 }

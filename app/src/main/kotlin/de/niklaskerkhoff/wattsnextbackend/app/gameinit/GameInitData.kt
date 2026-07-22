@@ -8,7 +8,7 @@ data class CreateGameRequest(
 )
 
 data class JoinGameRequest(
-    val gameId: UUID,
+    val shareCode: String,
     val playerName: String
 )
 
