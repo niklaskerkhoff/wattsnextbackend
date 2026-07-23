@@ -176,15 +176,28 @@ data class Game(
 
         val (gameAfterStandardEffect, standardEffectInfos) = drawnCard.effect(this)
 
+        val (finalGame, becameLost) = gameAfterStandardEffect.copy(
+            standardEventCards = updatedStandardEventCards,
+            standardEventCardDeck = updatedStandardEventCardDeck,
+        ).withImmediateLossIfBankrupt()
+
         return Result(
-            gameAfterStandardEffect.copy(
-                standardEventCards = updatedStandardEventCards,
-                standardEventCardDeck = updatedStandardEventCardDeck,
-            ),
-            BaseInfo(gotNewStandardEventCard = true),
+            finalGame,
+            BaseInfo(gotNewStandardEventCard = true, hasGameStateChanged = becameLost),
             eventEffectInfos = standardEffectInfos,
         )
     }
+
+    /**
+     * A forced, unavoidable payment (an event/catastrophe effect or phase upkeep) that pushes money
+     * below zero loses the game immediately: you cannot pay what you owe. Voluntary spending is
+     * already blocked by the actions' `canExecute`, so this only ever fires on mandatory costs.
+     * Returns the game — marked [GameState.Lost] when it just went bankrupt — together with whether
+     * that loss was triggered here, so the caller can flag the state change for the transport layer.
+     */
+    private fun Game.withImmediateLossIfBankrupt(): Pair<Game, Boolean> =
+        if (state == GameState.Running && money < 0) copy(state = GameState.Lost) to true
+        else this to false
 
     override fun provideModifiers() = getAllCards().filterNotNull()
 
@@ -210,13 +223,15 @@ data class Game(
 
                 val (gameAfterStandardEffect, standardEffectInfos) = drawnCard.effect(this)
 
+                val (finalGame, becameLost) = gameAfterStandardEffect.copy(
+                    turnInPhase = nextTurnInPhase,
+                    standardEventCards = updatedStandardEventCards,
+                    standardEventCardDeck = updatedStandardEventCardDeck,
+                ).withImmediateLossIfBankrupt()
+
                 Result(
-                    gameAfterStandardEffect.copy(
-                        turnInPhase = nextTurnInPhase,
-                        standardEventCards = updatedStandardEventCards,
-                        standardEventCardDeck = updatedStandardEventCardDeck,
-                    ),
-                    BaseInfo(gotNewStandardEventCard = true),
+                    finalGame,
+                    BaseInfo(gotNewStandardEventCard = true, hasGameStateChanged = becameLost),
                     eventEffectInfos = standardEffectInfos,
                 )
             } else if (nextTurnInPhase < numberOfTurnsPerPhase) {
@@ -432,21 +447,24 @@ data class Game(
             val (gameAfterCatastropheEffect, catastropheEffectInfos) =
                 drawnCatastropheCard?.effect(gameAfterStandardEffect) ?: Pair(gameAfterStandardEffect, emptyList())
 
+            val (finalGame, becameLost) = gameAfterCatastropheEffect.copy(
+                turnInPhase = 0,
+                secondEventCardTurnInPhase = randomSecondEventCardTurn(numberOfTurnsPerPhase),
+                phaseSnapshots = phaseSnapshots + phaseSnapshot,
+                standardEventCards = updatedStandardEventCards,
+                standardEventCardDeck = updatedStandardEventCardDeck,
+                catastropheEventCardDeck = updatedCatastropheEventCardDeck,
+                catastropheEventCard = drawnCatastropheCard,
+                progressCardDeck = updatedProgressCardDeck,
+                upcomingProgressCards = stillUpcomingProgressCards,
+            ).withImmediateLossIfBankrupt()
+
             Result(
-                gameAfterCatastropheEffect.copy(
-                    turnInPhase = 0,
-                    secondEventCardTurnInPhase = randomSecondEventCardTurn(numberOfTurnsPerPhase),
-                    phaseSnapshots = phaseSnapshots + phaseSnapshot,
-                    standardEventCards = updatedStandardEventCards,
-                    standardEventCardDeck = updatedStandardEventCardDeck,
-                    catastropheEventCardDeck = updatedCatastropheEventCardDeck,
-                    catastropheEventCard = drawnCatastropheCard,
-                    progressCardDeck = updatedProgressCardDeck,
-                    upcomingProgressCards = stillUpcomingProgressCards,
-                ),
+                finalGame,
                 BaseInfo(
                     phaseCompleted = true,
                     gotNewStandardEventCard = true,
+                    hasGameStateChanged = becameLost,
                     requirementsFulfilled = phaseSnapshot.targetsFulfilled
                 ),
                 eventEffectInfos = standardEffectInfos + catastropheEffectInfos
