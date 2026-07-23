@@ -43,7 +43,9 @@ enum class CardCostModifier(
             modificationBase: ModificationBase,
             targetPosition: Int
         ): Boolean =
-            builtCard is TechnologyCard &&
+            // No target position (e.g. a hand card): not being built onto anything, so no surcharge.
+            targetPosition >= 0 &&
+                    builtCard is TechnologyCard &&
                     builtCard.tags.contains(Iron) &&
                     modificationBase.technologyBoard.getCurrentTechnologyCard(builtCard.technology, targetPosition)
                         .let { currentCard ->
@@ -57,7 +59,9 @@ enum class CardCostModifier(
             modificationBase: ModificationBase,
             targetPosition: Int
         ): Boolean =
-            builtCard is TechnologyCard &&
+            // No target position (e.g. a hand card): not being built onto anything, so no surcharge.
+            targetPosition >= 0 &&
+                    builtCard is TechnologyCard &&
                     builtCard.tags.contains(Wind) &&
                     builtCard.supply.base.size == 3 &&
                     modificationBase.technologyBoard.getCurrentTechnologyCard(builtCard.technology, targetPosition)
