@@ -14,6 +14,7 @@ data class ModifiableValue<T>(
 sealed class Modification {
     abstract val type: String
 
-    data class Stack(val multiplier: Int, override val type: String = "Stack") : Modification()
+    // Reserved for the dormant advanced-mode stacking mechanic; not emitted yet.
+    // data class Stack(val multiplier: Int, override val type: String = "Stack") : Modification()
     data class Card(val name: String, override val type: String = "Card") : Modification()
 }

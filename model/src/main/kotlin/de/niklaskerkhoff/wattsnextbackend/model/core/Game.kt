@@ -102,6 +102,20 @@ data class Game(
     fun getModifiedResourceCost(card: ProgressCard, targetPosition: Int): Int =
         card.resourceCosts.modified(card, modificationBaseIncluding(card), Pair(this, targetPosition))
 
+    // Provider cards that changed a value, so the frontend can show *why* it differs from its base.
+    // Each accessor mirrors the modificationBase used by its modified* counterpart above.
+    fun getMoneyCostModifications(card: ProgressCard, targetPosition: Int): List<Card> =
+        card.moneyCosts.modifications(card, modificationBaseIncluding(card), Pair(this, targetPosition))
+
+    fun getResourceCostModifications(card: ProgressCard, targetPosition: Int): List<Card> =
+        card.resourceCosts.modifications(card, modificationBaseIncluding(card), Pair(this, targetPosition))
+
+    fun getSupplyModifications(card: ProgressCard, targetPosition: Int): List<Card> =
+        card.supply.modifications(card, this, Pair(this, targetPosition))
+
+    fun getPointConditionModifications(card: ProgressCard): List<Card> =
+        card.supplyRequirementsForSystem.modifications(card)
+
     fun doesElectricityExist(): Boolean = formExists(EnergyForm.Electricity)
 
     fun doesHeatExist(): Boolean = formExists(EnergyForm.Heat)
@@ -498,6 +512,9 @@ data class Game(
 
     private fun <T> ModifiedValue<T, ModificationBase>.modified(modifiedCard: ProgressCard) =
         modified(modifiedCard, this@Game, this@Game)
+
+    private fun <T> ModifiedValue<T, ModificationBase>.modifications(modifiedCard: ProgressCard) =
+        modifications(modifiedCard, this@Game, this@Game)
 
     // A card's own cost modifiers (e.g. a build-on-existing discount) live in its own
     // ModifierCollection, but a card in the hand is not part of provideModifiers(). Include the card
