@@ -285,10 +285,6 @@ val climateCards = listOf(
             cardMoneyCostsModifierConfig = ModifierConfig(
                 rank = 10,
                 modify = CardCostModifier.CostsWithSubventionOfWindAndPhotovoltaic.modify
-            ),
-            cardResourceCostsModifierConfig = ModifierConfig(
-                rank = 10,
-                modify = CardCostModifier.CostsWithSubventionOfWindAndPhotovoltaic.modify
             )
         ),
         phaseIndex = 0

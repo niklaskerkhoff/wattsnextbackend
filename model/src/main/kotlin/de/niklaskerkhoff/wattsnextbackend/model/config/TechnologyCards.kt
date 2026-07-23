@@ -1024,7 +1024,8 @@ val technologyCards = listOf(
         requirementsDescription = "Überschüssige Energie wird gespeichert.",
         explanation = "Bleiakkumulatoren sind schwere und robuste Batterien zur Notstromversorgung.",
 
-        phaseIndex = 0
+        phaseIndex = 0,
+        tags = tagsOf(Battery)
     ),
     TechnologyCardData(
         id = "fe2a3bc6-6edc-4651-bd5b-aee6a4d3753e",
