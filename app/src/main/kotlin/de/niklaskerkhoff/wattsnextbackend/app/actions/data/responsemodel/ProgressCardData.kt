@@ -17,7 +17,8 @@ data class ProgressCardData(
     val supply: ModifiableValue<Supply?>,
     val isPlayable: Boolean,
     val gameBeforeEffect: GameData?,
-    val type: String // 'technology' or 'climateAction'
+    val type: String, // 'technology' or 'climateAction'
+    val phase: Int // 1-indexed phase the card belongs to (I, II, III)
 ) {
     constructor(card: ProgressCard, result: Result<*>, targetPosition: Int? = null) : this(
         id = card.publicId,
@@ -47,5 +48,6 @@ data class ProgressCardData(
             is ProgressCard.TechnologyCard -> "technology"
             is ProgressCard.ClimateCard -> "climateAction"
         },
+        phase = card.phaseIndex + 1,
     )
 }

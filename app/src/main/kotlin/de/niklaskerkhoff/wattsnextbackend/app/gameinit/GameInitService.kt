@@ -5,8 +5,10 @@ import de.niklaskerkhoff.wattsnextbackend.app.actions.GameManagerRepo
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.responsemodel.GameData
 import de.niklaskerkhoff.wattsnextbackend.app.actions.websockets.GameMessageSender
 import de.niklaskerkhoff.wattsnextbackend.model.core.GameState
+import org.springframework.http.HttpStatus
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
@@ -28,7 +30,16 @@ class GameInitService(
         val normalizedShareCode = shareCode.trim().uppercase()
         val gameInit = gameInitMap.values.find { it.shareCode == normalizedShareCode }
             ?: throw IllegalArgumentException("Game not found")
-        gameInit.addPlayer(playerName)
+
+        // Enforce the player limit and add the player atomically so concurrent joins can't
+        // slip past the check and overfill the lobby. A CONFLICT (409) lets the frontend tell
+        // "lobby full" apart from other join failures.
+        synchronized(gameInit) {
+            if (gameInit.players.size >= MAX_PLAYERS) {
+                throw ResponseStatusException(HttpStatus.CONFLICT, "Lobby is full (max $MAX_PLAYERS players)")
+            }
+            gameInit.addPlayer(playerName)
+        }
 
         gameMessageSender.sendGameState(gameInit.id, gameInit)
         return GameInitWithPlayerIdResponse(gameInit, gameInit.players.last().id)
@@ -114,6 +125,8 @@ class GameInitService(
     }
 
     companion object {
+        private const val MAX_PLAYERS = 6
+
         private const val SHARE_CODE_LENGTH = 4
 
         // Alphabet without easily confused characters (no 0/O, 1/I).
