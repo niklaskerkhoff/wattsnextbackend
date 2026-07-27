@@ -5,6 +5,7 @@ import de.niklaskerkhoff.wattsnextbackend.app.gameinit.GameInit.Mode.StartWithCo
 import de.niklaskerkhoff.wattsnextbackend.app.gameinit.GameInit.Mode.StartWithNuclear
 import de.niklaskerkhoff.wattsnextbackend.model.config.climateCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.eventCards
+import de.niklaskerkhoff.wattsnextbackend.model.config.quizCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.startDistributionCards
 import de.niklaskerkhoff.wattsnextbackend.model.config.startGenerationCardsWithCoal
 import de.niklaskerkhoff.wattsnextbackend.model.config.startGenerationCardsWithNuclear
@@ -50,6 +51,7 @@ object GameFactory {
             upcomingProgressCards = upcomingProgressCards,
             standardEventCardDeck = standardEventCardDeck,
             catastropheEventCardDeck = catastropheEventCardDeck,
+            quizCardDeck = quizCards.shuffled(),
             pointTargetsPerPhase = listOf(30, 60, 100),
             numberOfPhases = 3,
             numberOfTurnsPerPhase = 12,

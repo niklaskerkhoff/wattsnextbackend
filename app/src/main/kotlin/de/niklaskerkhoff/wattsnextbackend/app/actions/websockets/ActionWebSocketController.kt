@@ -2,6 +2,7 @@ package de.niklaskerkhoff.wattsnextbackend.app.actions.websockets
 
 import de.niklaskerkhoff.wattsnextbackend.app.actions.GameManager
 import de.niklaskerkhoff.wattsnextbackend.app.actions.GameManagerRepo
+import de.niklaskerkhoff.wattsnextbackend.app.actions.data.AnswerQuizRequest
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.ChangeCardRequest
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.PlayClimateCardRequest
 import de.niklaskerkhoff.wattsnextbackend.app.actions.data.PlayTechnologyCardIntentRequest
@@ -64,6 +65,15 @@ class ActionWebSocketController(
         authorize(sessionInfo.playerId, gameManager)
         val response = gameManager.handleChangeCard(request.progressCardId)
         gameMessageSender.sendChangeCardResponse(sessionInfo.gameId, response)
+    }
+
+    @MessageMapping("/answerQuiz")
+    fun answerQuiz(request: AnswerQuizRequest, headerAccessor: StompHeaderAccessor) {
+        val sessionInfo = wsAuthHelper.getAndValidateSessionInfo(headerAccessor)
+        val gameManager = gameManagerRepo.getGameManagerOrThrow(sessionInfo.gameId)
+        authorize(sessionInfo.playerId, gameManager)
+        val response = gameManager.handleAnswerQuiz(request.optionIndex)
+        gameMessageSender.sendAnswerQuizResponse(sessionInfo.gameId, response)
     }
 
     private fun authorize(playerId: UUID, gameManager: GameManager) {

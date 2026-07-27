@@ -18,3 +18,7 @@ data class PlayTechnologyCardRequest(
 data class ChangeCardRequest(
     val progressCardId: UUID ,
 )
+
+data class AnswerQuizRequest(
+    val optionIndex: Int,
+)

@@ -76,7 +76,15 @@ class GameManager(
         return executeAction(action)
     }
 
+    fun handleAnswerQuiz(optionIndex: Int): ActionResponse {
+        val action = AnswerQuizAction(optionIndex)
+        return executeAction(action)
+    }
+
     private fun <T> executeAction(action: Action<T>): ActionResponse {
+        // While a quiz is pending, the only legal action is answering it.
+        if (game.pendingQuiz != null && action !is AnswerQuizAction) return illegalActionResponse()
+
         if (!action.canExecute(game)) return illegalActionResponse()
 
         val result = action.execute(game)

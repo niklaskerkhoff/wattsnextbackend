@@ -18,6 +18,7 @@ data class GameData(
     val phases: List<PhaseData>,
     val progressCardPileSize: Int,
     val progressPoints: Int,
+    val pendingQuiz: QuizCardData?,
 ) {
 
     constructor(game: Game) : this(Result<Unit>(game))
@@ -42,5 +43,6 @@ data class GameData(
         phases = (0..<result.game.numberOfPhases).map { PhaseData(result, it) },
         progressCardPileSize = result.game.progressCardDeck.size,
         progressPoints = result.game.calculateProgressPointInfo().progressPoints,
+        pendingQuiz = result.game.pendingQuiz?.let { QuizCardData(it) },
     )
 }

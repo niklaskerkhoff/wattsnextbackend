@@ -47,4 +47,8 @@ class GameMessageSender(
     fun sendChangeCardResponse(gameId: UUID, result: ActionResponse) {
         sendToGame(gameId, "changeCardResult", result)
     }
+
+    fun sendAnswerQuizResponse(gameId: UUID, result: ActionResponse) {
+        sendToGame(gameId, "answerQuizResult", result)
+    }
 }

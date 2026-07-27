@@ -4,6 +4,7 @@ import de.niklaskerkhoff.wattsnextbackend.model.core.cards.Card
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EffectBase
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.EventCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.ProgressCard
+import de.niklaskerkhoff.wattsnextbackend.model.core.cards.QuizCard
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModificationBase
 import de.niklaskerkhoff.wattsnextbackend.model.core.cards.modification.ModifiedValue
 import de.niklaskerkhoff.wattsnextbackend.model.lib.removedLast
@@ -13,8 +14,20 @@ import de.niklaskerkhoff.wattsnextbackend.model.values.energy.Technology
 import java.util.*
 import kotlin.random.Random
 
-private fun randomSecondEventCardTurn(numberOfTurnsPerPhase: Int): Int =
-    Random.nextInt(2, numberOfTurnsPerPhase - 2)
+// Quiz turns per phase, staggered by one turn so it is not always the same players who answer
+// (a phase is 12 turns, which is divisible by 2/3/4/6, so the phase number alone would keep the
+// answerer fixed). The gap of 7 within each phase guarantees two different answerers for 2–6 players.
+// Turns are 0-based here; in human counting the pairs are (4, 11), (3, 10) and (2, 9).
+private val defaultQuizTurnsPerPhase = listOf(
+    listOf(3, 10),
+    listOf(2, 9),
+    listOf(1, 8),
+)
+
+// The second event card lands on a random turn, but never on a quiz turn so that a quiz and an
+// event card never pile up in the same round.
+private fun randomSecondEventCardTurn(numberOfTurnsPerPhase: Int, quizTurns: List<Int>): Int =
+    ((2 until numberOfTurnsPerPhase - 2) - quizTurns.toSet()).random()
 
 data class Game(
     private val id: UUID,
@@ -38,6 +51,10 @@ data class Game(
     val standardEventCards: List<EventCard> = emptyList(),
     val catastropheEventCard: EventCard? = null,
 
+    val quizCardDeck: List<QuizCard> = emptyList(),
+    // The quiz currently awaiting an answer. While it is set, no other action can be performed.
+    val pendingQuiz: QuizCard? = null,
+
     val phase: Int = 0,
     val turnInPhase: Int = 0,
 
@@ -49,7 +66,10 @@ data class Game(
     val numberOfPhases: Int,
     val numberOfTurnsPerPhase: Int,
 
-    val secondEventCardTurnInPhase: Int = randomSecondEventCardTurn(numberOfTurnsPerPhase),
+    val quizTurnsPerPhase: List<List<Int>> = defaultQuizTurnsPerPhase,
+
+    val secondEventCardTurnInPhase: Int =
+        randomSecondEventCardTurn(numberOfTurnsPerPhase, quizTurnsPerPhase.getOrElse(phase) { emptyList() }),
 
 //    val frozenPhaseValues: List<PhaseValue> = emptyList(),
 ) : ModificationBase, EffectBase {
@@ -161,6 +181,17 @@ data class Game(
 
     fun withUpdatedMoney(delta: Int): Game = copy(money = money + delta)
 
+    /**
+     * Resolves the pending quiz: a correct answer earns 1 money, a wrong one costs 1. Like any other
+     * mandatory cost, a wrong answer that pushes money below zero loses the game (see
+     * [withImmediateLossIfBankrupt]). Returns the game together with whether it just became lost.
+     */
+    fun withQuizResolved(wasCorrect: Boolean): Pair<Game, Boolean> =
+        copy(
+            money = money + if (wasCorrect) 1 else -1,
+            pendingQuiz = null,
+        ).withImmediateLossIfBankrupt()
+
     fun withUpdatedResources(delta: Int): Game = copy(resources = resources + delta)
 
     fun withUpdatedState(state: GameState): Game = copy(state = state)
@@ -231,7 +262,17 @@ data class Game(
 
     override fun withNextTurn(): Result<Unit> =
         (turnInPhase + 1).let { nextTurnInPhase ->
-            if (nextTurnInPhase == secondEventCardTurnInPhase) {
+            if (nextTurnInPhase in quizTurnsPerPhase.getOrElse(phase) { emptyList() } && quizCardDeck.isNotEmpty()) {
+                val (drawnQuiz, updatedQuizCardDeck) = quizCardDeck.removedLast()
+                Result(
+                    copy(
+                        turnInPhase = nextTurnInPhase,
+                        pendingQuiz = drawnQuiz,
+                        quizCardDeck = updatedQuizCardDeck,
+                    ),
+                    BaseInfo(gotNewQuiz = true),
+                )
+            } else if (nextTurnInPhase == secondEventCardTurnInPhase) {
                 val (drawnCard, updatedStandardEventCardDeck) = standardEventCardDeck.removedLast()
                 val updatedStandardEventCards = standardEventCards + drawnCard
 
@@ -463,7 +504,10 @@ data class Game(
 
             val (finalGame, becameLost) = gameAfterCatastropheEffect.copy(
                 turnInPhase = 0,
-                secondEventCardTurnInPhase = randomSecondEventCardTurn(numberOfTurnsPerPhase),
+                secondEventCardTurnInPhase = randomSecondEventCardTurn(
+                    numberOfTurnsPerPhase,
+                    quizTurnsPerPhase.getOrElse(nextPhase) { emptyList() },
+                ),
                 phaseSnapshots = phaseSnapshots + phaseSnapshot,
                 standardEventCards = updatedStandardEventCards,
                 standardEventCardDeck = updatedStandardEventCardDeck,
@@ -559,6 +603,7 @@ data class Game(
     data class BaseInfo(
         val phaseCompleted: Boolean = false,
         val gotNewStandardEventCard: Boolean = false,
+        val gotNewQuiz: Boolean = false,
         val hasGameStateChanged: Boolean = false,
         val requirementsFulfilled: Boolean? = null,
     )
