@@ -3,6 +3,8 @@
 This is the Spring Boot backend of the online multiplayer implementation of the board game Watts Next. 
 The frontend can be found [here](https://github.com/Roundabout49/wattsnext-frontend).
 
+See `DEPLOYMENT.md` for how the app is deployed to the production server.
+
 ## What is Watts Next?
 
 Watts Next is a cooperative board game on the energy transition.
@@ -34,11 +36,7 @@ and both a build cache and a configuration cache (see `gradle.properties`).
 
 ## Open Issues
 
-- Offer separate game modi for standard and expert. Expert mode adds recycling, stacking for small technologies, only being able to use supply once and more. 
-- Separate cards by phases and introduce them to the deck in the according phase.
-- Make the displayed game id shorter (for example only the first 6 characters), so sharing it with other players becomes easier.
-- Set `gameBeforeEffect` in ProgressCardData.kt.
-- Implement event conditions (see *Sonniges Wetter* event card).
-- Implement temporal differentiation for event conditions (see *Sturmschäden* event card).
+- Offer separate game modi for standard and expert. Recycling, stacking for small technologies and single-use supply are implemented but disabled in standard mode. Expert mode still needs a way to actually turn them on.
+- Set `gameBeforeEffect` in `ProgressCardData.kt`. It is currently always `null`.
 - Add the technology energy matrix to the GameData telling the current energy supply totals.
 - possibly more ...

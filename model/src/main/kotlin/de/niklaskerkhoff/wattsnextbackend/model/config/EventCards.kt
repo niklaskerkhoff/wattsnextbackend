@@ -95,7 +95,6 @@ val eventCards = listOf(
             ),
         ),
         effectConditionDescription = "Falls Solartechnologien im Energiesystem vorhanden:",
-        // TODO: Only if solar exists
         modifierCollection = ModifierCollection(
             supplyRequirementsForSystemModifierConfig = ModifierConfig(
                 rank = 4,
