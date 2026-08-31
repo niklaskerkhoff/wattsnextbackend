@@ -1,0 +1,3 @@
+# Shell scripts must use LF line endings, or bash on the deploy machine fails
+# with `$'\r': command not found` (Windows checkouts would otherwise get CRLF).
+*.sh text eol=lf
