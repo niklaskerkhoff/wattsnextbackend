@@ -1,0 +1,15 @@
+[Unit]
+Description=WattsNext backend (Spring Boot)
+After=network.target
+
+[Service]
+User=selgrad
+WorkingDirectory=/home/selgrad/wattsnext
+ExecStart=/usr/bin/java -jar /home/selgrad/wattsnext/app.jar
+Restart=on-failure
+# Time to persist game state (data/gamemanagers.json) on shutdown.
+# WorkingDirectory above must stay set, since that path is resolved relative to it.
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
