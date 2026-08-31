@@ -10,6 +10,10 @@ See `DEPLOYMENT.md` for how the app is deployed to the production server.
 Watts Next is a cooperative board game on the energy transition.
 Visit the [website](https://www.enzo.kit.edu/wattsnext) for more information.
 
+## Prerequisites
+
+Java 21. The Gradle wrapper downloads a matching JDK automatically via the Foojay toolchain resolver if none is installed.
+
 ## About Gradle
 
 This project uses [Gradle](https://gradle.org/).

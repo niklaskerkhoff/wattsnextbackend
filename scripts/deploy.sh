@@ -27,7 +27,17 @@ if [[ -n "${JAVA_HOME_21:-}" ]]; then
 fi
 
 echo "==> Building backend (skipping tests)"
-./gradlew.bat :app:build -x test
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*)
+    # Git Bash on Windows: run the Windows wrapper through cmd, otherwise bash
+    # tries to execute the .bat as a shell script. //c becomes /c after MSYS
+    # path munging; the quoted command keeps the :task args from being mangled.
+    cmd //c "gradlew.bat :app:build -x test"
+    ;;
+  *)
+    ./gradlew :app:build -x test
+    ;;
+esac
 
 if [[ ! -f "$JAR" ]]; then
   echo "!! Build artifact not found: $JAR" >&2
